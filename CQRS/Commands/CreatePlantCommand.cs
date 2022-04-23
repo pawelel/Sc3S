@@ -2,7 +2,7 @@
 
 using Sc3S.Entities;
 
-namespace Sc3S.Commands;
+namespace Sc3S.CQRS.Commands;
 
 public class CreatePlantCommand : IRequest<Plant>
 {

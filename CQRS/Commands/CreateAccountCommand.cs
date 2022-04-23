@@ -3,7 +3,7 @@
 using Sc3S.DTO;
 using Sc3S.Entities;
 
-namespace Sc3S.Commands;
+namespace Sc3S.CQRS.Commands;
 
 public class CreateAccountCommand : IRequest<AccountDto>
 {

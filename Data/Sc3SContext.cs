@@ -15,6 +15,8 @@ public class Sc3SContext : DbContext
     }
 
     public DbSet<Plant> Plants => Set<Plant>();
+    public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Role> Roles => Set<Role>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

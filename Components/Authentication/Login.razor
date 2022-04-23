@@ -53,24 +53,17 @@
 
     private async Task Authenticate()
     {
-        
-        await Mediator.Send(_command);
 
-        //var userAccount = userAccountService.GetByUserName(_model.UserName);
-        //if (userAccount == null || userAccount.Password != _model.Password)
-        //{
-        //    await js.InvokeVoidAsync("alert", "Nieprawidłowa nazwa użytkownika lub hasło");
-        //    return;
-        //}
-
-        //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-        //await customAuthStateProvider.UpdateAuthenticationState(new UserSession
-        //    {
-        //        UserName = userAccount.UserName,
-        //        Role = userAccount.Role
-        //    });
-        //navManager.NavigateTo("/", true);
-
-
+        var userAccount =  await Mediator.Send(_command);
+        Console.WriteLine(userAccount);
+        if (userAccount is not null)
+        {
+            await authStateProvider.UpdateAuthenticationState(new UserSession
+                {
+                    UserName = userAccount.UserName,
+                    Role = userAccount.Role
+                });
+            navManager.NavigateTo("/", true);
+        }
     }
 }

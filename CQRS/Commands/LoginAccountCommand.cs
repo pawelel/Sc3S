@@ -2,7 +2,7 @@
 
 using Sc3S.DTO;
 
-namespace Sc3S.Commands;
+namespace Sc3S.CQRS.Commands;
 
 public class LoginAccountCommand : IRequest<UserSession>
 {

@@ -2,11 +2,11 @@
 
 using Microsoft.EntityFrameworkCore;
 
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
 using Sc3S.Entities;
-using Sc3S.Queries;
 
-namespace Sc3S.Handlers;
+namespace Sc3S.CQRS.Handlers;
 
 public class GetAllPlantsQueryHandler : IRequestHandler<GetAllPlantsQuery, Plant[]>
 {

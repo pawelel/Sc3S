@@ -5,7 +5,7 @@ using Sc3S.DTO;
 
 using System.Security.Claims;
 
-namespace Sc3S.Authentication;
+namespace Sc3S.Components.Authentication;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
