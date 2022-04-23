@@ -10,6 +10,7 @@ using Sc3S.Authentication;
 using Sc3S.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 builder.Services.AddAuthenticationCore();
@@ -18,10 +19,9 @@ builder.Services.AddServerSideBlazor(c => c.DetailedErrors = true);
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton<UserAccountService>();
-var cs = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<Sc3SContext>(options =>
-    options.UseSqlServer(cs));
+builder.Services.AddDbContext<Sc3SContext>(options => options.UseSqlServer(cs));
 
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
