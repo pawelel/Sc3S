@@ -1,13 +1,17 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using MudBlazor.Services;
 
 using Sc3S.Authentication;
 using Sc3S.Data;
+using Sc3S.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -20,12 +24,10 @@ builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSingleton<UserAccountService>();
-builder.Services.AddDbContext<Sc3SContext>(options => options.UseSqlServer(cs));
-
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddDbContextFactory<Sc3SContext>(options => options.UseSqlServer(cs));
+builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 builder.Services.AddMudServices();
-
+builder.Services.AddMediatR(typeof(Program));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,39 +1,34 @@
 ﻿@page "/login"
+
+
 @layout LoginLayout
-@using Sc3S.Authentication
-@inject UserAccountService userAccountService
+@inject IMediator Mediator
+
 @inject CustomAuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 @inject IJSRuntime js
+<AuthorizeView>
+    <NotAuthorized>
+<MudText Typo="Typo.h4" GutterBottom="true">Logowanie</MudText>
+<EditForm Model="_command" Context="login" OnValidSubmit="@Authenticate">
+    <ChildContent Context="model">
+    <FluentValidationValidator />
+   <MudText Color="Color.Error" ><ValidationSummary /></MudText> 
+    <MudTextField @bind-Value="_command.UserName" Label="Nazwa użytkownika/Email" Variant="Variant.Outlined" Class="my-6"></MudTextField>
 
-<MudText Typo="Typo.h4" GutterBottom="true">Sign In</MudText>
-<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-    <MudText>Don't have an account? <MudLink Href="/pages/authentication/register">Logowanie</MudLink></MudText>
+    <MudTextField @bind-Value="@_command.Password" Label="Hasło" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
 
-    <MudTextField T="string" @bind-Value="_model.UserName" Label="UserName/Email" Required="true" RequiredError="User name is required!" Variant="Variant.Outlined" Class="my-6"></MudTextField>
-
-    <MudTextField @bind-Value="@_model.Password" Label="Password" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
-
-    <MudButton @onkeypress="@LoginUser" Variant="Variant.Filled" Color="Color.Primary" OnClick="Authenticate" Size="Size.Large" FullWidth="true">Zaloguj</MudButton>
-</MudForm>
-
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" Size="Size.Large" FullWidth="true">Zaloguj</MudButton>
+</ChildContent>
+</EditForm>
+</NotAuthorized>
+<Authorized>
+    <LoginDisplay/>
+</Authorized>
+</AuthorizeView>
 @code {
-     bool success;
-    string[] errors = { };
-    MudForm form;
-    string donedeal = string.Empty;
-
-    private void KeyboardEventHandler(KeyboardEventArgs args)
-    {
-        if(success){
-            SubmitMyShit();
-        }
-    }
-
-    private void SubmitMyShit()
-    {
-        donedeal = "done deal";
-    }
+  
+    LoginAccountCommand _command = new();
     bool PasswordVisibility;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -54,36 +49,28 @@
         }
     }
 
-    private class LoginModel
-    {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
 
-    private LoginModel _model = new LoginModel();
 
     private async Task Authenticate()
     {
-        var userAccount = userAccountService.GetByUserName(_model.UserName);
-        if (userAccount == null || userAccount.Password != _model.Password)
-        {
-            await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
-            return;
-        }
+        
+        await Mediator.Send(_command);
 
-        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
-        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
-            {
-                UserName = userAccount.UserName,
-                Role = userAccount.Role
-            });
-        navManager.NavigateTo("/", true);
-    }
-    public async Task LoginUser(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            await Authenticate();
-        }
+        //var userAccount = userAccountService.GetByUserName(_model.UserName);
+        //if (userAccount == null || userAccount.Password != _model.Password)
+        //{
+        //    await js.InvokeVoidAsync("alert", "Nieprawidłowa nazwa użytkownika lub hasło");
+        //    return;
+        //}
+
+        //var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        //await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+        //    {
+        //        UserName = userAccount.UserName,
+        //        Role = userAccount.Role
+        //    });
+        //navManager.NavigateTo("/", true);
+
+
     }
 }

@@ -5,3 +5,4 @@
 * EntityFrameworkCore.SqlServer
 * Serilog.AspNetCore + Sinks: Console, File
 * Blazored.FluentValidation
+* MediatR

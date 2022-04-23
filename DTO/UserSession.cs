@@ -1,4 +1,4 @@
-﻿namespace Sc3S.Authentication;
+﻿namespace Sc3S.DTO;
 
 public class UserSession
 {

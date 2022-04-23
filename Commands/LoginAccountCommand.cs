@@ -1,8 +1,11 @@
-﻿namespace Sc3S.Authentication;
+﻿using MediatR;
 
-public class UserAccount
+using Sc3S.DTO;
+
+namespace Sc3S.Commands;
+
+public class LoginAccountCommand : IRequest<UserSession>
 {
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public string Role { get; set; } = string.Empty;
 }

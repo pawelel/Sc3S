@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
+using Sc3S.DTO;
+
 using System.Security.Claims;
 
 namespace Sc3S.Authentication;
