@@ -1,0 +1,44 @@
+﻿@page "/"
+@using System.Security.Claims
+
+<PageTitle>Index</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
+<AuthorizeView>
+    <Authorized>
+        <MudText Typo="Typo.h3" GutterBottom="true">You are authorized!</MudText>
+        <MudText Class="mb-8">Hello, @context.User.Claims.First().Value</MudText>
+        <MudText Class="mb-8">Hello, @context.User.Identity?.Name</MudText>
+        <MudText Typo="Typo.h4" GutterBottom="true">Authorized</MudText>
+        <MudText>You are authorized to view this page.</MudText>
+    </Authorized>
+    <NotAuthorized>
+        <MudText Typo="Typo.h4" GutterBottom="true">Not Authorized</MudText>
+        <MudText>You are not authorized to view this page.</MudText>
+    </NotAuthorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Manager">
+   <Authorized>
+          <MudText Typo="Typo.h4" GutterBottom="true">Manager</MudText>
+        <MudText>You are authorized to view this page.</MudText>
+   </Authorized>
+   <NotAuthorized>
+        <MudText Typo="Typo.h4" GutterBottom="true">Not Authorized</MudText>
+        
+        <MudText>@role are not authorized to view this page.</MudText>
+   </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthState { get; set; } = default!;
+    string role = string.Empty;
+    protected override async Task OnInitializedAsync()  
+    {
+        var authState = await AuthState;
+        var user = authState.User; 
+        role = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value==null?"":user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value+"s";
+    }  
+}

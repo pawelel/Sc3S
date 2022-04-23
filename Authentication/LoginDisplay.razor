@@ -1,0 +1,18 @@
+﻿@inject CustomAuthenticationStateProvider authStateProvider
+<AuthorizeView>
+    <Authorized>
+        Witaj, @context.User.Identity?.Name!
+        <MudButton Color="Color.Primary" OnClick="Logout">Wyloguj</MudButton>
+    </Authorized>
+    <NotAuthorized>
+        <MudButton Color="Color.Primary" Href="/login">Zaloguj</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+    async Task Logout()
+    {
+        await authStateProvider.Logout();
+    }
+
+}

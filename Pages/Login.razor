@@ -1,0 +1,89 @@
+﻿@page "/login"
+@layout LoginLayout
+@using Sc3S.Authentication
+@inject UserAccountService userAccountService
+@inject CustomAuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+@inject IJSRuntime js
+
+<MudText Typo="Typo.h4" GutterBottom="true">Sign In</MudText>
+<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+    <MudText>Don't have an account? <MudLink Href="/pages/authentication/register">Logowanie</MudLink></MudText>
+
+    <MudTextField T="string" @bind-Value="_model.UserName" Label="UserName/Email" Required="true" RequiredError="User name is required!" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+
+    <MudTextField @bind-Value="@_model.Password" Label="Password" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+
+    <MudButton @onkeypress="@LoginUser" Variant="Variant.Filled" Color="Color.Primary" OnClick="Authenticate" Size="Size.Large" FullWidth="true">Zaloguj</MudButton>
+</MudForm>
+
+@code {
+     bool success;
+    string[] errors = { };
+    MudForm form;
+    string donedeal = string.Empty;
+
+    private void KeyboardEventHandler(KeyboardEventArgs args)
+    {
+        if(success){
+            SubmitMyShit();
+        }
+    }
+
+    private void SubmitMyShit()
+    {
+        donedeal = "done deal";
+    }
+    bool PasswordVisibility;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void TogglePasswordVisibility()
+    {
+        @if (PasswordVisibility)
+        {
+            PasswordVisibility = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            PasswordVisibility = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    private class LoginModel
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    private LoginModel _model = new LoginModel();
+
+    private async Task Authenticate()
+    {
+        var userAccount = userAccountService.GetByUserName(_model.UserName);
+        if (userAccount == null || userAccount.Password != _model.Password)
+        {
+            await js.InvokeVoidAsync("alert", "Invalid User Name or Password");
+            return;
+        }
+
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(new UserSession
+            {
+                UserName = userAccount.UserName,
+                Role = userAccount.Role
+            });
+        navManager.NavigateTo("/", true);
+    }
+    public async Task LoginUser(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await Authenticate();
+        }
+    }
+}
