@@ -17,23 +17,15 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
-
+builder.Services.AddDbContextFactory<Sc3SContext>(options =>
+{
+    options.UseSqlServer(cs);
+});
 // Add services to the container.
 builder.Services.AddAuthenticationCore();
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor(c => c.DetailedErrors = true);
-builder.Services.AddScoped<ProtectedSessionStorage>();
-builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddDbContextFactory<Sc3SContext>(options => 
-{
-    options.UseSqlServer(cs);
-    options.EnableSensitiveDataLogging();
-});
-builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
-builder.Services.AddMudServices();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddServerSideBlazor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
