@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
+using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
 using Sc3S.DTO;
 using Sc3S.Entities;
@@ -8,7 +11,7 @@ namespace Sc3S.Services;
 
 public interface ICommunicateService
 {
-    Task<int> CreateCommunicate(CommunicateCreateDto communicateCreateDto);
+    Task<int> CreateCommunicate(CommunicateUpdateCommand communicateUpdateDto);
 
     Task<(int, int)> CreateCommunicateArea(int communicateId, int areaId);
 
@@ -40,9 +43,9 @@ public interface ICommunicateService
 
     Task DeleteCommunicateSpace(int communicateId, int spaceId);
 
-    Task<CommunicateDto> GetCommunicateById(int communicateId);
+    Task<CommunicateQuery> GetCommunicateById(int communicateId);
 
-    Task<IEnumerable<CommunicateDto>> GetCommunicates();
+    Task<IEnumerable<CommunicateQuery>> GetCommunicates();
 
     Task<IEnumerable<CommunicateWithAssetsDto>> GetCommunicatesWithAssets();
 
@@ -62,7 +65,7 @@ public interface ICommunicateService
 
     Task MarkDeleteCommunicateSpace(int communicateId, int spaceId);
 
-    Task UpdateCommunicate(int communicateId, CommunicateUpdateDto communicateUpdateDto);
+    Task UpdateCommunicate(int communicateId, CommunicateUpdateCommand communicateUpdateDto);
 
     Task UpdateCommunicateArea(int communicateId, int areaId);
     Task UpdateCommunicateAsset(int communicateId, int assetId);
@@ -83,14 +86,14 @@ public class CommunicateService : ICommunicateService
         _factory = factory;
         _logger = logger;
     }
-    public async Task<int> CreateCommunicate(CommunicateCreateDto communicateCreateDto)
+    public async Task<int> CreateCommunicate(CommunicateUpdateCommand communicateUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate category name
-        var duplicate = await _context.Communicates.AnyAsync(c => c.Name.ToLower().Trim() == communicateCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Communicates.AnyAsync(c => c.Name.ToLower().Trim() == communicateUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Communicate name already exists");
@@ -100,8 +103,8 @@ public class CommunicateService : ICommunicateService
         var communicate = new Communicate
         {
 
-            Name = communicateCreateDto.Name,
-            Description = communicateCreateDto.Description,
+            Name = communicateUpdateDto.Name,
+            Description = communicateUpdateDto.Description,
             IsDeleted = false
         };
         // create category
@@ -753,7 +756,7 @@ public class CommunicateService : ICommunicateService
         }
     }
 
-    public async Task<CommunicateDto> GetCommunicateById(int communicateId)
+    public async Task<CommunicateQuery> GetCommunicateById(int communicateId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -761,7 +764,7 @@ public class CommunicateService : ICommunicateService
         // get communicate
         var communicate = await _context.Communicates
             .AsNoTracking()
-            .Select(c => new CommunicateDto
+            .Select(c => new CommunicateQuery
             {
                 CommunicateId = c.CommunicateId,
                 Name = c.Name,
@@ -781,7 +784,7 @@ public class CommunicateService : ICommunicateService
         return communicate;
     }
 
-    public async Task<IEnumerable<CommunicateDto>> GetCommunicates()
+    public async Task<IEnumerable<CommunicateQuery>> GetCommunicates()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -789,7 +792,7 @@ public class CommunicateService : ICommunicateService
         // get communicates
         var communicates = await _context.Communicates
             .AsNoTracking()
-            .Select(c => new CommunicateDto
+            .Select(c => new CommunicateQuery
             {
                 CommunicateId = c.CommunicateId,
                 Name = c.Name,
@@ -824,7 +827,7 @@ public class CommunicateService : ICommunicateService
                 Description = c.Description,
                 IsDeleted = c.IsDeleted,
                 UserId = c.UpdatedBy,
-                Assets = c.CommunicateAssets.Select(a => new AssetDto
+                Assets = c.CommunicateAssets.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Asset.Name,
@@ -844,7 +847,7 @@ public class CommunicateService : ICommunicateService
         return communicates;
     }
 
-    public async Task<SituationDto> GetSituationById(int situationId)
+    public async Task<SituationQuery> GetSituationById(int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -852,7 +855,7 @@ public class CommunicateService : ICommunicateService
         // get situation
         var situation = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationDto
+            .Select(s => new SituationQuery
             {
                 SituationId = s.SituationId,
                 Name = s.Name,
@@ -1181,7 +1184,7 @@ public class CommunicateService : ICommunicateService
         }
     }
 
-    public async Task UpdateCommunicate(int communicateId, CommunicateUpdateDto communicateUpdateDto)
+    public async Task UpdateCommunicate(int communicateId, CommunicateUpdateCommand communicateUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();

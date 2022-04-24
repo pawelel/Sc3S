@@ -1,7 +1,11 @@
 ﻿<MudNavMenu Color="Color.Primary">
     <MudNavLink Href="/user" Match="NavLinkMatch.All" Icon="@Icons.Outlined.DevicesOther">Wyświetlanie</MudNavLink>
+    <AuthorizeView Roles="Admin, Manager">
     <MudNavLink Href="/manager" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.Settings">Zarządzanie</MudNavLink>
+    </AuthorizeView>
+    <AuthorizeView Roles="Admin">
     <MudNavLink Href="/admin" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.AdminPanelSettings">Admin</MudNavLink>
+    </AuthorizeView>
     <MudNavLink Href="/docs" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.List">Dokumentacja</MudNavLink>
     <MudNavLink Href="/testing" Match="NavLinkMatch.Prefix" Icon="@Icons.Outlined.Notes">Testy</MudNavLink>
 </MudNavMenu>

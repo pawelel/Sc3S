@@ -1,4 +1,6 @@
-﻿namespace Sc3S.DTO;
+﻿using Sc3S.CQRS.Queries;
+
+namespace Sc3S.DTO;
 public class AssetCategoryDto : BaseDto
 {
     public int AssetId { get; set; }

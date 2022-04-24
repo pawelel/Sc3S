@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-using Sc3S.DTO;
+using Sc3S.CQRS.Queries;
 using Sc3S.Enumerations;
 using Sc3S.Services;
 
 namespace Sc3S.Components.StuffComponents;
 public partial class AssetSearch : ComponentBase
 {
-    private IEnumerable<AssetDisplayDto> _assets = new List<AssetDisplayDto>();
-    private IEnumerable<AssetDisplayDto> _filteredAssets = new List<AssetDisplayDto>();
+    private IEnumerable<AssetDisplayQuery> _assets = new List<AssetDisplayQuery>();
+    private IEnumerable<AssetDisplayQuery> _filteredAssets = new List<AssetDisplayQuery>();
 
     private string _searchString = string.Empty;
     private string _selectedFilters = string.Empty;
     [Inject]
     private IStuffService StuffService { get; set; } = default!;
 
-    private Func<AssetDisplayDto, bool> AssetFilter => x =>
+    private Func<AssetDisplayQuery, bool> AssetFilter => x =>
     {
-        return _searchString != null && typeof(AssetDisplayDto).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
+        return _searchString != null && typeof(AssetDisplayQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
     };
     protected override async Task OnInitializedAsync()
     {
@@ -25,7 +25,7 @@ public partial class AssetSearch : ComponentBase
         _filteredAssets = _assets;
 
     }
-    private static void ShowBtnPress(AssetDisplayDto aDisplayDto)
+    private static void ShowBtnPress(AssetDisplayQuery aDisplayDto)
     {
         aDisplayDto.ShowDetails = !aDisplayDto.ShowDetails;
     }

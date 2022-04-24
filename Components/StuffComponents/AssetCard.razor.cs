@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-using Sc3S.DTO;
+using Sc3S.CQRS.Queries;
 
 namespace Sc3S.Components.StuffComponents;
 public partial class AssetCard : ComponentBase
 {
-    [Parameter] public AssetDisplayDto AssetModel { get; set; } = new();
+    [Parameter] public AssetDisplayQuery AssetModel { get; set; } = new();
 }

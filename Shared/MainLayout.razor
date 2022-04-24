@@ -1,20 +1,34 @@
 ﻿@inherits LayoutComponentBase
+@inject ISnackbar Snackbar
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => DrawerToggle())"/>
-        <MudSpacer/>
-        <LoginDisplay/>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => DrawerToggle())" />
+        <MudSpacer />
+        <LoginDisplay />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
             <MudLink Color="Color.Inherit" Typo="Typo.h6" Href="" Underline="Underline.None">SC3 Asset Manager</MudLink>
-
         </MudDrawerHeader>
-        <NavMenu/>
+        <NavMenu />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
-            @Body
+            <CustomErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent Context="Exception">
+                    @Snackbar.Add(@Exception.Message, Severity.Error, config=>{
+                    config.Action="Ok";
+                    config.ActionColor=Color.Tertiary;
+                    config.Onclick = snackbar=>{
+                    Confirm();
+                    return Task.CompletedTask;
+                    };
+                    })
+                </ErrorContent>
+            </CustomErrorBoundary>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
@@ -25,5 +39,12 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+
+    private CustomErrorBoundary errorBoundary = new();
+    void Confirm()
+    {
+        errorBoundary.Recover();
     }
 }

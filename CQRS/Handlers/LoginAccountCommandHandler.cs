@@ -3,8 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
-using Sc3S.DTO;
 
 namespace Sc3S.CQRS.Handlers;
 

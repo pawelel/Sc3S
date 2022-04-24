@@ -1,20 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
-using Sc3S.DTO;
 using Sc3S.Entities;
 using Sc3S.Exceptions;
 
 namespace Sc3S.Services;
 public interface ILocationService
 {
-    //Task<int> CreateArea(int plantId, AreaCreateDto areaCreateDto);
+    //Task<int> CreateArea(int plantId, AreaUpdateDto areaUpdateDto);
 
-    //Task<int> CreateCoordinate(int spaceId, CoordinateCreateDto coordinateCreateDto);
+    //Task<int> CreateCoordinate(int spaceId, CoordinateUpdateDto coordinateUpdateDto);
 
-    Task<int> CreatePlant(PlantCreateDto plantCreateDto);
+    Task<int> CreatePlant(PlantUpdateCommand plantUpdateDto);
 
-    //Task<int> CreateSpace(int areaId, SpaceCreateDto spaceCreateDto);
+    //Task<int> CreateSpace(int areaId, SpaceUpdateDto spaceUpdateDto);
 
     //Task DeleteArea(int areaId);
 
@@ -36,7 +37,7 @@ public interface ILocationService
 
     //Task<IEnumerable<CoordinateDto>> GetCoordinatesWithAssets();
 
-    Task<PlantDto> GetPlantById(int plantId);
+    Task<PlantQuery> GetPlantById(int plantId);
 
     //Task<IEnumerable<PlantDto>> GetPlants();
 
@@ -60,7 +61,7 @@ public interface ILocationService
 
     //Task UpdateCoordinate(int coordinateId, CoordinateUpdateDto coordinateUpdateDto);
 
-    Task UpdatePlant(int plantId, PlantUpdateDto plantUpdateDto);
+    Task UpdatePlant(int plantId, PlantUpdateCommand plantUpdateDto);
 
     //Task UpdateSpace(int spaceId, SpaceUpdateDto spaceUpdateDto);
 }
@@ -75,7 +76,7 @@ public class LocationService : ILocationService
         _factory = factory;
         _logger = logger;
     }
-    public async Task<int> CreateArea(int plantId, AreaCreateDto areaCreateDto)
+    public async Task<int> CreateArea(int plantId, AreaUpdateCommand areaUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -88,7 +89,7 @@ public class LocationService : ILocationService
         {
             throw new NotFoundException("Plant not found");
         }
-        if (plant.Areas.Any(a => a.Name.ToLower().Trim() == areaCreateDto.Name.ToLower().Trim()))
+        if (plant.Areas.Any(a => a.Name.ToLower().Trim() == areaUpdateDto.Name.ToLower().Trim()))
         {
             _logger.LogWarning("Area name already exists");
             throw new BadRequestException("Area with this name already exists");
@@ -97,8 +98,8 @@ public class LocationService : ILocationService
         var area = new Area
         {
 
-            Name = areaCreateDto.Name,
-            Description = areaCreateDto.Description,
+            Name = areaUpdateDto.Name,
+            Description = areaUpdateDto.Description,
             PlantId = plant.PlantId,
             IsDeleted = false
         };
@@ -123,7 +124,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task<int> CreateCoordinate(int spaceId, CoordinateCreateDto coordinateCreateDto)
+    public async Task<int> CreateCoordinate(int spaceId, CoordinateUpdateCommand coordinateUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -137,7 +138,7 @@ public class LocationService : ILocationService
         }
         // validate coordinate name
 
-        if (space.Coordinates.Any(c => c.SpaceId == spaceId && c.Name.ToLower().Trim() == coordinateCreateDto.Name.ToLower().Trim()))
+        if (space.Coordinates.Any(c => c.SpaceId == spaceId && c.Name.ToLower().Trim() == coordinateUpdateDto.Name.ToLower().Trim()))
         {
             _logger.LogWarning("Coordinate name already exists");
             throw new BadRequestException("Coordinate name already exists");
@@ -146,8 +147,8 @@ public class LocationService : ILocationService
         var coordinate = new Coordinate
         {
 
-            Name = coordinateCreateDto.Name,
-            Description = coordinateCreateDto.Description,
+            Name = coordinateUpdateDto.Name,
+            Description = coordinateUpdateDto.Description,
             SpaceId = spaceId,
             IsDeleted = false
         };
@@ -173,7 +174,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task<int> CreatePlant(PlantCreateDto plantCreateDto)
+    public async Task<int> CreatePlant(PlantUpdateCommand plantUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -181,7 +182,7 @@ public class LocationService : ILocationService
 
         // validate plant name
         var duplicate = await _context.Plants
-            .AnyAsync(p => p.Name.ToLower().Trim() == plantCreateDto.Name.ToLower().Trim());
+            .AnyAsync(p => p.Name.ToLower().Trim() == plantUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Plant name already exists");
@@ -191,8 +192,8 @@ public class LocationService : ILocationService
         var plant = new Plant
         {
 
-            Name = plantCreateDto.Name,
-            Description = plantCreateDto.Description,
+            Name = plantUpdateDto.Name,
+            Description = plantUpdateDto.Description,
             IsDeleted = false
         };
         // create plant
@@ -217,7 +218,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task<int> CreateSpace(int areaId, SpaceCreateDto spaceCreateDto)
+    public async Task<int> CreateSpace(int areaId, SpaceUpdateCommand spaceUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -231,7 +232,7 @@ public class LocationService : ILocationService
             throw new BadRequestException("Area not found");
         }
         // validate space name
-        if (area.Spaces.Any(s => s.AreaId == areaId && s.Name.ToLower().Trim() == spaceCreateDto.Name.ToLower().Trim()))
+        if (area.Spaces.Any(s => s.AreaId == areaId && s.Name.ToLower().Trim() == spaceUpdateDto.Name.ToLower().Trim()))
         {
             _logger.LogWarning("Space name already exists");
             throw new BadRequestException("Space name already exists");
@@ -240,10 +241,10 @@ public class LocationService : ILocationService
         var space = new Space
         {
 
-            Name = spaceCreateDto.Name,
-            Description = spaceCreateDto.Description,
+            Name = spaceUpdateDto.Name,
+            Description = spaceUpdateDto.Description,
             AreaId = areaId,
-            SpaceType = spaceCreateDto.SpaceType,
+            SpaceType = spaceUpdateDto.SpaceType,
             IsDeleted = false
         };
         // create space
@@ -424,7 +425,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task<AreaDto> GetAreaById(int areaId)
+    public async Task<AreaQuery> GetAreaById(int areaId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -432,7 +433,7 @@ public class LocationService : ILocationService
         // get area
         var area = await _context.Areas
             .AsNoTracking()
-            .Select(a => new AreaDto
+            .Select(a => new AreaQuery
             {
                 AreaId = a.AreaId,
                 Name = a.Name,
@@ -450,7 +451,7 @@ public class LocationService : ILocationService
         return area;
     }
 
-    public async Task<IEnumerable<AreaDto>> GetAreas()
+    public async Task<IEnumerable<AreaQuery>> GetAreas()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -458,7 +459,7 @@ public class LocationService : ILocationService
         // get areas
         var areas = await _context.Areas
             .AsNoTracking()
-            .Select(a => new AreaDto
+            .Select(a => new AreaQuery
             {
                 AreaId = a.AreaId,
                 Name = a.Name,
@@ -477,7 +478,7 @@ public class LocationService : ILocationService
         return areas;
     }
 
-    public async Task<IEnumerable<AreaDto>> GetAreasWithSpaces()
+    public async Task<IEnumerable<AreaQuery>> GetAreasWithSpaces()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -485,14 +486,14 @@ public class LocationService : ILocationService
         // get areas
         var areas = await _context.Areas
             .AsNoTracking()
-            .Select(a => new AreaDto
+            .Select(a => new AreaQuery
             {
                 AreaId = a.AreaId,
                 Name = a.Name,
                 Description = a.Description,
                 IsDeleted = a.IsDeleted,
                 UserId = a.UpdatedBy,
-                Spaces = a.Spaces.Select(s => new SpaceDto
+                Spaces = a.Spaces.Select(s => new SpaceQuery
                 {
                     SpaceId = s.SpaceId,
                     Name = s.Name,
@@ -511,7 +512,7 @@ public class LocationService : ILocationService
         return areas;
     }
 
-    public async Task<CoordinateDto> GetCoordinateByIdWithAssets(int coordinateId)
+    public async Task<CoordinateQuery> GetCoordinateByIdWithAssets(int coordinateId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -519,14 +520,14 @@ public class LocationService : ILocationService
         // get coordinate
         var coordinate = await _context.Coordinates
             .AsNoTracking()
-            .Select(c => new CoordinateDto
+            .Select(c => new CoordinateQuery
             {
                 CoordinateId = c.CoordinateId,
                 Name = c.Name,
                 Description = c.Description,
                 IsDeleted = c.IsDeleted,
                 UserId = c.UpdatedBy,
-                Assets = c.Assets.Select(a => new AssetDto
+                Assets = c.Assets.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
@@ -545,7 +546,7 @@ public class LocationService : ILocationService
         return coordinate;
     }
 
-    public async Task<IEnumerable<CoordinateDto>> GetCoordinates()
+    public async Task<IEnumerable<CoordinateQuery>> GetCoordinates()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -553,7 +554,7 @@ public class LocationService : ILocationService
         // get coordinates
         var coordinates = await _context.Coordinates
             .AsNoTracking()
-            .Select(c => new CoordinateDto
+            .Select(c => new CoordinateQuery
             {
                 CoordinateId = c.CoordinateId,
                 Name = c.Name,
@@ -571,7 +572,7 @@ public class LocationService : ILocationService
         return coordinates;
     }
 
-    public async Task<IEnumerable<CoordinateDto>> GetCoordinatesWithAssets()
+    public async Task<IEnumerable<CoordinateQuery>> GetCoordinatesWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -579,14 +580,14 @@ public class LocationService : ILocationService
         // get coordinates
         var coordinates = await _context.Coordinates
             .AsNoTracking()
-            .Select(c => new CoordinateDto
+            .Select(c => new CoordinateQuery
             {
                 CoordinateId = c.CoordinateId,
                 Name = c.Name,
                 Description = c.Description,
                 IsDeleted = c.IsDeleted,
                 UserId = c.UpdatedBy,
-                Assets = c.Assets.Select(a => new AssetDto
+                Assets = c.Assets.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
@@ -605,7 +606,7 @@ public class LocationService : ILocationService
         return coordinates;
     }
 
-    public async Task<PlantDto> GetPlantById(int plantId)
+    public async Task<PlantQuery> GetPlantById(int plantId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -613,7 +614,7 @@ public class LocationService : ILocationService
         // get plant
         var plant = await _context.Plants
             .AsNoTracking()
-            .Select(p => new PlantDto
+            .Select(p => new PlantQuery
             {
                 PlantId = p.PlantId,
                 Name = p.Name,
@@ -631,7 +632,7 @@ public class LocationService : ILocationService
         return plant;
     }
 
-    public async Task<IEnumerable<PlantDto>> GetPlants()
+    public async Task<IEnumerable<PlantQuery>> GetPlants()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -639,7 +640,7 @@ public class LocationService : ILocationService
         // get plants
         var plants = await _context.Plants
             .AsNoTracking()
-            .Select(p => new PlantDto
+            .Select(p => new PlantQuery
             {
                 PlantId = p.PlantId,
                 Name = p.Name,
@@ -657,7 +658,7 @@ public class LocationService : ILocationService
         return plants;
     }
 
-    public async Task<IEnumerable<PlantDto>> GetPlantsWithAreas()
+    public async Task<IEnumerable<PlantQuery>> GetPlantsWithAreas()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -665,14 +666,14 @@ public class LocationService : ILocationService
         // get plants
         var plants = await _context.Plants
             .AsNoTracking()
-            .Select(p => new PlantDto
+            .Select(p => new PlantQuery
             {
                 PlantId = p.PlantId,
                 Name = p.Name,
                 Description = p.Description,
                 IsDeleted = p.IsDeleted,
                 UserId = p.UpdatedBy,
-                Areas = p.Areas.Select(a => new AreaDto
+                Areas = p.Areas.Select(a => new AreaQuery
                 {
                     AreaId = a.AreaId,
                     Name = a.Name,
@@ -691,7 +692,7 @@ public class LocationService : ILocationService
         return plants;
     }
 
-    public async Task<SpaceDto> GetSpaceById(int spaceId)
+    public async Task<SpaceQuery> GetSpaceById(int spaceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -699,7 +700,7 @@ public class LocationService : ILocationService
         // get space
         var space = await _context.Spaces
             .AsNoTracking()
-            .Select(s => new SpaceDto
+            .Select(s => new SpaceQuery
             {
                 SpaceId = s.SpaceId,
                 Name = s.Name,
@@ -718,7 +719,7 @@ public class LocationService : ILocationService
         return space;
     }
 
-    public async Task<IEnumerable<SpaceDto>> GetSpaces()
+    public async Task<IEnumerable<SpaceQuery>> GetSpaces()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -726,7 +727,7 @@ public class LocationService : ILocationService
         // get spaces
         var spaces = await _context.Spaces
             .AsNoTracking()
-            .Select(s => new SpaceDto
+            .Select(s => new SpaceQuery
             {
                 SpaceId = s.SpaceId,
                 Name = s.Name,
@@ -745,21 +746,21 @@ public class LocationService : ILocationService
         return spaces;
     }
 
-    public async Task<IEnumerable<SpaceDto>> GetSpacesWithCoordinates()
+    public async Task<IEnumerable<SpaceQuery>> GetSpacesWithCoordinates()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get spaces
         var spaces = await _context.Spaces
             .AsNoTracking()
-            .Select(s => new SpaceDto
+            .Select(s => new SpaceQuery
             {
                 SpaceId = s.SpaceId,
                 Name = s.Name,
                 Description = s.Description,
                 IsDeleted = s.IsDeleted,
                 UserId = s.UpdatedBy,
-                Coordinates = s.Coordinates.Select(c => new CoordinateDto
+                Coordinates = s.Coordinates.Select(c => new CoordinateQuery
                 {
                     CoordinateId = c.CoordinateId,
                     Name = c.Name,
@@ -980,7 +981,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task UpdateArea(int areaId, AreaUpdateDto areaUpdateDto)
+    public async Task UpdateArea(int areaId, AreaUpdateCommand areaUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1027,7 +1028,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task UpdateCoordinate(int coordinateId, CoordinateUpdateDto coordinateUpdateDto)
+    public async Task UpdateCoordinate(int coordinateId, CoordinateUpdateCommand coordinateUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1074,7 +1075,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task UpdatePlant(int plantId, PlantUpdateDto plantUpdateDto)
+    public async Task UpdatePlant(int plantId, PlantUpdateCommand plantUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1122,7 +1123,7 @@ public class LocationService : ILocationService
         }
     }
 
-    public async Task UpdateSpace(int spaceId, SpaceUpdateDto spaceUpdateDto)
+    public async Task UpdateSpace(int spaceId, SpaceUpdateCommand spaceUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();

@@ -1,13 +1,13 @@
-﻿using Sc3S.DTO;
+﻿using Sc3S.CQRS.Queries;
 
 namespace Sc3S.Components.LocationComponents;
 public partial class LocationGrid
 {
-    private List<LocationDto> _locations = new();
+    private List<LocationQuery> _locations = new();
 
     private string _searchString = string.Empty;
 
-    private Func<LocationDto, bool> AreaFilter => x =>
+    private Func<LocationQuery, bool> AreaFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -16,7 +16,7 @@ public partial class LocationGrid
         return false;
     };
 
-    private Func<LocationDto, bool> SpaceFilter => x =>
+    private Func<LocationQuery, bool> SpaceFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -28,9 +28,9 @@ public partial class LocationGrid
         return false;
 
     };
-    private Func<LocationDto, bool> CoordinateFilter => x =>
+    private Func<LocationQuery, bool> CoordinateFilter => x =>
     {
-        return _searchString != null && typeof(LocationDto).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
+        return _searchString != null && typeof(LocationQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
     };
     
     

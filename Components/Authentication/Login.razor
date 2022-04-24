@@ -1,6 +1,4 @@
 ﻿@page "/login"
-
-
 @layout LoginLayout
 @inject IMediator Mediator
 
@@ -15,9 +13,7 @@
     <FluentValidationValidator />
    <MudText Color="Color.Error" ><ValidationSummary /></MudText> 
     <MudTextField @bind-Value="_command.UserName" Label="Nazwa użytkownika/Email" Variant="Variant.Outlined" Class="my-6"></MudTextField>
-
     <MudTextField @bind-Value="@_command.Password" Label="Hasło" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
-
     <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" Size="Size.Large" FullWidth="true">Zaloguj</MudButton>
 </ChildContent>
 </EditForm>

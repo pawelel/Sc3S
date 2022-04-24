@@ -1,3 +1,5 @@
+using FluentValidation;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Components;
@@ -7,13 +9,17 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using MudBlazor;
 using MudBlazor.Services;
 
 using Sc3S.Components.Authentication;
+using Sc3S.CQRS.Commands;
 using Sc3S.Data;
 using Sc3S.Entities;
+using Sc3S.Extensions;
 using Sc3S.Middleware;
 using Sc3S.Services;
+using Sc3S.Validators;
 
 using Serilog;
 
@@ -38,18 +44,33 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IStuffService, StuffService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<ICommunicateService, CommunicateService>();
+builder.Services.AddTransient<ISituationService, SituationService>();
 builder.Services.AddTransient<IUserContextService, UserContextService>();
 builder.Services.AddTransient<IStuffService, StuffService>();
 builder.Services.AddTransient<ICommunicateService, CommunicateService>();
 builder.Services.AddTransient<ISituationService, SituationService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddTransient<IValidator<DeviceUpdateCommand>, DeviceUpdateCommandValidator>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter;
+    config.SnackbarConfiguration.PreventDuplicates = true;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = false;
+    config.SnackbarConfiguration.VisibleStateDuration = 10000;
+    config.SnackbarConfiguration.HideTransitionDuration = 500;
+    config.SnackbarConfiguration.ShowTransitionDuration = 500;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Outlined;
+});
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 var app = builder.Build();
 app.UseMiddleware<ErrorHandlingMiddleware>();

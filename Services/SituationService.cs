@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
+using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
-using Sc3S.DTO;
 using Sc3S.Entities;
 using Sc3S.Exceptions;
 
@@ -15,9 +17,9 @@ public interface ISituationService
 
     Task<(int, int)> CreateDeviceSituation(int deviceId, int situationId);
 
-    Task<int> CreateQuestion(QuestionCreateDto questionCreateDto);
+    Task<int> CreateQuestion(QuestionUpdateCommand questionUpdateDto);
 
-    Task<int> CreateSituation(SituationCreateDto situationCreateDto);
+    Task<int> CreateSituation(SituationUpdateCommand situationUpdateDto);
 
     Task<(int, int)> CreateSituationDetail(int situationId, int detailId);
 
@@ -41,21 +43,21 @@ public interface ISituationService
 
     Task DeleteSituationQuestion(int situationId, int questionId);
 
-    Task<QuestionDto> GetQuestionById(int questionId);
+    Task<QuestionQuery> GetQuestionById(int questionId);
 
-    Task<IEnumerable<QuestionDto>> GetQuestions();
+    Task<IEnumerable<QuestionQuery>> GetQuestions();
 
-    Task<SituationDto> GetSituationById(int situationId);
+    Task<SituationQuery> GetSituationById(int situationId);
 
-    Task<IEnumerable<SituationDto>> GetSituations();
+    Task<IEnumerable<SituationQuery>> GetSituations();
 
-    Task<IEnumerable<SituationWithAssetsDto>> GetSituationsWithAssets();
+    Task<IEnumerable<SituationWithAssetsQuery>> GetSituationsWithAssets();
 
-    Task<IEnumerable<SituationWithCategoriesDto>> GetSituationsWithCategories();
+    Task<IEnumerable<SituationWithCategoriesQuery>> GetSituationsWithCategories();
 
-    Task<IEnumerable<SituationWithQuestionsDto>> GetSituationsWithQuestions();
+    Task<IEnumerable<SituationWithQuestionsQuery>> GetSituationsWithQuestions();
 
-    Task<IEnumerable<SituationWithAssetsAndDetailsDto>> GetSituationWithAssetsAndDetails();
+    Task<IEnumerable<SituationWithAssetsAndDetailsQuery>> GetSituationWithAssetsAndDetails();
 
     Task MarkDeleteAssetSituation(int assetId, int situationId);
 
@@ -76,9 +78,9 @@ public interface ISituationService
     Task UpdateAssetSituation(int assetId, int situationId);
     Task UpdateCategorySituation(int categoryId, int situationId);
     Task UpdateDeviceSituation(int deviceId, int situationId);
-    Task UpdateQuestion(int questionId, QuestionUpdateDto questionUpdateDto);
+    Task UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto);
 
-    Task UpdateSituation(int questionId, SituationUpdateDto situationUpdateDto);
+    Task UpdateSituation(int questionId, SituationUpdateCommand situationUpdateDto);
 
     Task UpdateSituationDetail(int situationId, int detailId);
     Task UpdateSituationParameter(int situationId, int parameterId);
@@ -228,14 +230,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<int> CreateQuestion(QuestionCreateDto questionCreateDto)
+    public async Task<int> CreateQuestion(QuestionUpdateCommand questionUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate question name
-        var duplicate = await _context.Questions.AnyAsync(c => c.Name.ToLower().Trim() == questionCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Questions.AnyAsync(c => c.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Question name already exists");
@@ -245,7 +247,7 @@ public class SituationService : ISituationService
         var question = new Question
         {
 
-            Name = questionCreateDto.Name,
+            Name = questionUpdateDto.Name,
             IsDeleted = false
         };
         // create question
@@ -270,14 +272,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<int> CreateSituation(SituationCreateDto situationCreateDto)
+    public async Task<int> CreateSituation(SituationUpdateCommand situationUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate situation name
-        var duplicate = await _context.Situations.AnyAsync(c => c.Name.ToLower().Trim() == situationCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Situations.AnyAsync(c => c.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Situation name already exists");
@@ -287,8 +289,8 @@ public class SituationService : ISituationService
         var situation = new Situation
         {
 
-            Name = situationCreateDto.Name,
-            Description = situationCreateDto.Description,
+            Name = situationUpdateDto.Name,
+            Description = situationUpdateDto.Description,
             IsDeleted = false
         };
         // create situation
@@ -760,7 +762,7 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<QuestionDto> GetQuestionById(int questionId)
+    public async Task<QuestionQuery> GetQuestionById(int questionId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -768,7 +770,7 @@ public class SituationService : ISituationService
         // get question
         var question = await _context.Questions
             .AsNoTracking()
-            .Select(q => new QuestionDto
+            .Select(q => new QuestionQuery
             {
                 QuestionId = q.QuestionId,
                 Name = q.Name,
@@ -786,7 +788,7 @@ public class SituationService : ISituationService
         return question;
     }
 
-    public async Task<IEnumerable<QuestionDto>> GetQuestions()
+    public async Task<IEnumerable<QuestionQuery>> GetQuestions()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -794,7 +796,7 @@ public class SituationService : ISituationService
         // get questions
         var questions = await _context.Questions
             .AsNoTracking()
-            .Select(q => new QuestionDto
+            .Select(q => new QuestionQuery
             {
                 QuestionId = q.QuestionId,
                 Name = q.Name,
@@ -812,7 +814,7 @@ public class SituationService : ISituationService
         return questions;
     }
 
-    public async Task<SituationDto> GetSituationById(int situationId)
+    public async Task<SituationQuery> GetSituationById(int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -820,7 +822,7 @@ public class SituationService : ISituationService
         // get situation
         var situation = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationDto
+            .Select(s => new SituationQuery
             {
                 SituationId = s.SituationId,
                 Name = s.Name,
@@ -839,7 +841,7 @@ public class SituationService : ISituationService
         return situation;
     }
 
-    public async Task<IEnumerable<SituationDto>> GetSituations()
+    public async Task<IEnumerable<SituationQuery>> GetSituations()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -847,7 +849,7 @@ public class SituationService : ISituationService
         // get situations
         var situations = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationDto
+            .Select(s => new SituationQuery
             {
                 SituationId = s.SituationId,
                 Name = s.Name,
@@ -866,7 +868,7 @@ public class SituationService : ISituationService
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithAssetsDto>> GetSituationsWithAssets()
+    public async Task<IEnumerable<SituationWithAssetsQuery>> GetSituationsWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -874,14 +876,14 @@ public class SituationService : ISituationService
         // get situations with assets
         var situations = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationWithAssetsDto
+            .Select(s => new SituationWithAssetsQuery
             {
                 Name = s.Name,
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
                 UserId = s.UpdatedBy,
-                Assets = s.AssetSituations.Select(a => new AssetDto
+                Assets = s.AssetSituations.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Asset.Name,
@@ -900,7 +902,7 @@ public class SituationService : ISituationService
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithCategoriesDto>> GetSituationsWithCategories()
+    public async Task<IEnumerable<SituationWithCategoriesQuery>> GetSituationsWithCategories()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -908,14 +910,14 @@ public class SituationService : ISituationService
         // get situations with categories
         var situations = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationWithCategoriesDto
+            .Select(s => new SituationWithCategoriesQuery
             {
                 Name = s.Name,
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
                 UserId = s.UpdatedBy,
-                Categories = s.CategorySituations.Select(c => new CategoryDto
+                Categories = s.CategorySituations.Select(c => new CategoryQuery
                 {
                     CategoryId = c.CategoryId,
                     Name = c.Category.Name,
@@ -934,7 +936,7 @@ public class SituationService : ISituationService
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithQuestionsDto>> GetSituationsWithQuestions()
+    public async Task<IEnumerable<SituationWithQuestionsQuery>> GetSituationsWithQuestions()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -942,14 +944,14 @@ public class SituationService : ISituationService
         // get situations with questions
         var situations = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationWithQuestionsDto
+            .Select(s => new SituationWithQuestionsQuery
             {
                 Name = s.Name,
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
                 UserId = s.UpdatedBy,
-                Questions = s.SituationQuestions.Select(q => new QuestionDto
+                Questions = s.SituationQuestions.Select(q => new QuestionQuery
                 {
                     QuestionId = q.QuestionId,
                     IsDeleted = q.Question.IsDeleted,
@@ -966,7 +968,7 @@ public class SituationService : ISituationService
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithAssetsAndDetailsDto>> GetSituationWithAssetsAndDetails()
+    public async Task<IEnumerable<SituationWithAssetsAndDetailsQuery>> GetSituationWithAssetsAndDetails()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -974,21 +976,21 @@ public class SituationService : ISituationService
         // get situations with assets and details
         var situations = await _context.Situations
             .AsNoTracking()
-            .Select(s => new SituationWithAssetsAndDetailsDto
+            .Select(s => new SituationWithAssetsAndDetailsQuery
             {
                 Name = s.Name,
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
                 UserId = s.UpdatedBy,
-                Assets = s.AssetSituations.Select(a => new AssetWithDetailsDisplayDto
+                Assets = s.AssetSituations.Select(a => new AssetWithDetailsDisplayQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Asset.Name,
                     Description = a.Asset.Description,
                     IsDeleted = a.Asset.IsDeleted,
                     UserId = a.Asset.UpdatedBy,
-                    Details = a.Asset.AssetDetails.Select(d => new AssetDetailDisplayDto
+                    Details = a.Asset.AssetDetails.Select(d => new AssetDetailDisplayQuery
                     {
                         Name = d.Detail.Name,
                         Description = d.Detail.Description,
@@ -1494,7 +1496,7 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task UpdateQuestion(int questionId, QuestionUpdateDto questionUpdateDto)
+    public async Task UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1540,7 +1542,7 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task UpdateSituation(int situationId, SituationUpdateDto situationUpdateDto)
+    public async Task UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();

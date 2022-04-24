@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
-using Sc3S.DTO;
+using Sc3S.CQRS.Queries;
 
 using System.Security.Claims;
 

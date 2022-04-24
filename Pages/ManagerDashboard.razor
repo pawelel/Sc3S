@@ -1,11 +1,14 @@
 ﻿@page "/manager"
 
 <PageTitle>Zarządzanie Assetami</PageTitle>
-
+<AuthorizeView Roles="Admin, Manager">
 <MudText Typo="Typo.h5" GutterBottom="true">Zarządzanie Assetami</MudText>
 <MudTabs Elevation="1" Rounded="true" PanelClass="mt-6" DisableSliderAnimation="true">
     <MudTabPanel Text="Ogłoszenia">
         <CommunicateGrid/>
+    </MudTabPanel>
+    <MudTabPanel Text="Sprzęty">
+        <DeviceCard/>
     </MudTabPanel>
     <MudTabPanel Text="Assety">
         <AssetGrid/>
@@ -17,3 +20,4 @@
         <DeviceGrid/>
     </MudTabPanel>
 </MudTabs>
+</AuthorizeView>

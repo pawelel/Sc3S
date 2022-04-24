@@ -1,4 +1,5 @@
-﻿using Sc3S.Enumerations;
+﻿using Sc3S.CQRS.Queries;
+using Sc3S.Enumerations;
 namespace Sc3S.DTO;
 public class CommunicateWithAssetsDto : BaseDto
 {
@@ -9,5 +10,5 @@ public class CommunicateWithAssetsDto : BaseDto
     public CommunicationType CommunicationType { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public virtual List<AssetDto> Assets { get; set; } = new();
+    public virtual List<AssetQuery> Assets { get; set; } = new();
 }

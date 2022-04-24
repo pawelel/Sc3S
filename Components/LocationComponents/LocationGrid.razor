@@ -1,4 +1,4 @@
-﻿@if (_locations is null)
+﻿@*@if (_locations is null)
 {
     <p>please wait</p>
 }
@@ -7,12 +7,12 @@ else
     <MudTextField @bind-Value="_searchString" Placeholder="Szukaj" Adornment="Adornment.Start" Immediate="true"
                   AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
     </MudTextField>
-    <MudDataGrid T="LocationDto" Dense=true Class="mb-3" Items="@_locations" Sortable="true" Filterable="true" QuickFilter="@AreaFilter">
+    <MudDataGrid T="LocationQuery" Dense=true Class="mb-3" Items="@_locations" Sortable="true" Filterable="true" QuickFilter="@AreaFilter">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Obszary</MudText>
         </ToolBarContent>
         <Columns>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Area))" Title="Obszar">
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Area))" Title="Obszar">
                 <HeaderTemplate>
                     Obszar <MudIconButton Color="Color.Default" Icon="@Icons.Outlined.Add" Size="Size.Small" Variant="Variant.Outlined"/>
                 </HeaderTemplate>
@@ -24,7 +24,7 @@ else
             </Column>
         </Columns>
         <PagerContent>
-            <MudDataGridPager RowsPerPageString="Elementów na stronę" PageSizeOptions="Utils.PageSizeOptions" T="LocationDto"/>
+            <MudDataGridPager RowsPerPageString="Elementów na stronę" PageSizeOptions="Utils.PageSizeOptions" T="LocationQuery"/>
         </PagerContent>
     </MudDataGrid>
     <MudDataGrid Dense=true Class="mb-3" Items="@_locations" Sortable="true" Filterable="true" QuickFilter="@SpaceFilter">
@@ -32,7 +32,7 @@ else
             <MudText Typo="Typo.h6">Przestrzenie</MudText>
         </ToolBarContent>
         <Columns>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Space))" Title="Przestrzeń">
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Space))" Title="Przestrzeń">
                 <HeaderTemplate>
                     Przestrzeń <MudIconButton Color="Color.Default" Icon="@Icons.Outlined.Add" Size="Size.Small" Variant="Variant.Outlined"/>
                 </HeaderTemplate>
@@ -42,10 +42,10 @@ else
                     </MudButton>
                 </CellTemplate>
             </Column>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Area))" Title="Obszar"/>
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Area))" Title="Obszar"/>
         </Columns>
         <PagerContent>
-            <MudDataGridPager RowsPerPageString="Elementów na stronę" PageSizeOptions="Utils.PageSizeOptions" T="LocationDto"/>
+            <MudDataGridPager RowsPerPageString="Elementów na stronę" PageSizeOptions="Utils.PageSizeOptions" T="LocationQuery"/>
         </PagerContent>
     </MudDataGrid>
     <MudDataGrid Dense=true Items="@_locations" Sortable="true" Filterable="true" QuickFilter="@CoordinateFilter">
@@ -53,7 +53,7 @@ else
             <MudText Typo="Typo.h6">Koordynaty</MudText>
         </ToolBarContent>
         <Columns>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Coordinate))" Title="Koordynat">
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Coordinate))" Title="Koordynat">
                 <HeaderTemplate>
                     Koordynat <MudIconButton Color="Color.Default" Icon="@Icons.Outlined.Add" Size="Size.Small" Variant="Variant.Outlined"/>
                 </HeaderTemplate>
@@ -63,12 +63,12 @@ else
                     </MudButton>
                 </CellTemplate>
             </Column>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Space))" Title="Przestrzeń"/>
-            <Column T="LocationDto" Field="@(nameof(LocationDto.Area))" Title="Obszar"/>
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Space))" Title="Przestrzeń"/>
+            <Column T="LocationQuery" Field="@(nameof(LocationQuery.Area))" Title="Obszar"/>
         </Columns>
         <PagerContent>
 
             <MudDataGridPager RowsPerPageString="Elementów na stronę" PageSizeOptions="Utils.PageSizeOptions" T="LocationDto"/>
         </PagerContent>
     </MudDataGrid>
-}
+}*@

@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
-using Sc3S.DTO;
 using Sc3S.Entities;
 
 namespace Sc3S.CQRS.Handlers;
 
-public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountDto>
+public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountQuery>
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
     private readonly ILogger<CreateAccountCommandHandler> _logger;
@@ -27,7 +27,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<AccountDto> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+    public async Task<AccountQuery> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,7 +41,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
 
             await ctx.AddAsync(account, cancellationToken);
             await ctx.SaveChangesAsync(cancellationToken);
-            return _mapper.Map<AccountDto>(account);
+            return _mapper.Map<AccountQuery>(account);
         }
         catch (Exception ex)
         {

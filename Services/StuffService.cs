@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+
+using Microsoft.EntityFrameworkCore;
+
+using Sc3S.CQRS.Commands;
+using Sc3S.CQRS.Queries;
 using Sc3S.Data;
 using Sc3S.DTO;
 using Sc3S.Entities;
@@ -8,130 +13,133 @@ namespace Sc3S.Services;
 
 public interface IStuffService
 {
-    //Task ChangeModelOfAsset(int assetId, int modelId);
+    Task ChangeModelOfAsset(int assetId, int modelId);
 
-    //Task<int> CreateAsset(AssetCreateDto assetCreateDto);
+    Task<int> CreateAsset(AssetUpdateCommand assetUpdateDto);
 
-    //Task<(int, int)> CreateAssetCategory(int assetId, int categoryId);
+    Task<(int, int)> CreateAssetCategory(int assetId, int categoryId);
 
-    //Task<(int, int)> CreateAssetDetail(AssetDetailDto assetDetailDto);
+    Task<(int, int)> CreateAssetDetail(AssetDetailDto assetDetailDto);
 
-    //Task<int> CreateCategory(CategoryCreateDto categoryCreateDto);
+    Task<int> CreateCategory(CategoryUpdateCommand categoryUpdateDto);
 
-    //Task<int> CreateDetail(DetailCreateDto detailCreateDto);
+    Task<int> CreateDetail(DetailUpdateCommand detailUpdateDto);
 
-    //Task<int> CreateDevice(DeviceCreateDto deviceCreateDto);
+    Task<int> CreateDevice(DeviceUpdateCommand deviceUpdateDto);
 
-    //Task<int> CreateModel(int deviceId, ModelCreateDto modelCreateDto);
+    Task<int> CreateModel(int deviceId, ModelUpdateCommand modelUpdateDto);
 
-    //Task<(int, int)> CreateModelParameter(ModelParameterDto modelParameterDto);
+    Task<(int, int)> CreateModelParameter(ModelParameterDto modelParameterDto);
 
-    //Task<int> CreateParameter(ParameterCreateDto parameterCreateDto);
+    Task<int> CreateParameter(ParameterUpdateCommand parameterUpdateDto);
 
-    //Task DeleteAsset(int assetId);
+    Task DeleteAsset(int assetId);
 
-    //Task DeleteAssetCategory(int assetId, int categoryId);
+    Task DeleteAssetCategory(int assetId, int categoryId);
 
-    //Task DeleteAssetDetail(int assetId, int detailId);
+    Task DeleteAssetDetail(int assetId, int detailId);
 
-    //Task DeleteCategory(int categoryId);
+    Task DeleteCategory(int categoryId);
 
-    //Task DeleteDetail(int detailId);
+    Task DeleteDetail(int detailId);
 
-    //Task DeleteDevice(int deviceId);
+    Task DeleteDevice(int deviceId);
 
-    //Task DeleteModel(int modelId);
+    Task DeleteModel(int modelId);
 
-    //Task DeleteModelParameter(int modelId, int parameterId);
+    Task DeleteModelParameter(int modelId, int parameterId);
 
-    //Task DeleteParameter(int parameterId);
+    Task DeleteParameter(int parameterId);
 
-    //Task<AssetDto> GetAssetById(int assetId);
+    Task<AssetQuery> GetAssetById(int assetId);
 
-    Task<IEnumerable<AssetDisplayDto>> GetAssetDisplays();
+    Task<IEnumerable<AssetDisplayQuery>> GetAssetDisplays();
 
-    //Task<IEnumerable<AssetDto>> GetAssets();
+    Task<IEnumerable<AssetQuery>> GetAssets();
 
-    //Task<IEnumerable<CategoryDto>> GetCategories();
+    Task<IEnumerable<CategoryQuery>> GetCategories();
 
-    //Task<IEnumerable<CategoryWithAssetsDto>> GetCategoriesWithAssets();
+    Task<IEnumerable<CategoryWithAssetsQuery>> GetCategoriesWithAssets();
 
-    //Task<IEnumerable<DeviceWithAssetsDto>> GetDevicesWithAssets();
-    //Task<DeviceWithAssetsDto> GetDeviceWithAssets(int deviceId);
-    //Task<CategoryDto> GetCategoryById(int categoryId);
+    Task<IEnumerable<DeviceWithAssetsQuery>> GetDevicesWithAssets();
+    Task<DeviceWithAssetsQuery> GetDeviceWithAssets(int deviceId);
+    Task<CategoryQuery> GetCategoryById(int categoryId);
 
-    //Task<CategoryWithAssetsDto> GetCategoryByIdWithAssets(int categoryId);
+    Task<CategoryWithAssetsQuery> GetCategoryByIdWithAssets(int categoryId);
 
-    //Task<DetailDto> GetDetailById(int detailId);
+    Task<DetailQuery> GetDetailById(int detailId);
 
-    //Task<IEnumerable<DetailDto>> GetDetails();
+    Task<IEnumerable<DetailQuery>> GetDetails();
 
-    //Task<IEnumerable<DetailWithAssetsDto>> GetDetailsWithAssets();
+    Task<IEnumerable<DetailWithAssetsQuery>> GetDetailsWithAssets();
 
-    //Task<DeviceDto> GetDeviceById(int deviceId);
+    Task<DeviceQuery> GetDeviceById(int deviceId);
+    Task<DeviceUpdateCommand> GetDeviceToUpdateById(int deviceId);
 
-    //Task<IEnumerable<DeviceDto>> GetDevices();
+    Task<IEnumerable<Device>> GetDevices();
+    Task SaveDevice(Device device);
+    Task<IEnumerable<DeviceQuery>> GetDevicesWithModels();
 
-    //Task<IEnumerable<DeviceDto>> GetDevicesWithModels();
+    Task<ModelQuery> GetModelById(int modelId);
 
-    //Task<ModelDto> GetModelById(int modelId);
+    Task<IEnumerable<ModelQuery>> GetModels();
 
-    //Task<IEnumerable<ModelDto>> GetModels();
+    Task<IEnumerable<ModelQuery>> GetModelsWithAssets();
 
-    //Task<IEnumerable<ModelDto>> GetModelsWithAssets();
+    Task<ParameterQuery> GetParameterById(int parameterId);
 
-    //Task<ParameterDto> GetParameterById(int parameterId);
+    Task<IEnumerable<ParameterQuery>> GetParameters();
 
-    //Task<IEnumerable<ParameterDto>> GetParameters();
+    Task<IEnumerable<ParameterWithModelsQuery>> GetParametersWithModels();
 
-    //Task<IEnumerable<ParameterWithModelsDto>> GetParametersWithModels();
+    Task MarkDeleteAsset(int assetId);
 
-    //Task MarkDeleteAsset(int assetId);
+    Task MarkDeleteAssetCategory(int assetId, int categoryId);
 
-    //Task MarkDeleteAssetCategory(int assetId, int categoryId);
+    Task MarkDeleteAssetDetail(int assetId, int detailId);
 
-    //Task MarkDeleteAssetDetail(int assetId, int detailId);
+    Task MarkDeleteCategory(int categoryId);
 
-    //Task MarkDeleteCategory(int categoryId);
+    Task MarkDeleteDetail(int detailId);
 
-    //Task MarkDeleteDetail(int detailId);
+    Task MarkDeleteDevice(int deviceId);
 
-    //Task MarkDeleteDevice(int deviceId);
+    Task MarkDeleteModel(int modelId);
 
-    //Task MarkDeleteModel(int modelId);
+    Task MarkDeleteModelParameter(int modelId, int parameterId);
 
-    //Task MarkDeleteModelParameter(int modelId, int parameterId);
+    Task MarkDeleteParameter(int parameterId);
 
-    //Task MarkDeleteParameter(int parameterId);
+    Task UpdateAsset(int assetId, AssetUpdateCommand assetUpdateDto);
 
-    //Task UpdateAsset(int assetId, AssetUpdateDto assetUpdateDto);
+    Task UpdateAssetCategory(int assetId, int categoryId);
 
-    //Task UpdateAssetCategory(int assetId, int categoryId);
+    Task UpdateAssetDetail(AssetDetailDto assetDetailDto);
 
-    //Task UpdateAssetDetail(AssetDetailDto assetDetailDto);
+    Task UpdateCategory(int categoryId, CategoryUpdateCommand categoryUpdateDto);
 
-    //Task UpdateCategory(int categoryId, CategoryUpdateDto categoryUpdateDto);
+    Task UpdateDetail(int detailId, DetailUpdateCommand detailUpdateDto);
 
-    //Task UpdateDetail(int detailId, DetailUpdateDto detailUpdateDto);
+    Task UpdateDevice(int deviceId, DeviceUpdateCommand deviceUpdateDto);
 
-    //Task UpdateDevice(int deviceId, DeviceUpdateDto deviceUpdateDto);
+    Task UpdateModel(int modelId, ModelUpdateCommand modelUpdateDto);
 
-    //Task UpdateModel(int modelId, ModelUpdateDto modelUpdateDto);
+    Task UpdateModelParameter(ModelParameterDto modelParameterDto);
 
-    //Task UpdateModelParameter(ModelParameterDto modelParameterDto);
-
-    //Task UpdateParameter(int parameterId, ParameterUpdateDto parameterUpdateDto);
-    //Task UpdateAssetName(int assetId, string name);
+    Task UpdateParameter(int parameterId, ParameterUpdateCommand parameterUpdateDto);
+    Task UpdateAssetName(int assetId, string name);
 }
 public class StuffService : IStuffService
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
     private readonly ILogger<StuffService> _logger;
+    private readonly IMapper _mapper;
 
-    public StuffService(IDbContextFactory<Sc3SContext> factory, ILogger<StuffService> logger)
+    public StuffService(IDbContextFactory<Sc3SContext> factory, ILogger<StuffService> logger, IMapper mapper)
     {
         _factory = factory;
         _logger = logger;
+        _mapper = mapper;
     }
 
 
@@ -188,13 +196,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateAsset(AssetCreateDto assetCreateDto)
+    public async Task<int> CreateAsset(AssetUpdateCommand assetUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // get model
-        var model = await _context.Models.Include(m => m.Assets).AsNoTracking().FirstOrDefaultAsync(m => m.ModelId == assetCreateDto.ModelId);
+        var model = await _context.Models.Include(m => m.Assets).AsNoTracking().FirstOrDefaultAsync(m => m.ModelId == assetUpdateDto.ModelId);
         if (model == null)
         {
             _logger.LogWarning("Model not found");
@@ -206,7 +214,7 @@ public class StuffService : IStuffService
             throw new BadRequestException("Model marked as deleted");
         }
         // get coordinate
-        var coordinate = await _context.Coordinates.AsNoTracking().FirstOrDefaultAsync(c => c.CoordinateId == assetCreateDto.CoordinateId);
+        var coordinate = await _context.Coordinates.AsNoTracking().FirstOrDefaultAsync(c => c.CoordinateId == assetUpdateDto.CoordinateId);
         if (coordinate == null)
         {
             _logger.LogWarning("Coordinate not found");
@@ -219,7 +227,7 @@ public class StuffService : IStuffService
         }
 
         // validate asset name
-        var duplicate = model.Assets.Any(a => a.Name.ToLower().Trim() == assetCreateDto.Name.ToLower().Trim());
+        var duplicate = model.Assets.Any(a => a.Name.ToLower().Trim() == assetUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Asset name already exists");
@@ -228,15 +236,15 @@ public class StuffService : IStuffService
 
         var asset = new Asset
         {
-            ModelId = assetCreateDto.ModelId,
-            CoordinateId = assetCreateDto.CoordinateId,
-            Name = assetCreateDto.Name,
-            Description = assetCreateDto.Description,
-            Process = assetCreateDto.Process,
-            Status = assetCreateDto.Status,
+            ModelId = assetUpdateDto.ModelId,
+            CoordinateId = assetUpdateDto.CoordinateId,
+            Name = assetUpdateDto.Name,
+            Description = assetUpdateDto.Description,
+            Process = assetUpdateDto.Process,
+            Status = assetUpdateDto.Status,
             IsDeleted = false,
-            Model = new() { ModelId = assetCreateDto.ModelId },
-            Coordinate = new() { CoordinateId = assetCreateDto.CoordinateId }
+            Model = new() { ModelId = assetUpdateDto.ModelId },
+            Coordinate = new() { CoordinateId = assetUpdateDto.CoordinateId }
         };
         // create asset
         _context.Attach(asset);
@@ -255,7 +263,35 @@ public class StuffService : IStuffService
             throw new BadRequestException("Error creating asset");
         }
     }
-
+    public async Task SaveDevice(Device device)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+        var duplicate = await _context.Devices.AsNoTracking().FirstOrDefaultAsync(d => d.DeviceId!=device.DeviceId&& d.Name.ToLower().Trim() == device.Name.ToLower().Trim());
+        if (duplicate != null)
+        {
+            _logger.LogWarning("Device name already exists");
+            throw new BadRequestException("Device name already exists");
+        }
+        device.IsDeleted = false;
+        if (device.DeviceId == 0)
+        {
+            _context.Devices.Add(device);
+        }
+        else
+        {
+            _context.Entry(device).State = EntityState.Modified;
+        }
+        try
+        {
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Device with id {DeviceId} saved", device.DeviceId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error saving device");
+            throw new BadRequestException("Error saving device");
+        }
+    }
     public async Task<(int, int)> CreateAssetCategory(int assetId, int categoryId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
@@ -347,13 +383,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateCategory(CategoryCreateDto categoryCreateDto)
+    public async Task<int> CreateCategory(CategoryUpdateCommand categoryUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate category name
-        var duplicate = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == categoryCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == categoryUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Category name already exists");
@@ -362,8 +398,8 @@ public class StuffService : IStuffService
 
         var category = new Category
         {
-            Name = categoryCreateDto.Name,
-            Description = categoryCreateDto.Description,
+            Name = categoryUpdateDto.Name,
+            Description = categoryUpdateDto.Description,
             IsDeleted = false
         };
         // create category
@@ -389,13 +425,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateDetail(DetailCreateDto detailCreateDto)
+    public async Task<int> CreateDetail(DetailUpdateCommand detailUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate detail name
-        var duplicate = await _context.Details.AnyAsync(d => d.Name.ToLower().Trim() == detailCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Details.AnyAsync(d => d.Name.ToLower().Trim() == detailUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Detail name already exists");
@@ -404,8 +440,8 @@ public class StuffService : IStuffService
 
         var detail = new Detail
         {
-            Name = detailCreateDto.Name,
-            Description = detailCreateDto.Description,
+            Name = detailUpdateDto.Name,
+            Description = detailUpdateDto.Description,
             IsDeleted = false
         };
         // create detail
@@ -430,13 +466,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateDevice(DeviceCreateDto deviceCreateDto)
+    public async Task<int> CreateDevice(DeviceUpdateCommand deviceUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate device name
-        var duplicate = await _context.Devices.AnyAsync(d => d.Name.ToLower().Trim() == deviceCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Devices.AnyAsync(d => d.Name.ToLower().Trim() == deviceUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Device name already exists");
@@ -445,8 +481,8 @@ public class StuffService : IStuffService
 
         var device = new Device
         {
-            Name = deviceCreateDto.Name,
-            Description = deviceCreateDto.Description,
+            Name = deviceUpdateDto.Name,
+            Description = deviceUpdateDto.Description,
             IsDeleted = false
         };
         // create device
@@ -471,7 +507,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateModel(int deviceId, ModelCreateDto modelCreateDto)
+    public async Task<int> CreateModel(int deviceId, ModelUpdateCommand modelUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -485,7 +521,7 @@ public class StuffService : IStuffService
         }
 
         // validate model name
-        var duplicate = device.Models.Any(m => m.Name.ToLower().Trim() == modelCreateDto.Name.ToLower().Trim());
+        var duplicate = device.Models.Any(m => m.Name.ToLower().Trim() == modelUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Model name already exists");
@@ -497,8 +533,8 @@ public class StuffService : IStuffService
         {
             DeviceId = deviceId,
             Device = new() { DeviceId = deviceId },
-            Name = modelCreateDto.Name,
-            Description = modelCreateDto.Description,
+            Name = modelUpdateDto.Name,
+            Description = modelUpdateDto.Description,
             IsDeleted = false
         };
         // create model
@@ -567,13 +603,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<int> CreateParameter(ParameterCreateDto parameterCreateDto)
+    public async Task<int> CreateParameter(ParameterUpdateCommand parameterUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // validate parameter name
-        var duplicate = await _context.Parameters.AnyAsync(p => p.Name.ToLower().Trim() == parameterCreateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Parameters.AnyAsync(p => p.Name.ToLower().Trim() == parameterUpdateDto.Name.ToLower().Trim());
         if (duplicate)
         {
             _logger.LogWarning("Parameter name already exists");
@@ -582,8 +618,8 @@ public class StuffService : IStuffService
         var parameter = new Parameter
         {
 
-            Name = parameterCreateDto.Name,
-            Description = parameterCreateDto.Description,
+            Name = parameterUpdateDto.Name,
+            Description = parameterUpdateDto.Description,
             IsDeleted = false
         };
         // create parameter
@@ -948,13 +984,13 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task<AssetDto> GetAssetById(int assetId)
+    public async Task<AssetQuery> GetAssetById(int assetId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // get asset
-        var asset = await _context.Assets.AsNoTracking().Select(a => new AssetDto
+        var asset = await _context.Assets.AsNoTracking().Select(a => new AssetQuery
         {
             AssetId = a.AssetId,
             Name = a.Name,
@@ -976,7 +1012,7 @@ public class StuffService : IStuffService
         return asset;
     }
 
-    public async Task<IEnumerable<AssetDisplayDto>> GetAssetDisplays()
+    public async Task<IEnumerable<AssetDisplayQuery>> GetAssetDisplays()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -984,7 +1020,7 @@ public class StuffService : IStuffService
         // get asset
         var query = await _context.Assets
             .AsNoTracking()
-            .Select(a => new AssetDisplayDto
+            .Select(a => new AssetDisplayQuery
             {
                 Name = a.Name,
                 Description = a.Description,
@@ -999,7 +1035,7 @@ public class StuffService : IStuffService
                 Status = a.Status,
                 IsDeleted = a.IsDeleted,
                 UserId = a.UpdatedBy,
-                Categories = a.AssetCategories.Select(ac => new AssetCategoryDisplayDto
+                Categories = a.AssetCategories.Select(ac => new AssetCategoryDisplayQuery
                 {
                     Name = ac.Category.Name,
                     AssetId = ac.AssetId,
@@ -1008,7 +1044,7 @@ public class StuffService : IStuffService
                     Description = ac.Category.Description,
                     IsDeleted = ac.IsDeleted
                 }).ToList(),
-                Details = a.AssetDetails.Select(ad => new AssetDetailDisplayDto
+                Details = a.AssetDetails.Select(ad => new AssetDetailDisplayQuery
                 {
                     Name = ad.Detail.Name,
                     Value = ad.Value,
@@ -1018,7 +1054,7 @@ public class StuffService : IStuffService
                     Description = ad.Detail.Description,
                     IsDeleted = ad.IsDeleted
                 }).ToList(),
-                Parameters = a.Model.ModelParameters.Select(mp => new ModelParameterDisplayDto
+                Parameters = a.Model.ModelParameters.Select(mp => new ModelParameterDisplayQuery
                 {
                     Name = mp.Parameter.Name,
                     Value = mp.Value,
@@ -1039,7 +1075,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<AssetDto>> GetAssets()
+    public async Task<IEnumerable<AssetQuery>> GetAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1047,7 +1083,7 @@ public class StuffService : IStuffService
         // get assets
         var assets = await _context.Assets
             .AsNoTracking()
-            .Select(a => new AssetDto
+            .Select(a => new AssetQuery
             {
                 AssetId = a.AssetId,
                 Name = a.Name,
@@ -1069,7 +1105,7 @@ public class StuffService : IStuffService
         return assets;
     }
 
-    public async Task<IEnumerable<CategoryDto>> GetCategories()
+    public async Task<IEnumerable<CategoryQuery>> GetCategories()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1077,7 +1113,7 @@ public class StuffService : IStuffService
         // get categories
         var query = await _context.Categories
             .AsNoTracking()
-            .Select(c => new CategoryDto
+            .Select(c => new CategoryQuery
             {
                 Name = c.Name,
                 Description = c.Description,
@@ -1095,7 +1131,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<CategoryWithAssetsDto>> GetCategoriesWithAssets()
+    public async Task<IEnumerable<CategoryWithAssetsQuery>> GetCategoriesWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1103,14 +1139,14 @@ public class StuffService : IStuffService
         // get categories
         var query = await _context.Categories
             .AsNoTracking()
-            .Select(c => new CategoryWithAssetsDto
+            .Select(c => new CategoryWithAssetsQuery
             {
                 CategoryId = c.CategoryId,
                 Name = c.Name,
                 Description = c.Description,
                 UserId = c.UpdatedBy,
                 IsDeleted = c.IsDeleted,
-                Assets = c.AssetCategories.Select(ac => new AssetDto
+                Assets = c.AssetCategories.Select(ac => new AssetQuery
                 {
                     Name = ac.Asset.Name,
                     Description = ac.Asset.Description,
@@ -1131,7 +1167,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<CategoryDto> GetCategoryById(int categoryId)
+    public async Task<CategoryQuery> GetCategoryById(int categoryId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1139,7 +1175,7 @@ public class StuffService : IStuffService
         // get category
         var query = await _context.Categories
             .AsNoTracking()
-            .Select(c => new CategoryDto
+            .Select(c => new CategoryQuery
             {
                 Name = c.Name,
                 UserId = c.UpdatedBy,
@@ -1157,7 +1193,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<CategoryWithAssetsDto> GetCategoryByIdWithAssets(int categoryId)
+    public async Task<CategoryWithAssetsQuery> GetCategoryByIdWithAssets(int categoryId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1165,14 +1201,14 @@ public class StuffService : IStuffService
         // get category
         var query = await _context.Categories
             .AsNoTracking()
-            .Select(c => new CategoryWithAssetsDto
+            .Select(c => new CategoryWithAssetsQuery
             {
                 CategoryId = c.CategoryId,
                 Name = c.Name,
                 Description = c.Description,
                 UserId = c.UpdatedBy,
                 IsDeleted = c.IsDeleted,
-                Assets = c.AssetCategories.Select(ac => new AssetDto
+                Assets = c.AssetCategories.Select(ac => new AssetQuery
                 {
                     Name = ac.Asset.Name,
                     Description = ac.Asset.Description,
@@ -1193,7 +1229,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<DetailDto> GetDetailById(int detailId)
+    public async Task<DetailQuery> GetDetailById(int detailId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1201,7 +1237,7 @@ public class StuffService : IStuffService
         // get detail
         var query = await _context.Details
             .AsNoTracking()
-            .Select(d => new DetailDto
+            .Select(d => new DetailQuery
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
@@ -1219,7 +1255,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<DetailDto>> GetDetails()
+    public async Task<IEnumerable<DetailQuery>> GetDetails()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1227,7 +1263,7 @@ public class StuffService : IStuffService
         // get details
         var query = await _context.Details
             .AsNoTracking()
-            .Select(d => new DetailDto
+            .Select(d => new DetailQuery
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
@@ -1246,7 +1282,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<DetailWithAssetsDto>> GetDetailsWithAssets()
+    public async Task<IEnumerable<DetailWithAssetsQuery>> GetDetailsWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1254,14 +1290,14 @@ public class StuffService : IStuffService
         // get details
         var query = await _context.Details
             .AsNoTracking()
-            .Select(d => new DetailWithAssetsDto
+            .Select(d => new DetailWithAssetsQuery
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
                 UserId = d.UpdatedBy,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                Assets = d.AssetDetails.Select(ad => new AssetDto
+                Assets = d.AssetDetails.Select(ad => new AssetQuery
                 {
                     Name = ad.Asset.Name,
                     Description = ad.Asset.Description,
@@ -1281,8 +1317,12 @@ public class StuffService : IStuffService
         _logger.LogInformation("Details found");
         return query;
     }
-
-    public async Task<DeviceDto> GetDeviceById(int deviceId)
+    public async Task<DeviceUpdateCommand> GetDeviceToUpdateById(int deviceId)
+    {
+        var device = await GetDeviceById(deviceId);
+        return _mapper.Map<DeviceUpdateCommand>(device);
+    }
+    public async Task<DeviceQuery> GetDeviceById(int deviceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1290,7 +1330,7 @@ public class StuffService : IStuffService
         // get device
         var query = await _context.Devices
             .AsNoTracking()
-            .Select(d => new DeviceDto
+            .Select(d => new DeviceQuery
             {
                 DeviceId = d.DeviceId,
                 UserId = d.UpdatedBy,
@@ -1308,7 +1348,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<DeviceDto>> GetDevices()
+    public async Task<IEnumerable<Device>> GetDevices()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1316,13 +1356,13 @@ public class StuffService : IStuffService
         // get devices
         var query = await _context.Devices
             .AsNoTracking()
-            .Select(d => new DeviceDto
+            .Select(d => new Device
             {
                 DeviceId = d.DeviceId,
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                UserId = d.UpdatedBy
+                UpdatedBy = d.UpdatedBy
             }).ToListAsync();
         if (query is null)
         {
@@ -1334,7 +1374,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<DeviceDto>> GetDevicesWithModels()
+    public async Task<IEnumerable<DeviceQuery>> GetDevicesWithModels()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1342,14 +1382,14 @@ public class StuffService : IStuffService
         // get devices
         var query = await _context.Devices
             .AsNoTracking()
-            .Select(d => new DeviceDto
+            .Select(d => new DeviceQuery
             {
                 DeviceId = d.DeviceId,
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
                 UserId = d.UpdatedBy,
-                Models = d.Models.Select(m => new ModelDto
+                Models = d.Models.Select(m => new ModelQuery
                 {
                     ModelId = m.ModelId,
                     Name = m.Name,
@@ -1368,20 +1408,20 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<DeviceWithAssetsDto>> GetDevicesWithAssets()
+    public async Task<IEnumerable<DeviceWithAssetsQuery>> GetDevicesWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
         // get devices
         var query = await _context.Devices
             .AsNoTracking()
-            .Select(d => new DeviceWithAssetsDto
+            .Select(d => new DeviceWithAssetsQuery
             {
                 DeviceId = d.DeviceId,
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
                 UserId = d.UpdatedBy,
-                Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetDto
+                Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
@@ -1399,20 +1439,20 @@ public class StuffService : IStuffService
         _logger.LogInformation("Devices found");
         return query;
     }
-    public async Task<DeviceWithAssetsDto> GetDeviceWithAssets(int deviceId)
+    public async Task<DeviceWithAssetsQuery> GetDeviceWithAssets(int deviceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
         // get device
         var query = await _context.Devices
             .AsNoTracking()
-            .Select(d => new DeviceWithAssetsDto
+            .Select(d => new DeviceWithAssetsQuery
             {
                 DeviceId = d.DeviceId,
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
                 UserId = d.UpdatedBy,
-                Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetDto
+                Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
@@ -1431,14 +1471,14 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<ModelDto> GetModelById(int modelId)
+    public async Task<ModelQuery> GetModelById(int modelId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get model
         var query = await _context.Models
             .AsNoTracking()
-            .Select(m => new ModelDto
+            .Select(m => new ModelQuery
             {
                 ModelId = m.ModelId,
                 Name = m.Name,
@@ -1456,7 +1496,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<ModelDto>> GetModels()
+    public async Task<IEnumerable<ModelQuery>> GetModels()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1464,7 +1504,7 @@ public class StuffService : IStuffService
         // get models
         var query = await _context.Models
             .AsNoTracking()
-            .Select(m => new ModelDto
+            .Select(m => new ModelQuery
             {
                 ModelId = m.ModelId,
                 Name = m.Name,
@@ -1482,7 +1522,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<ModelDto>> GetModelsWithAssets()
+    public async Task<IEnumerable<ModelQuery>> GetModelsWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1490,14 +1530,14 @@ public class StuffService : IStuffService
         // get models
         var query = await _context.Models
             .AsNoTracking()
-            .Select(m => new ModelDto
+            .Select(m => new ModelQuery
             {
                 ModelId = m.ModelId,
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
                 UserId = m.UpdatedBy,
-                Assets = m.Assets.Select(a => new AssetDto
+                Assets = m.Assets.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
@@ -1516,7 +1556,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<ParameterDto> GetParameterById(int parameterId)
+    public async Task<ParameterQuery> GetParameterById(int parameterId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1524,7 +1564,7 @@ public class StuffService : IStuffService
         // get parameter
         var query = await _context.Parameters
             .AsNoTracking()
-            .Select(m => new ParameterDto
+            .Select(m => new ParameterQuery
             {
                 ParameterId = m.ParameterId,
                 Name = m.Name,
@@ -1542,7 +1582,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<ParameterDto>> GetParameters()
+    public async Task<IEnumerable<ParameterQuery>> GetParameters()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1550,7 +1590,7 @@ public class StuffService : IStuffService
         // get parameters
         var query = await _context.Parameters
             .AsNoTracking()
-            .Select(m => new ParameterDto
+            .Select(m => new ParameterQuery
             {
                 ParameterId = m.ParameterId,
                 Name = m.Name,
@@ -1568,7 +1608,7 @@ public class StuffService : IStuffService
         return query;
     }
 
-    public async Task<IEnumerable<ParameterWithModelsDto>> GetParametersWithModels()
+    public async Task<IEnumerable<ParameterWithModelsQuery>> GetParametersWithModels()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1576,14 +1616,14 @@ public class StuffService : IStuffService
         // get parameters
         var query = await _context.Parameters
             .AsNoTracking()
-            .Select(p => new ParameterWithModelsDto
+            .Select(p => new ParameterWithModelsQuery
             {
                 ParameterId = p.ParameterId,
                 Name = p.Name,
                 Description = p.Description,
                 IsDeleted = p.IsDeleted,
                 UserId = p.UpdatedBy,
-                Models = p.ModelParameters.Select(mp => new ModelDto
+                Models = p.ModelParameters.Select(mp => new ModelQuery
                 {
                     ModelId = mp.ModelId,
                     Name = mp.Model.Name,
@@ -1978,7 +2018,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateAsset(int assetId, AssetUpdateDto assetUpdateDto)
+    public async Task UpdateAsset(int assetId, AssetUpdateCommand assetUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -2159,7 +2199,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateCategory(int categoryId, CategoryUpdateDto categoryUpdateDto)
+    public async Task UpdateCategory(int categoryId, CategoryUpdateCommand categoryUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -2205,7 +2245,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateDetail(int detailId, DetailUpdateDto detailUpdateDto)
+    public async Task UpdateDetail(int detailId, DetailUpdateCommand detailUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -2251,26 +2291,21 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateDevice(int deviceId, DeviceUpdateDto deviceUpdateDto)
+    public async Task UpdateDevice(int deviceId, DeviceUpdateCommand deviceUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
 
 
         // get device
-        var device = await _context.Devices.FirstOrDefaultAsync(m => m.DeviceId == deviceId);
+        var device = await _context.Devices.AsNoTracking().FirstOrDefaultAsync(m => m.DeviceId == deviceId);
         if (device == null)
         {
             _logger.LogWarning("Device not found");
             throw new NotFoundException("Device not found");
         }
         // check if device name from dto is already taken
-        var duplicate = await _context.Devices.AnyAsync(a => a.Name.ToLower().Trim() == deviceUpdateDto.Name.ToLower().Trim());
-        if (duplicate || device.Name.ToLower().Trim() == deviceUpdateDto.Name.ToLower().Trim())
-        {
-            _logger.LogWarning("Device name is already taken");
-            throw new BadRequestException("Device name is already taken");
-        }
+     
         device.Name = deviceUpdateDto.Name;
         // assign userId to update
         device.Description = deviceUpdateDto.Description;
@@ -2297,7 +2332,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateModel(int modelId, ModelUpdateDto modelUpdateDto)
+    public async Task UpdateModel(int modelId, ModelUpdateCommand modelUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -2385,7 +2420,7 @@ public class StuffService : IStuffService
         }
     }
 
-    public async Task UpdateParameter(int parameterId, ParameterUpdateDto parameterUpdateDto)
+    public async Task UpdateParameter(int parameterId, ParameterUpdateCommand parameterUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();

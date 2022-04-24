@@ -1,6 +1,7 @@
-﻿namespace Sc3S.CQRS.Commands;
-
-public class CreateRoleCommand
+﻿namespace Sc3S.CQRS.Commands
 {
-    public string Name { get; set; } = string.Empty;
+    public class CreateRoleCommand
+    {
+        public string Name { get; set; } = string.Empty;
+    }
 }
