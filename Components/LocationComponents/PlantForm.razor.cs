@@ -1,23 +1,25 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AutoMapper;
+
+using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
 
 using Sc3S.CQRS.Commands;
+using Sc3S.Helpers;
 using Sc3S.Services;
 
 namespace Sc3S.Components.LocationComponents;
 public partial class PlantForm : ComponentBase
 {
-    private readonly PlantUpdateCommand _plantUpdateDto = new();
+    private PlantUpdateCommand _plantUpdate = new();
     private MudForm _form = new();
-    private bool _isOpen;
+
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
     [Inject]
     private ILocationService LocationService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Parameter] public int PlantId { get; set; }
-    private string _name = string.Empty;
-    private string _description = string.Empty;
+    [Inject] public IMapper Mapper { get; set; } = default!;
 
     private void Submit()
     {
@@ -28,44 +30,52 @@ public partial class PlantForm : ComponentBase
         MudDialog.Cancel();
     }
 
-    private static IEnumerable<string> MaxNameCharacters(string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 60 < ch?.Length)
-            yield return "Max 59 znaków";
-    }
-    private static IEnumerable<string> MaxDescriptionCharacters(string ch)
-    {
-        if (!string.IsNullOrEmpty(ch) && 250 < ch?.Length)
-            yield return "Max 249 znaków";
-    }
-    public void ToggleOpen()
-    {
-        _isOpen = !_isOpen;
-    }
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        if (PlantId != 0)
+        if (PlantId > 0)
         {
-            var plant = await LocationService.GetPlantById(PlantId);
-            _name = plant.Name;
-            _description = plant.Description;
+            await GetPlant();
         }
     }
+
+    private async Task GetPlant()
+    {
+        var result = await LocationService.GetPlantById(PlantId);
+        if (result.Success)
+        {
+            _plantUpdate = Mapper.Map<PlantUpdateCommand>(result.Data);
+            return;
+        }
+        _plantUpdate = new();
+    }
+
     private async Task HandleSave()
     {
         if (PlantId > 0)
         {
-            var plantUpdate = new PlantUpdateCommand
+
+         var  result =  await LocationService.UpdatePlant(_plantUpdate);
+            if (result.Success)
             {
-                Name = _name,
-                Description = _description
-            };
-            await LocationService.UpdatePlant(PlantId, plantUpdate);
+                Snackbar.Add(result.Message, Severity.Success);
+                MudDialog.Close(DialogResult.Ok(true));
+                return;
+            }
+            Snackbar.Add(result.Message, Severity.Error);
         }
         else
         {
-            await LocationService.CreatePlant(_plantUpdateDto);
+          var result =  await LocationService.CreatePlant(_plantUpdate);
+            if (result.Success)
+            {
+                Snackbar.Add(result.Message, Severity.Success);
+                MudDialog.Close(DialogResult.Ok(true));
+                return;
+            }
+            Snackbar.Add(result.Message, Severity.Error);
         }
 
 
@@ -73,7 +83,7 @@ public partial class PlantForm : ComponentBase
         if (_form.IsValid)
             try
             {
-                await LocationService.CreatePlant(_plantUpdateDto);
+                await LocationService.CreatePlant(_plantUpdate);
                 Snackbar.Add("Pomyślnie dodano nowy zakład", Severity.Success);
                 MudDialog.Close(DialogResult.Ok(true));
             }

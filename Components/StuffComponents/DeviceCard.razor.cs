@@ -2,6 +2,7 @@
 
 using MudBlazor;
 
+using Sc3S.CQRS.Queries;
 using Sc3S.Entities;
 using Sc3S.Services;
 
@@ -15,7 +16,7 @@ public partial class DeviceCard : ComponentBase
     [Inject] ISnackbar Snackbar { get; set; } = default!;
     [Inject] IStuffService StuffService { get; set; } = default!;
     [Inject] IDialogService DialogService { get; set; } = default!;
-    private IEnumerable<Device> _devices = new List<Device>();
+    private IEnumerable<DeviceQuery> _devices = new List<DeviceQuery>();
     protected override async Task OnInitializedAsync()
     {
         await GetDevices();
@@ -23,10 +24,19 @@ public partial class DeviceCard : ComponentBase
     private string _search = string.Empty;
     private async Task GetDevices()
     {
-        _devices = await StuffService.GetDevices();
+        var result = await StuffService.GetDevices();
+        if (result.Success)
+        {
+            _devices = result.Data!;
+        }
+        else
+        {
+            Snackbar.Add(result.Message, Severity.Error);
+            _devices = new List<DeviceQuery>();
+        }
     }
 
-    private bool Search(Device device)
+    private bool Search(DeviceQuery device)
     {
         if (string.IsNullOrWhiteSpace(_search))
         {
@@ -41,32 +51,25 @@ public partial class DeviceCard : ComponentBase
         {
             { "DeviceId", id }
         };
-        //_device = _devices.FirstOrDefault(d => d.DeviceId==id)??new();
+        
         var dialog = DialogService.Show<DeviceForm>("Edycja sprzętu", parameters);
         var result = await dialog.Result;
         if (result.Cancelled == false)
         {
             await GetDevices();
-            Snackbar.Add("Zapisano zmiany");
         }
     }
     private async Task MarkDelete(int id)
     {
-        await StuffService.MarkDeleteDevice(id);
-        Snackbar.Add("Sprzęt oznaczony do usunięcia", Severity.Warning);
+      var result =  await StuffService.MarkDeleteDevice(id);
+        Snackbar.Add(result.Message, Severity.Warning);
+        await GetDevices();
     }
 
     private async Task Delete(int id)
     {
-        await StuffService.DeleteDevice(id);
+       var result = await StuffService.DeleteDevice(id);
+        Snackbar.Add(result.Message, Severity.Warning);
         await GetDevices();
     }
-
-    //private async Task Save()
-    //{
-    //    await StuffService.SaveDevice(_device);
-    //    _device = new();
-    //    Snackbar.Add("Sprzęt zapisany", Severity.Success);
-    //    await GetDevices();
-    //}
 }

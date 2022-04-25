@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using MudBlazor;
 using MudBlazor.Services;
@@ -38,12 +39,14 @@ builder.Services.AddDbContextFactory<Sc3SContext>(options =>
     options.UseSqlServer(cs);
 });
 // Add builder.Services to the container.
-builder.Services.AddAuthenticationCore();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.AddRazorPages();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpContextAccessor();
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IStuffService, StuffService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICommunicateService, CommunicateService>();
@@ -90,6 +93,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

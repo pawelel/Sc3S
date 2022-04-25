@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 
+using MudBlazor;
+
 using Sc3S.CQRS.Queries;
 using Sc3S.Enumerations;
 using Sc3S.Services;
@@ -9,11 +11,10 @@ public partial class AssetSearch : ComponentBase
 {
     private IEnumerable<AssetDisplayQuery> _assets = new List<AssetDisplayQuery>();
     private IEnumerable<AssetDisplayQuery> _filteredAssets = new List<AssetDisplayQuery>();
-
+    [Inject] ISnackbar Snackbar { get; set; } = default!;
     private string _searchString = string.Empty;
     private string _selectedFilters = string.Empty;
-    [Inject]
-    private IStuffService StuffService { get; set; } = default!;
+    [Inject] private IStuffService StuffService { get; set; } = default!;
 
     private Func<AssetDisplayQuery, bool> AssetFilter => x =>
     {
@@ -21,10 +22,25 @@ public partial class AssetSearch : ComponentBase
     };
     protected override async Task OnInitializedAsync()
     {
-        _assets = await StuffService.GetAssetDisplays();
+        await GetAssets();
         _filteredAssets = _assets;
 
     }
+
+    private async Task GetAssets()
+    {
+        var result = await StuffService.GetAssetDisplays();
+        if (result.Success)
+        {
+            _assets = result.Data!;
+        }
+        else
+        {
+            Snackbar.Add(result.Message, Severity.Error);
+            _assets = new List<AssetDisplayQuery>();
+        }
+    }
+
     private static void ShowBtnPress(AssetDisplayQuery aDisplayDto)
     {
         aDisplayDto.ShowDetails = !aDisplayDto.ShowDetails;

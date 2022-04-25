@@ -12,5 +12,6 @@ public class Sc3SProfile : Profile
     {
         CreateMap<Account, AccountQuery>();
         CreateMap<DeviceQuery, DeviceUpdateCommand>();
+        CreateMap<PlantQuery, PlantUpdateCommand>();
     }
 }

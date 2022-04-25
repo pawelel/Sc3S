@@ -18,7 +18,7 @@ public class Sc3SContext : DbContext
     }
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)
     {
-        var userId = _userContextService.GetUserId;
+        var userId = _userContextService.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
         var now = DateTime.Now;
         var entries = ChangeTracker.Entries();
         foreach (var entry in entries)

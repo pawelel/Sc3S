@@ -75,7 +75,7 @@ public interface IStuffService
     Task<ServiceResponse<IEnumerable<DetailWithAssetsQuery>>> GetDetailsWithAssets();
 
     Task<ServiceResponse<DeviceQuery>> GetDeviceById(int deviceId);
-    Task<ServiceResponse<DeviceUpdateCommand>> GetDeviceToUpdateById(int deviceId);
+   
 
     Task<ServiceResponse<IEnumerable<DeviceQuery>>> GetDevicesWithModels();
 
@@ -133,13 +133,11 @@ public class StuffService : IStuffService
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
     private readonly ILogger<StuffService> _logger;
-    private readonly IMapper _mapper;
 
-    public StuffService(IDbContextFactory<Sc3SContext> factory, ILogger<StuffService> logger, IMapper mapper)
+    public StuffService(IDbContextFactory<Sc3SContext> factory, ILogger<StuffService> logger)
     {
         _factory = factory;
         _logger = logger;
-        _mapper = mapper;
     }
 
 
@@ -1289,12 +1287,6 @@ public class StuffService : IStuffService
         // return details
         _logger.LogInformation("Details found");
         return new ServiceResponse<IEnumerable<DetailWithAssetsQuery>>(true, query, "Szczegóły zostały znalezione");
-    }
-    public async Task<ServiceResponse<DeviceUpdateCommand>> GetDeviceToUpdateById(int deviceId)
-    {
-        var device = await GetDeviceById(deviceId);
-        var mapped = _mapper.Map<DeviceUpdateCommand>(device);
-        return new ServiceResponse<DeviceUpdateCommand>(true, mapped, "Urządzenie zostało znalezione");
     }
     public async Task<ServiceResponse<DeviceQuery>> GetDeviceById(int deviceId)
     {

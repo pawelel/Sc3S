@@ -1,12 +1,12 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudForm @ref="_form" Model="@_device" >
+        <EditForm Model="@_device" OnValidSubmit="@HandleSave">
+            <FluentValidationValidator/>
+            <ValidationSummary/>
             <MudTextField @bind-Value="_device.Name" Label="Nazwa" For="@(()=>_device.Name)" Immediate="true" Variant="Variant.Text" Margin="Margin.Normal"> </MudTextField>
             <MudTextField @bind-Value="_device.Description" For="@(()=>_device.Description)" Immediate="true" Label="Opis" Variant="Variant.Text" Margin="Margin.Normal"> </MudTextField>
-        </MudForm>
-    </DialogContent>
-    <DialogActions>
         <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Warning" OnClick="Cancel">Anuluj</MudButton>
-        <MudButton Variant="Variant.Outlined" OnClick="HandleSave" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success">Zapisz</MudButton>
-    </DialogActions>
+        <MudButton Variant="Variant.Outlined" ButtonType="ButtonType.Submit" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success">Zapisz</MudButton>
+        </EditForm>
+    </DialogContent>
 </MudDialog>

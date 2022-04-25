@@ -626,7 +626,6 @@ public class LocationService : ILocationService
         _logger.LogInformation("Plant with id {PlantId} returned", plant.PlantId);
         return new ServiceResponse<PlantQuery>(true, plant, "Fabryka została zwrócona");
     }
-
     public async Task<ServiceResponse<IEnumerable<PlantQuery>>> GetPlants()
     {
         await using var _context = await _factory.CreateDbContextAsync();
