@@ -5,86 +5,87 @@ using Sc3S.CQRS.Queries;
 using Sc3S.Data;
 using Sc3S.Entities;
 using Sc3S.Exceptions;
+using Sc3S.Helpers;
 
 namespace Sc3S.Services;
 
 
 public interface ISituationService
 {
-    Task<(int, int)> CreateAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse<(int,int)>> CreateAssetSituation(int assetId, int situationId);
 
-    Task<(int, int)> CreateCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse<(int,int)>> CreateCategorySituation(int categoryId, int situationId);
 
-    Task<(int, int)> CreateDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse<(int,int)>> CreateDeviceSituation(int deviceId, int situationId);
 
-    Task<int> CreateQuestion(QuestionUpdateCommand questionUpdateDto);
+    Task<ServiceResponse<int>> CreateQuestion(QuestionUpdateCommand questionUpdateDto);
 
-    Task<int> CreateSituation(SituationUpdateCommand situationUpdateDto);
+    Task<ServiceResponse<int>> CreateSituation(SituationUpdateCommand situationUpdateDto);
 
-    Task<(int, int)> CreateSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse<(int,int)>> CreateSituationDetail(int situationId, int detailId);
 
-    Task<(int, int)> CreateSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse<(int,int)>> CreateSituationParameter(int situationId, int parameterId);
 
-    Task<(int, int)> CreateSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse<(int,int)>> CreateSituationQuestion(int situationId, int questionId);
 
-    Task DeleteAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse> DeleteAssetSituation(int assetId, int situationId);
 
-    Task DeleteCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse> DeleteCategorySituation(int categoryId, int situationId);
 
-    Task DeleteDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse> DeleteDeviceSituation(int deviceId, int situationId);
 
-    Task DeleteQuestion(int situationId);
+    Task<ServiceResponse> DeleteQuestion(int situationId);
 
-    Task DeleteSituation(int situationId);
+    Task<ServiceResponse> DeleteSituation(int situationId);
 
-    Task DeleteSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse> DeleteSituationDetail(int situationId, int detailId);
 
-    Task DeleteSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse> DeleteSituationParameter(int situationId, int parameterId);
 
-    Task DeleteSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse> DeleteSituationQuestion(int situationId, int questionId);
 
-    Task<QuestionQuery> GetQuestionById(int questionId);
+    Task<ServiceResponse<QuestionQuery>> GetQuestionById(int questionId);
 
-    Task<IEnumerable<QuestionQuery>> GetQuestions();
+    Task<ServiceResponse<IEnumerable<QuestionQuery>>> GetQuestions();
 
-    Task<SituationQuery> GetSituationById(int situationId);
+    Task<ServiceResponse<SituationQuery>> GetSituationById(int situationId);
 
-    Task<IEnumerable<SituationQuery>> GetSituations();
+    Task<ServiceResponse<IEnumerable<SituationQuery>>> GetSituations();
 
-    Task<IEnumerable<SituationWithAssetsQuery>> GetSituationsWithAssets();
+    Task<ServiceResponse<IEnumerable<SituationWithAssetsQuery>>> GetSituationsWithAssets();
 
-    Task<IEnumerable<SituationWithCategoriesQuery>> GetSituationsWithCategories();
+    Task<ServiceResponse<IEnumerable<SituationWithCategoriesQuery>>> GetSituationsWithCategories();
 
-    Task<IEnumerable<SituationWithQuestionsQuery>> GetSituationsWithQuestions();
+    Task<ServiceResponse<IEnumerable<SituationWithQuestionsQuery>>> GetSituationsWithQuestions();
 
-    Task<IEnumerable<SituationWithAssetsAndDetailsQuery>> GetSituationWithAssetsAndDetails();
+    Task<ServiceResponse<IEnumerable<SituationWithAssetsAndDetailsQuery>>> GetSituationWithAssetsAndDetails();
 
-    Task MarkDeleteAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse> MarkDeleteAssetSituation(int assetId, int situationId);
 
-    Task MarkDeleteCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId);
 
-    Task MarkDeleteDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId);
 
-    Task MarkDeleteQuestion(int questionId);
+    Task<ServiceResponse> MarkDeleteQuestion(int questionId);
 
-    Task MarkDeleteSituation(int situationId);
+    Task<ServiceResponse> MarkDeleteSituation(int situationId);
 
-    Task MarkDeleteSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId);
 
-    Task MarkDeleteSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId);
 
-    Task MarkDeleteSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId);
 
-    Task UpdateAssetSituation(int assetId, int situationId);
-    Task UpdateCategorySituation(int categoryId, int situationId);
-    Task UpdateDeviceSituation(int deviceId, int situationId);
-    Task UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto);
+    Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto);
 
-    Task UpdateSituation(int questionId, SituationUpdateCommand situationUpdateDto);
+    Task<ServiceResponse> UpdateSituation(int questionId, SituationUpdateCommand situationUpdateDto);
 
-    Task UpdateSituationDetail(int situationId, int detailId);
-    Task UpdateSituationParameter(int situationId, int parameterId);
-    Task UpdateSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId);
 }
 public class SituationService : ISituationService
 {
@@ -96,7 +97,7 @@ public class SituationService : ISituationService
         _factory = factory;
         _logger = logger;
     }
-    public async Task<(int, int)> CreateAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse<(int,int)>> CreateAssetSituation(int assetId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -104,18 +105,18 @@ public class SituationService : ISituationService
         // get assetSituation
         var assetSituation = await _context.AssetSituations.FindAsync(assetId, situationId);
         if (assetSituation != null)
-            throw new BadRequestException("AssetSituation already exists");
+            return new ServiceResponse(null, "AssetSituation already exists");
         var asset = await _context.Assets.FindAsync(assetId);
         if (asset == null || asset.IsDeleted)
         {
             _logger.LogWarning("Asset not found");
-            throw new NotFoundException("Asset not found");
+            return new ServiceResponse("Asset not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         assetSituation = new AssetSituation
         {
@@ -136,11 +137,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating assetSituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task<(int, int)> CreateCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse<(int,int)>> CreateCategorySituation(int categoryId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -148,18 +149,18 @@ public class SituationService : ISituationService
         // get categorySituation
         var categorySituation = await _context.CategorySituations.FindAsync(categoryId, situationId);
         if (categorySituation != null)
-            throw new BadRequestException("CategorySituation already exists");
+            return new ServiceResponse("CategorySituation already exists");
         var category = await _context.Categories.FindAsync(categoryId);
         if (category == null || category.IsDeleted)
         {
             _logger.LogWarning("Category not found");
-            throw new NotFoundException("Category not found");
+            return new ServiceResponse("Category not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         categorySituation = new CategorySituation
         {
@@ -181,11 +182,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating categorySituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task<(int, int)> CreateDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse<(int,int)>> CreateDeviceSituation(int deviceId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -193,18 +194,18 @@ public class SituationService : ISituationService
         // get deviceSituation
         var deviceSituation = await _context.DeviceSituations.FindAsync(deviceId, situationId);
         if (deviceSituation != null)
-            throw new BadRequestException("DeviceSituation already exists");
+            return new ServiceResponse("DeviceSituation already exists");
         var device = await _context.Devices.FindAsync(deviceId);
         if (device == null || device.IsDeleted)
         {
             _logger.LogWarning("Device not found");
-            throw new NotFoundException("Device not found");
+            return new ServiceResponse("Device not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         deviceSituation = new DeviceSituation
         {
@@ -226,11 +227,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating deviceSituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task<int> CreateQuestion(QuestionUpdateCommand questionUpdateDto)
+    public async Task<ServiceResponse<int>> CreateQuestion(QuestionUpdateCommand questionUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -241,7 +242,7 @@ public class SituationService : ISituationService
         if (duplicate)
         {
             _logger.LogWarning("Question name already exists");
-            throw new BadRequestException("Question name already exists");
+            return new ServiceResponse("Question name already exists");
         }
 
         var question = new Question
@@ -268,11 +269,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error creating question");
             // rollback transaction
 
-            throw new BadRequestException("Error creating question");
+            return new ServiceResponse("Error creating question");
         }
     }
 
-    public async Task<int> CreateSituation(SituationUpdateCommand situationUpdateDto)
+    public async Task<ServiceResponse<int>> CreateSituation(SituationUpdateCommand situationUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -283,7 +284,7 @@ public class SituationService : ISituationService
         if (duplicate)
         {
             _logger.LogWarning("Situation name already exists");
-            throw new BadRequestException("Situation name already exists");
+            return new ServiceResponse("Situation name already exists");
         }
 
         var situation = new Situation
@@ -311,11 +312,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error creating situation");
             // rollback transaction
 
-            throw new BadRequestException("Error creating situation");
+            return new ServiceResponse("Error creating situation");
         }
     }
 
-    public async Task<(int, int)> CreateSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse<(int,int)>> CreateSituationDetail(int situationId, int detailId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -323,18 +324,18 @@ public class SituationService : ISituationService
         // get situationDetail
         var situationDetail = await _context.SituationDetails.FindAsync(situationId, detailId);
         if (situationDetail != null)
-            throw new BadRequestException("SituationDetail already exists");
+            return new ServiceResponse("SituationDetail already exists");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var detail = await _context.Details.FindAsync(detailId);
         if (detail == null || detail.IsDeleted)
         {
             _logger.LogWarning("Detail not found");
-            throw new NotFoundException("Detail not found");
+            return new ServiceResponse("Detail not found");
         }
         situationDetail = new SituationDetail
         {
@@ -356,11 +357,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating situationDetail");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task<(int, int)> CreateSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse<(int,int)>> CreateSituationParameter(int situationId, int parameterId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -368,18 +369,18 @@ public class SituationService : ISituationService
         // get situationParameter
         var situationParameter = await _context.SituationParameters.FindAsync(situationId, parameterId);
         if (situationParameter != null)
-            throw new BadRequestException("SituationParameter already exists");
+            return new ServiceResponse("SituationParameter already exists");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var parameter = await _context.Parameters.FindAsync(parameterId);
         if (parameter == null || parameter.IsDeleted)
         {
             _logger.LogWarning("Parameter not found");
-            throw new NotFoundException("Parameter not found");
+            return new ServiceResponse("Parameter not found");
         }
         situationParameter = new SituationParameter
         {
@@ -401,11 +402,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating situationParameter");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task<(int, int)> CreateSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse<(int,int)>> CreateSituationQuestion(int situationId, int questionId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -413,18 +414,18 @@ public class SituationService : ISituationService
         // get situationQuestion
         var situationQuestion = await _context.SituationQuestions.FindAsync(situationId, questionId);
         if (situationQuestion != null)
-            throw new BadRequestException("SituationQuestion already exists");
+            return new ServiceResponse("SituationQuestion already exists");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var question = await _context.Questions.FindAsync(questionId);
         if (question == null || question.IsDeleted)
         {
             _logger.LogWarning("Question not found");
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         situationQuestion = new SituationQuestion
         {
@@ -446,11 +447,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error creating situationQuestion");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task DeleteAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse> DeleteAssetSituation(int assetId, int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -460,13 +461,13 @@ public class SituationService : ISituationService
         if (assetSituation == null)
         {
             _logger.LogWarning("Asset situation not found");
-            throw new NotFoundException("Asset situation not found");
+            return new ServiceResponse("Asset situation not found");
         }
         // check if AssetSituation is not marked as deleted
         if (assetSituation.IsDeleted == false)
         {
             _logger.LogWarning("Asset situation is not marked as deleted");
-            throw new BadRequestException("Asset situation is not marked as deleted");
+            return new ServiceResponse("Asset situation is not marked as deleted");
         }
         // delete asset situation
         _context.AssetSituations.Remove(assetSituation);
@@ -485,11 +486,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting asset situation");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting asset situation");
+            return new ServiceResponse("Error deleting asset situation");
         }
     }
 
-    public async Task DeleteCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse> DeleteCategorySituation(int categoryId, int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -499,13 +500,13 @@ public class SituationService : ISituationService
         if (categorySituation == null)
         {
             _logger.LogWarning("Category situation not found");
-            throw new NotFoundException("Category situation not found");
+            return new ServiceResponse("Category situation not found");
         }
         // check if CategorySituation is not marked as deleted
         if (categorySituation.IsDeleted == false)
         {
             _logger.LogWarning("Category situation is not marked as deleted");
-            throw new BadRequestException("Category situation is not marked as deleted");
+            return new ServiceResponse("Category situation is not marked as deleted");
         }
         // delete category situation
         _context.CategorySituations.Remove(categorySituation);
@@ -524,11 +525,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting category situation");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting category situation");
+            return new ServiceResponse("Error deleting category situation");
         }
     }
 
-    public async Task DeleteDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse> DeleteDeviceSituation(int deviceId, int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -538,13 +539,13 @@ public class SituationService : ISituationService
         if (deviceSituation == null)
         {
             _logger.LogWarning("Device situation not found");
-            throw new NotFoundException("Device situation not found");
+            return new ServiceResponse("Device situation not found");
         }
         // check if DeviceSituation is not marked as deleted
         if (deviceSituation.IsDeleted == false)
         {
             _logger.LogWarning("Device situation is not marked as deleted");
-            throw new BadRequestException("Device situation is not marked as deleted");
+            return new ServiceResponse("Device situation is not marked as deleted");
         }
         // delete device situation
         _context.DeviceSituations.Remove(deviceSituation);
@@ -563,11 +564,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting device situation");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting device situation");
+            return new ServiceResponse("Error deleting device situation");
         }
     }
 
-    public async Task DeleteQuestion(int situationId)
+    public async Task<ServiceResponse> DeleteQuestion(int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -577,13 +578,13 @@ public class SituationService : ISituationService
         if (question == null)
         {
             _logger.LogWarning("Question not found");
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         // check if question is marked as deleted
         if (question.IsDeleted == false)
         {
             _logger.LogWarning("Question is not marked as deleted");
-            throw new BadRequestException("Question is not marked as deleted");
+            return new ServiceResponse("Question is not marked as deleted");
         }
         // delete question
         _context.Questions.Remove(question);
@@ -602,11 +603,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting question");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting question");
+            return new ServiceResponse("Error deleting question");
         }
     }
 
-    public async Task DeleteSituation(int situationId)
+    public async Task<ServiceResponse> DeleteSituation(int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -616,13 +617,13 @@ public class SituationService : ISituationService
         if (situation == null)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         // check if situation is marked as deleted
         if (situation.IsDeleted == false)
         {
             _logger.LogWarning("Situation is not marked as deleted");
-            throw new BadRequestException("Situation is not marked as deleted");
+            return new ServiceResponse("Situation is not marked as deleted");
         }
         // delete situation
         _context.Situations.Remove(situation);
@@ -641,11 +642,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting situation");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting situation");
+            return new ServiceResponse("Error deleting situation");
         }
     }
 
-    public async Task DeleteSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse> DeleteSituationDetail(int situationId, int detailId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -655,13 +656,13 @@ public class SituationService : ISituationService
         if (situationDetail == null)
         {
             _logger.LogWarning("Situation detail not found");
-            throw new NotFoundException("Situation detail not found");
+            return new ServiceResponse("Situation detail not found");
         }
         // check if situation detail is marked as deleted
         if (situationDetail.IsDeleted == false)
         {
             _logger.LogWarning("Situation detail is not marked as deleted");
-            throw new BadRequestException("Situation detail is not marked as deleted");
+            return new ServiceResponse("Situation detail is not marked as deleted");
         }
         // delete situation detail
         _context.SituationDetails.Remove(situationDetail);
@@ -680,11 +681,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting situation detail");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting situation detail");
+            return new ServiceResponse("Error deleting situation detail");
         }
     }
 
-    public async Task DeleteSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse> DeleteSituationParameter(int situationId, int parameterId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -694,13 +695,13 @@ public class SituationService : ISituationService
         if (situationParameter == null)
         {
             _logger.LogWarning("Situation parameter not found");
-            throw new NotFoundException("Situation parameter not found");
+            return new ServiceResponse("Situation parameter not found");
         }
         // check if situation parameter is marked as deleted
         if (situationParameter.IsDeleted == false)
         {
             _logger.LogWarning("Situation parameter is not marked as deleted");
-            throw new BadRequestException("Situation parameter is not marked as deleted");
+            return new ServiceResponse("Situation parameter is not marked as deleted");
         }
         // delete situation parameter
         _context.SituationParameters.Remove(situationParameter);
@@ -719,11 +720,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting situation parameter");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting situation parameter");
+            return new ServiceResponse("Error deleting situation parameter");
         }
     }
 
-    public async Task DeleteSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse> DeleteSituationQuestion(int situationId, int questionId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -733,13 +734,13 @@ public class SituationService : ISituationService
         if (situationQuestion == null)
         {
             _logger.LogWarning("Situation question not found");
-            throw new NotFoundException("Situation question not found");
+            return new ServiceResponse("Situation question not found");
         }
         // check if situation question is marked as deleted
         if (situationQuestion.IsDeleted == false)
         {
             _logger.LogWarning("Situation question is not marked as deleted");
-            throw new BadRequestException("Situation question is not marked as deleted");
+            return new ServiceResponse("Situation question is not marked as deleted");
         }
         // delete situation question
         _context.SituationQuestions.Remove(situationQuestion);
@@ -758,11 +759,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error deleting situation question");
             // rollback transaction
 
-            throw new BadRequestException("Error deleting situation question");
+            return new ServiceResponse("Error deleting situation question");
         }
     }
 
-    public async Task<QuestionQuery> GetQuestionById(int questionId)
+    public async Task<ServiceResponse<QuestionQuery>> GetQuestionById(int questionId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -781,14 +782,14 @@ public class SituationService : ISituationService
         if (question == null)
         {
             _logger.LogWarning("Question not found");
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         // return question
         _logger.LogInformation("Question with id {QuestionId} returned", questionId);
         return question;
     }
 
-    public async Task<IEnumerable<QuestionQuery>> GetQuestions()
+    public async Task<ServiceResponse<IEnumerable<QuestionQuery>>> GetQuestions()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -807,14 +808,14 @@ public class SituationService : ISituationService
         if (questions is null)
         {
             _logger.LogWarning("Questions not found");
-            throw new NotFoundException("Questions not found");
+            return new ServiceResponse("Questions not found");
         }
         // return questions
         _logger.LogInformation("Questions returned");
         return questions;
     }
 
-    public async Task<SituationQuery> GetSituationById(int situationId)
+    public async Task<ServiceResponse<SituationQuery>> GetSituationById(int situationId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -834,14 +835,14 @@ public class SituationService : ISituationService
         if (situation == null)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         // return situation
         _logger.LogInformation("Situation with id {SituationId} returned", situationId);
         return situation;
     }
 
-    public async Task<IEnumerable<SituationQuery>> GetSituations()
+    public async Task<ServiceResponse<IEnumerable<SituationQuery>>> GetSituations()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -861,14 +862,14 @@ public class SituationService : ISituationService
         if (situations is null)
         {
             _logger.LogWarning("Situations not found");
-            throw new NotFoundException("Situations not found");
+            return new ServiceResponse("Situations not found");
         }
         // return situations
         _logger.LogInformation("Situations returned");
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithAssetsQuery>> GetSituationsWithAssets()
+    public async Task<ServiceResponse<IEnumerable<SituationWithAssetsQuery>>> GetSituationsWithAssets()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -895,14 +896,14 @@ public class SituationService : ISituationService
         if (situations is null)
         {
             _logger.LogWarning("Situations not found");
-            throw new NotFoundException("Situations not found");
+            return new ServiceResponse("Situations not found");
         }
         // return situations
         _logger.LogInformation("Situations returned");
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithCategoriesQuery>> GetSituationsWithCategories()
+    public async Task<ServiceResponse<IEnumerable<SituationWithCategoriesQuery>>> GetSituationsWithCategories()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -929,14 +930,14 @@ public class SituationService : ISituationService
         if (situations is null)
         {
             _logger.LogWarning("Situations not found");
-            throw new NotFoundException("Situations not found");
+            return new ServiceResponse("Situations not found");
         }
         // return situations
         _logger.LogInformation("Situations returned");
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithQuestionsQuery>> GetSituationsWithQuestions()
+    public async Task<ServiceResponse<IEnumerable<SituationWithQuestionsQuery>>> GetSituationsWithQuestions()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -961,14 +962,14 @@ public class SituationService : ISituationService
         if (situations is null)
         {
             _logger.LogWarning("Situations not found");
-            throw new NotFoundException("Situations not found");
+            return new ServiceResponse("Situations not found");
         }
         // return situations
         _logger.LogInformation("Situations returned");
         return situations;
     }
 
-    public async Task<IEnumerable<SituationWithAssetsAndDetailsQuery>> GetSituationWithAssetsAndDetails()
+    public async Task<ServiceResponse<IEnumerable<SituationWithAssetsAndDetailsQuery>>> GetSituationWithAssetsAndDetails()
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -1003,14 +1004,14 @@ public class SituationService : ISituationService
         if (situations is null)
         {
             _logger.LogWarning("Situations with asset details not found");
-            throw new NotFoundException("Situations with asset details not found");
+            return new ServiceResponse("Situations with asset details not found");
         }
         // return situations
         _logger.LogInformation("Situations with asset details returned");
         return situations;
     }
 
-    public async Task MarkDeleteAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteAssetSituation(int assetId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1021,12 +1022,12 @@ public class SituationService : ISituationService
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
-            throw new NotFoundException("AssetSituation not found");
+            return new ServiceResponse("AssetSituation not found");
         }
         if (assetSituation.IsDeleted)
         {
             _logger.LogWarning("AssetSituation already marked as deleted");
-            throw new BadRequestException("AssetSituation already marked as deleted");
+            return new ServiceResponse("AssetSituation already marked as deleted");
         }
         assetSituation.IsDeleted = true;
         _context.Update(assetSituation);
@@ -1043,11 +1044,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking assetSituation with id {AssetId}, {SituationId} as deleted", assetId, situationId);
 
-            throw new BadRequestException($"Error marking assetSituation with id {assetId}, {situationId} as deleted");
+            return new ServiceResponse($"Error marking assetSituation with id {assetId}, {situationId} as deleted");
         }
     }
 
-    public async Task MarkDeleteCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1058,12 +1059,12 @@ public class SituationService : ISituationService
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
-            throw new NotFoundException("CategorySituation not found");
+            return new ServiceResponse("CategorySituation not found");
         }
         if (categorySituation.IsDeleted)
         {
             _logger.LogWarning("CategorySituation already marked as deleted");
-            throw new BadRequestException("CategorySituation already marked as deleted");
+            return new ServiceResponse("CategorySituation already marked as deleted");
         }
         categorySituation.IsDeleted = true;
         _context.Update(categorySituation);
@@ -1080,11 +1081,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking categorySituation with id {CategoryId}, {SituationId} as deleted", categoryId, situationId);
 
-            throw new BadRequestException($"Error marking categorySituation with id {categoryId}, {situationId} as deleted");
+            return new ServiceResponse($"Error marking categorySituation with id {categoryId}, {situationId} as deleted");
         }
     }
 
-    public async Task MarkDeleteDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1095,12 +1096,12 @@ public class SituationService : ISituationService
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
-            throw new NotFoundException("DeviceSituation not found");
+            return new ServiceResponse("DeviceSituation not found");
         }
         if (deviceSituation.IsDeleted)
         {
             _logger.LogWarning("DeviceSituation already marked as deleted");
-            throw new BadRequestException("DeviceSituation already marked as deleted");
+            return new ServiceResponse("DeviceSituation already marked as deleted");
         }
         deviceSituation.IsDeleted = true;
         _context.Update(deviceSituation);
@@ -1117,11 +1118,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking deviceSituation with id {DeviceId}, {SituationId} as deleted", deviceId, situationId);
 
-            throw new BadRequestException($"Error marking deviceSituation with id {deviceId}, {situationId} as deleted");
+            return new ServiceResponse($"Error marking deviceSituation with id {deviceId}, {situationId} as deleted");
         }
     }
 
-    public async Task MarkDeleteQuestion(int questionId)
+    public async Task<ServiceResponse> MarkDeleteQuestion(int questionId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1135,19 +1136,19 @@ public class SituationService : ISituationService
         if (question == null)
         {
             _logger.LogWarning("Question with id {QuestionId} not found", questionId);
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         // if question is already deleted
         if (question.IsDeleted)
         {
             _logger.LogWarning("Question with id {QuestionId} is already deleted", questionId);
-            throw new BadRequestException("Question is already deleted");
+            return new ServiceResponse("Question is already deleted");
         }
         // check if question has SituationQuestions with IsDeleted = false
         if (question.SituationQuestions.Any(sq => sq.IsDeleted == false))
         {
             _logger.LogWarning("Question with id {QuestionId} has SituationQuestions with IsDeleted = false", questionId);
-            throw new BadRequestException("Question has SituationQuestions with IsDeleted = false");
+            return new ServiceResponse("Question has SituationQuestions with IsDeleted = false");
         }
 
         // mark question as deleted
@@ -1168,11 +1169,11 @@ public class SituationService : ISituationService
             _logger.LogError(ex, "Error marking question with id {QuestionId} as deleted", questionId);
             // rollback transaction
 
-            throw new BadRequestException($"Error marking question with id {questionId} as deleted");
+            return new ServiceResponse($"Error marking question with id {questionId} as deleted");
         }
     }
 
-    public async Task MarkDeleteSituation(int situationId)
+    public async Task<ServiceResponse> MarkDeleteSituation(int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1191,49 +1192,49 @@ public class SituationService : ISituationService
         if (situation == null)
         {
             _logger.LogWarning("Situation with id {SituationId} not found", situationId);
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         // if situation is already deleted
         if (situation.IsDeleted)
         {
             _logger.LogWarning("Situation with id {SituationId} is already deleted", situationId);
-            throw new BadRequestException("Situation is already deleted");
+            return new ServiceResponse("Situation is already deleted");
         }
         // check if situation has SituationQuestions with IsDeleted = false
         if (situation.SituationQuestions.Any(sq => sq.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has SituationQuestions with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has SituationQuestions with IsDeleted = false");
+            return new ServiceResponse("Situation has SituationQuestions with IsDeleted = false");
         }
         // check if situation has SituationDetails with IsDeleted = false
         if (situation.SituationDetails.Any(sd => sd.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has SituationDetails with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has SituationDetails with IsDeleted = false");
+            return new ServiceResponse("Situation has SituationDetails with IsDeleted = false");
         }
         // check if situation has SituationParameters with IsDeleted = false
         if (situation.SituationParameters.Any(sp => sp.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has SituationParameters with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has SituationParameters with IsDeleted = false");
+            return new ServiceResponse("Situation has SituationParameters with IsDeleted = false");
         }
         // check if situation has AssetSituations with IsDeleted = false
         if (situation.AssetSituations.Any(asit => asit.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has AssetSituations with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has AssetSituations with IsDeleted = false");
+            return new ServiceResponse("Situation has AssetSituations with IsDeleted = false");
         }
         // check if situation has CategorySituations with IsDeleted = false
         if (situation.CategorySituations.Any(cs => cs.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has CategorySituations with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has CategorySituations with IsDeleted = false");
+            return new ServiceResponse("Situation has CategorySituations with IsDeleted = false");
         }
         // check if situation has DeviceSituations with IsDeleted = false
         if (situation.DeviceSituations.Any(ds => ds.IsDeleted == false))
         {
             _logger.LogWarning("Situation with id {SituationId} has DeviceSituations with IsDeleted = false", situationId);
-            throw new BadRequestException("Situation has DeviceSituations with IsDeleted = false");
+            return new ServiceResponse("Situation has DeviceSituations with IsDeleted = false");
         }
         // mark delete situation
         situation.IsDeleted = true;
@@ -1254,11 +1255,11 @@ public class SituationService : ISituationService
             // await rollback transaction
 
 
-            throw new BadRequestException($"Error while marking as deleted situation with id {situationId}");
+            return new ServiceResponse($"Error while marking as deleted situation with id {situationId}");
         }
     }
 
-    public async Task MarkDeleteSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1269,12 +1270,12 @@ public class SituationService : ISituationService
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
-            throw new NotFoundException("SituationDetail not found");
+            return new ServiceResponse("SituationDetail not found");
         }
         if (situationDetail.IsDeleted)
         {
             _logger.LogWarning("SituationDetail already marked as deleted");
-            throw new BadRequestException("SituationDetail already marked as deleted");
+            return new ServiceResponse("SituationDetail already marked as deleted");
         }
 
         situationDetail.IsDeleted = true;
@@ -1292,11 +1293,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking situationDetail with id {SituationId}, {DetailId} as deleted", situationId, detailId);
 
-            throw new BadRequestException($"Error marking situationDetail with id {situationId}, {detailId} as deleted");
+            return new ServiceResponse($"Error marking situationDetail with id {situationId}, {detailId} as deleted");
         }
     }
 
-    public async Task MarkDeleteSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1307,12 +1308,12 @@ public class SituationService : ISituationService
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
-            throw new NotFoundException("SituationParameter not found");
+            return new ServiceResponse("SituationParameter not found");
         }
         if (situationParameter.IsDeleted)
         {
             _logger.LogWarning("SituationParameter already marked as deleted");
-            throw new BadRequestException("SituationParameter already marked as deleted");
+            return new ServiceResponse("SituationParameter already marked as deleted");
         }
         situationParameter.IsDeleted = true;
         _context.Update(situationParameter);
@@ -1329,11 +1330,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking situationParameter with id {SituationId}, {ParameterId} as deleted", situationId, parameterId);
 
-            throw new BadRequestException($"Error marking situationParameter with id {situationId}, {parameterId} as deleted");
+            return new ServiceResponse($"Error marking situationParameter with id {situationId}, {parameterId} as deleted");
         }
     }
 
-    public async Task MarkDeleteSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1344,12 +1345,12 @@ public class SituationService : ISituationService
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
-            throw new NotFoundException("SituationQuestion not found");
+            return new ServiceResponse("SituationQuestion not found");
         }
         if (situationQuestion.IsDeleted)
         {
             _logger.LogWarning("SituationQuestion already marked as deleted");
-            throw new BadRequestException("SituationQuestion already marked as deleted");
+            return new ServiceResponse("SituationQuestion already marked as deleted");
         }
         situationQuestion.IsDeleted = true;
         _context.Update(situationQuestion);
@@ -1366,11 +1367,11 @@ public class SituationService : ISituationService
         {
             _logger.LogError(ex, "Error marking situationQuestion with id {SituationId}, {QuestionId} as deleted", situationId, questionId);
 
-            throw new BadRequestException($"Error marking situationQuestion with id {situationId}, {questionId} as deleted");
+            return new ServiceResponse($"Error marking situationQuestion with id {situationId}, {questionId} as deleted");
         }
     }
 
-    public async Task UpdateAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1380,21 +1381,21 @@ public class SituationService : ISituationService
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
-            throw new NotFoundException("AssetSituation not found");
+            return new ServiceResponse("AssetSituation not found");
         }
         if (!assetSituation.IsDeleted)
-            throw new BadRequestException("AssetSituation not marked as deleted");
+            return new ServiceResponse("AssetSituation not marked as deleted");
         var asset = await _context.Assets.FindAsync(assetId);
         if (asset == null || asset.IsDeleted)
         {
             _logger.LogWarning("Asset not found");
-            throw new NotFoundException("Asset not found");
+            return new ServiceResponse("Asset not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         assetSituation.IsDeleted = false;
         // save changes
@@ -1408,11 +1409,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating assetSituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task UpdateCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1422,21 +1423,21 @@ public class SituationService : ISituationService
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
-            throw new NotFoundException("CategorySituation not found");
+            return new ServiceResponse("CategorySituation not found");
         }
         if (!categorySituation.IsDeleted)
-            throw new BadRequestException("CategorySituation not marked as deleted");
+            return new ServiceResponse("CategorySituation not marked as deleted");
         var category = await _context.Categories.FindAsync(categoryId);
         if (category == null || category.IsDeleted)
         {
             _logger.LogWarning("Category not found");
-            throw new NotFoundException("Category not found");
+            return new ServiceResponse("Category not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         categorySituation.IsDeleted = false;
         // save changes
@@ -1450,11 +1451,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating categorySituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task UpdateDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1464,21 +1465,21 @@ public class SituationService : ISituationService
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
-            throw new NotFoundException("DeviceSituation not found");
+            return new ServiceResponse("DeviceSituation not found");
         }
         if (!deviceSituation.IsDeleted)
-            throw new BadRequestException("DeviceSituation not marked as deleted");
+            return new ServiceResponse("DeviceSituation not marked as deleted");
         var device = await _context.Devices.FindAsync(deviceId);
         if (device == null || device.IsDeleted)
         {
             _logger.LogWarning("Device not found");
-            throw new NotFoundException("Device not found");
+            return new ServiceResponse("Device not found");
         }
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         deviceSituation.IsDeleted = false;
         // save changes
@@ -1492,11 +1493,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating deviceSituation");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
+    public async Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1507,14 +1508,14 @@ public class SituationService : ISituationService
         if (question == null)
         {
             _logger.LogWarning("Question not found");
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         // check if question name from dto is already taken
         var duplicate = await _context.Questions.AnyAsync(a => a.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
         if (duplicate || question.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim())
         {
             _logger.LogWarning("Question name is already taken");
-            throw new BadRequestException("Question name is already taken");
+            return new ServiceResponse("Question name is already taken");
         }
 
         question.Name = questionUpdateDto.Name;
@@ -1538,11 +1539,11 @@ public class SituationService : ISituationService
             _logger.LogError(e, "Error updating question");
             // await rollback transaction
 
-            throw new BadRequestException("Error updating question");
+            return new ServiceResponse("Error updating question");
         }
     }
 
-    public async Task UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
+    public async Task<ServiceResponse> UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1553,14 +1554,14 @@ public class SituationService : ISituationService
         if (situation == null)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         // check if situation name from dto is already taken
         var duplicate = await _context.Situations.AnyAsync(a => a.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
         if (duplicate || situation.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim())
         {
             _logger.LogWarning("Situation name is already taken");
-            throw new BadRequestException("Situation name is already taken");
+            return new ServiceResponse("Situation name is already taken");
         }
 
         situation.Name = situationUpdateDto.Name;
@@ -1584,11 +1585,11 @@ public class SituationService : ISituationService
             _logger.LogError(e, "Error updating situation");
             // await rollback transaction
 
-            throw new BadRequestException("Error updating situation");
+            return new ServiceResponse("Error updating situation");
         }
     }
 
-    public async Task UpdateSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1598,21 +1599,21 @@ public class SituationService : ISituationService
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
-            throw new NotFoundException("SituationDetail not found");
+            return new ServiceResponse("SituationDetail not found");
         }
         if (!situationDetail.IsDeleted)
-            throw new BadRequestException("SituationDetail not marked as deleted");
+            return new ServiceResponse("SituationDetail not marked as deleted");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var detail = await _context.Details.FindAsync(detailId);
         if (detail == null || detail.IsDeleted)
         {
             _logger.LogWarning("Detail not found");
-            throw new NotFoundException("Detail not found");
+            return new ServiceResponse("Detail not found");
         }
         situationDetail.IsDeleted = false;
         // save changes
@@ -1626,11 +1627,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating situationDetail");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task UpdateSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1640,21 +1641,21 @@ public class SituationService : ISituationService
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
-            throw new NotFoundException("SituationParameter not found");
+            return new ServiceResponse("SituationParameter not found");
         }
         if (!situationParameter.IsDeleted)
-            throw new BadRequestException("SituationParameter not marked as deleted");
+            return new ServiceResponse("SituationParameter not marked as deleted");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var parameter = await _context.Parameters.FindAsync(parameterId);
         if (parameter == null || parameter.IsDeleted)
         {
             _logger.LogWarning("Parameter not found");
-            throw new NotFoundException("Parameter not found");
+            return new ServiceResponse("Parameter not found");
         }
         situationParameter.IsDeleted = false;
         // save changes
@@ -1668,11 +1669,11 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating situationParameter");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 
-    public async Task UpdateSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId)
     {
 
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1682,21 +1683,21 @@ public class SituationService : ISituationService
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
-            throw new NotFoundException("SituationQuestion not found");
+            return new ServiceResponse("SituationQuestion not found");
         }
         if (!situationQuestion.IsDeleted)
-            throw new BadRequestException("SituationQuestion not marked as deleted");
+            return new ServiceResponse("SituationQuestion not marked as deleted");
         var situation = await _context.Situations.FindAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
-            throw new NotFoundException("Situation not found");
+            return new ServiceResponse("Situation not found");
         }
         var question = await _context.Questions.FindAsync(questionId);
         if (question == null || question.IsDeleted)
         {
             _logger.LogWarning("Question not found");
-            throw new NotFoundException("Question not found");
+            return new ServiceResponse("Question not found");
         }
         situationQuestion.IsDeleted = false;
         // save changes
@@ -1710,7 +1711,7 @@ public class SituationService : ISituationService
         {
 
             _logger.LogError(ex, "Error updating situationQuestion");
-            throw new BadRequestException("Error while saving changes");
+            return new ServiceResponse("Error while saving changes");
         }
     }
 }

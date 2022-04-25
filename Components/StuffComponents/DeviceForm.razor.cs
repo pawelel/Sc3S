@@ -18,17 +18,8 @@ public partial class DeviceForm : ComponentBase
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
     [Inject]
     private IStuffService StuffService { get; set; } = default!;
-    [Inject] IValidator<DeviceUpdateCommand> Validator { get; set; } = default!;
-    public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
-    {
-        var result = await Validator.ValidateAsync(ValidationContext<DeviceUpdateCommand>
-            .CreateWithOptions((DeviceUpdateCommand)model, x => x.IncludeProperties(propertyName)));
-
-       if (result.IsValid)
-            return Array.Empty<string>();
-
-        return result.Errors.Select(e => e.ErrorMessage);
-    };
+    
+    
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Parameter] public int DeviceId { get; set; }
     private DeviceUpdateCommand _device = new();

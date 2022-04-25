@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudForm @ref="_form" Model="@_device" ValidationDelay="0" Validation="@(ValidateValue)">
+        <MudForm @ref="_form" Model="@_device" >
             <MudTextField @bind-Value="_device.Name" Label="Nazwa" For="@(()=>_device.Name)" Immediate="true" Variant="Variant.Text" Margin="Margin.Normal"> </MudTextField>
             <MudTextField @bind-Value="_device.Description" For="@(()=>_device.Description)" Immediate="true" Label="Opis" Variant="Variant.Text" Margin="Margin.Normal"> </MudTextField>
         </MudForm>

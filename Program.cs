@@ -54,7 +54,6 @@ builder.Services.AddTransient<ICommunicateService, CommunicateService>();
 builder.Services.AddTransient<ISituationService, SituationService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
-builder.Services.AddTransient<IValidator<DeviceUpdateCommand>, DeviceUpdateCommandValidator>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -26,7 +26,8 @@ public class DeviceUpdateCommandValidator : AbstractValidator<DeviceUpdateComman
     async Task<bool> ValidateDevice(string name, int deviceId)
     {
         await using var ctx = await _factory.CreateDbContextAsync();
-        return !await ctx.Devices.AsNoTracking().Where(a => a.Name.ToLower().Trim() == name.ToLower().Trim() && a.DeviceId != deviceId).AnyAsync();
+        var allowed = await ctx.Devices.AsNoTracking().Where(a => a.Name.ToLower().Trim() == name.ToLower().Trim() && a.DeviceId != deviceId).AnyAsync();
+        return !allowed;
     }
     
     async Task<List<Device>> GetDevices(string name, CancellationToken cancellationToken)
