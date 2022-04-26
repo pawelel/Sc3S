@@ -13,8 +13,8 @@ namespace Sc3S.Validators;
 public class LoginAccountCommandValidator : AbstractValidator<LoginAccountCommand>
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
-    private readonly IPasswordHasher<Account> _hasher;
-    public LoginAccountCommandValidator(IDbContextFactory<Sc3SContext> factory, IPasswordHasher<Account> hasher)
+    private readonly IPasswordHasher<ApplicationUser> _hasher;
+    public LoginAccountCommandValidator(IDbContextFactory<Sc3SContext> factory, IPasswordHasher<ApplicationUser> hasher)
     {
         CascadeMode = CascadeMode.Stop;
         _factory = factory;
@@ -30,7 +30,7 @@ public class LoginAccountCommandValidator : AbstractValidator<LoginAccountComman
         RuleFor(x => new { x.UserName, x.Password }).MustAsync(async (x, CancellationToken) =>
           {
               await using var ctx = await _factory.CreateDbContextAsync(CancellationToken);
-              var user = await ctx.Accounts.AsNoTracking().FirstOrDefaultAsync(y => y.UserName.ToLower()== x.UserName.ToLower()||y.Email.ToLower()==x.UserName.ToLower(), cancellationToken: CancellationToken);
+              var user = await ctx.Users.AsNoTracking().FirstOrDefaultAsync(y => y.UserName.ToLower()== x.UserName.ToLower()||y.Email.ToLower()==x.UserName.ToLower(), cancellationToken: CancellationToken);
               if (user is not null)
               {
                   var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, x.Password);

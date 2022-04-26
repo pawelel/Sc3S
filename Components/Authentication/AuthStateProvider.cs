@@ -7,12 +7,12 @@ using System.Security.Claims;
 
 namespace Sc3S.Components.Authentication;
 
-public class CustomAuthenticationStateProvider : AuthenticationStateProvider
+public class AuthStateProvider : AuthenticationStateProvider
 {
     private readonly ProtectedLocalStorage _browserStorage;
-    private readonly ILogger<CustomAuthenticationStateProvider> _logger;
+    private readonly ILogger<AuthStateProvider> _logger;
 
-    public CustomAuthenticationStateProvider(ProtectedLocalStorage browserStorage, ILogger<CustomAuthenticationStateProvider> logger)
+    public AuthStateProvider(ProtectedLocalStorage browserStorage, ILogger<AuthStateProvider> logger)
     {
         _browserStorage = browserStorage;
         _logger = logger;
@@ -30,11 +30,16 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             {
                 return await Task.FromResult(new AuthenticationState(_anonymous));
             }
-            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, userSession.UserName),
-            new Claim(ClaimTypes.Role, userSession.Role)
-        }, "CustomAuth"));
+            List<Claim> claims = new()
+            {
+                new Claim(ClaimTypes.Name, userSession.UserName)
+            };
+            foreach (var item in userSession.Roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims
+        , "CustomAuth"));
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
         catch (Exception ex)
@@ -49,11 +54,15 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         if (userSession != null)
         {
             await _browserStorage.SetAsync("UserSession", userSession);
-            claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
+            List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, userSession.UserName),
-                new Claim(ClaimTypes.Role, userSession.Role)
-            }));
+                new Claim(ClaimTypes.Name, userSession.UserName)
+            };
+            foreach (var item in userSession.Roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
+            claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
         }
         else
         {

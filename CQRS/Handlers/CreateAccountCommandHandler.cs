@@ -17,9 +17,9 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
     private readonly IDbContextFactory<Sc3SContext> _factory;
     private readonly ILogger<CreateAccountCommandHandler> _logger;
     private readonly IMapper _mapper;
-    private readonly IPasswordHasher<Account> _passwordHasher;
+    private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-    public CreateAccountCommandHandler(IDbContextFactory<Sc3SContext> factory, ILogger<CreateAccountCommandHandler> logger, IMapper mapper, IPasswordHasher<Account> passwordHasher)
+    public CreateAccountCommandHandler(IDbContextFactory<Sc3SContext> factory, ILogger<CreateAccountCommandHandler> logger, IMapper mapper, IPasswordHasher<ApplicationUser> passwordHasher)
     {
         _factory = factory;
         _logger = logger;
@@ -32,7 +32,7 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand,
         try
         {
             await using var ctx = await _factory.CreateDbContextAsync(cancellationToken);
-            Account account = new()
+            ApplicationUser account = new()
             {
                 UserName = request.UserName,
                 Email = request.Email

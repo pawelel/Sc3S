@@ -1,10 +1,12 @@
 ﻿using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 using Sc3S.CQRS.Commands;
 using Sc3S.CQRS.Queries;
 using Sc3S.Data;
+
+using System.Security.Claims;
 
 namespace Sc3S.CQRS.Handlers;
 
@@ -24,13 +26,17 @@ public class LoginAccountCommandHandler : IRequestHandler<LoginAccountCommand, U
         try
         {
             await using var ctx = await _factory.CreateDbContextAsync(cancellationToken);
-            var user = await ctx.Accounts.Include(a => a.Role).AsNoTracking().FirstOrDefaultAsync(a => a.UserName.ToLower() == request.UserName.ToLower() || a.Email.ToLower() == request.UserName.ToLower(), cancellationToken: cancellationToken);
+            var user = await ctx.Users.AsNoTracking().FirstOrDefaultAsync(a => a.UserName.ToLower() == request.UserName.ToLower() || a.Email.ToLower() == request.UserName.ToLower(), cancellationToken: cancellationToken);
             if (user is not null)
             {
+                List<string> roles = (from ur in ctx.UserRoles
+                                      join r in ctx.Roles on ur.RoleId equals r.Id
+                                      where ur.UserId == user.Id
+                                      select r.Name).ToList();
                 return new()
                 {
                     UserName = user.UserName,
-                    Role = user.Role.Name
+                    Roles = roles
                 };
             }
         }

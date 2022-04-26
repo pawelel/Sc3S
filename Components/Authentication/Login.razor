@@ -2,7 +2,7 @@
 @layout LoginLayout
 @inject IMediator Mediator
 
-@inject CustomAuthenticationStateProvider authStateProvider
+@inject AuthStateProvider authStateProvider
 @inject NavigationManager navManager
 @inject IJSRuntime js
 <AuthorizeView>
@@ -51,13 +51,13 @@
     {
 
         var userAccount =  await Mediator.Send(_command);
-        Console.WriteLine(userAccount);
+        
         if (userAccount is not null)
         {
             await authStateProvider.UpdateAuthenticationState(new UserSession
                 {
                     UserName = userAccount.UserName,
-                    Role = userAccount.Role
+                    Roles = userAccount.Roles
                 });
             navManager.NavigateTo("/", true);
         }

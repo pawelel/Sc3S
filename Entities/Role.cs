@@ -1,8 +1,0 @@
-﻿namespace Sc3S.Entities;
-
-public class Role
-{
-    public string RoleId { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
-    public ICollection<Account> Accounts { get; set; } = new List<Account>();
-}

@@ -10,6 +10,45 @@ namespace Sc3S.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -237,31 +276,6 @@ namespace Sc3S.Migrations
                 .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
-                })
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "RolesHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
-
-            migrationBuilder.CreateTable(
                 name: "Situations",
                 columns: table => new
                 {
@@ -292,6 +306,124 @@ namespace Sc3S.Migrations
                 .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                 .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                 .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 name: "CommunicateCategories",
@@ -451,40 +583,6 @@ namespace Sc3S.Migrations
                 })
                 .Annotation("SqlServer:IsTemporal", true)
                 .Annotation("SqlServer:TemporalHistoryTableName", "AreasHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
-
-            migrationBuilder.CreateTable(
-                name: "Accounts",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PeriodEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    PeriodStart = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accounts", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Accounts_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "RoleId",
-                        onDelete: ReferentialAction.Restrict);
-                })
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "AccountsHistory")
                 .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                 .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                 .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
@@ -1207,49 +1305,76 @@ namespace Sc3S.Migrations
                 .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "8c916fc5-5d08-4164-8594-7ac0e2b6e16a", "83256a0f-8959-4eb8-a15e-e9c74c782841", "Admin", "ADMIN" },
+                    { "9588cfdb-8071-49c0-82cf-c51f20d305d2", "83e0991b-0ddb-4291-bfe6-f9217019fde5", "User", "USER" },
+                    { "af138749-2fc8-4bcf-8492-fadb9e0d5415", "6d68df77-faee-4dab-bb84-4c445d4cc7a1", "Manager", "MANAGER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "223eea6c-5cfc-4413-ba83-257db573452c", 0, "cec394b7-28cb-4ef3-a351-d274f4b47631", "manager@manager.com", true, false, null, "MANAGER@MANAGER.COM", "MANAGER@MANAGER.COM", "AQAAAAEAACcQAAAAEOE91CAPVWB9iO2LYg7dM9Y0NWZtfcL/Dv07300QdpquUZzsS8FuJKGtHFQUyuubHA==", null, false, "7ae12fce-1a3e-4b67-8380-02ca0ca92ba9", false, "manager@manager.com" },
+                    { "5877932b-ce30-45be-a63f-12e5e6e42ed3", 0, "e9a43eca-5620-443a-be1c-dce507bb752d", "user@user.com", true, false, null, "USER@USER.COM", "USER@USER.COM", "AQAAAAEAACcQAAAAELuwO02g8/v4Z9ruPQ32cYKywJGOHHB6iz3RSViXhAa8sqUfcMY3hcPX0JqtN4nQMg==", null, false, "764db6ea-8c8d-4990-b629-7b5f37ba3d8f", false, "user@user.com" },
+                    { "a96d7c75-47f4-409b-a4d1-03f93c105647", 0, "e96b1cfb-ce12-4fdd-b2e0-3f024bb13dd4", "admin@admin.com", true, false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEOJxql4s2FpyWe+2F6bp03NBv556mn0oRM7kp4J93b4extb2+r1Yc8eH7VO/tV5gRQ==", null, false, "f0a48fb6-f7f9-496a-be66-92ed1965ea9a", false, "admin@admin.com" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6882), "App", "PH 3DMAPPING", false, "3d Mapping", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6883), "App" },
-                    { 2, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6885), "App", "PH ALS", false, "ALS", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6885), "App" },
-                    { 3, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6886), "App", "PH ATLAS DRUCKER", false, "Drukarka Atlas", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6887), "App" },
-                    { 4, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6888), "App", "PH DELLPC", false, "Dell PC", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6888), "App" },
-                    { 5, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6889), "App", "PH EPSON DRUCKER", false, "Drukarka Epson", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6889), "App" },
-                    { 6, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6890), "App", "PH FFT", false, "FFT", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6890), "App" },
-                    { 7, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6891), "App", "PH FIS DRUCKER", false, "Drukarka Fis", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6892), "App" },
-                    { 8, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6892), "App", "PH FIS EQS", false, "EQS", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6893), "App" },
-                    { 9, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6894), "App", "PH FPG", false, "FPG", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6894), "App" },
-                    { 10, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6895), "App", "PH GBA NEC", false, "GBA NEC", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6895), "App" },
-                    { 11, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6896), "App", "PH GBA SIEMENS", false, "GBA Siemens", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6896), "App" },
-                    { 12, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6897), "App", "PH GOM", false, "Gom", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6897), "App" },
-                    { 13, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6898), "App", "PH HDT FIS", false, "HDT Fis", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6898), "App" },
-                    { 14, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6899), "App", "PH HDT LOGISTIK", false, "HDT Logistik", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6900), "App" },
-                    { 15, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6900), "App", "PH HDT ZEBRA", false, "HDT Zebra", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6901), "App" },
-                    { 16, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6902), "App", "PH JUNGMAN", false, "Jungman", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6902), "App" },
-                    { 17, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6903), "App", "PH LOGISTIK DRUCKER", false, "Drukarka logistyczna", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6903), "App" },
-                    { 18, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6904), "App", "PH MASTERPC", false, "MasterPC", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6904), "App" },
-                    { 19, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6905), "App", "PH MDIHOST", false, "MDI Host", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6905), "App" },
-                    { 20, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6906), "App", "PH MFT", false, "MFT", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6907), "App" },
-                    { 21, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6907), "App", "PH OPS", false, "OPS", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6908), "App" },
-                    { 22, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6909), "App", "PH PBL", false, "PBL", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6909), "App" },
-                    { 23, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6910), "App", "PH PC INDUSTRY", false, "PC produkcyjny", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6910), "App" },
-                    { 24, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6911), "App", "PH PEGASUS", false, "Pegasus", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6911), "App" },
-                    { 25, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6912), "App", "PH PHOENIX", false, "Phoenix", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6912), "App" },
-                    { 26, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6913), "App", "PH QSTORQUE", false, "Qs Torque", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6913), "App" },
-                    { 27, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6914), "App", "PH SCOUT", false, "Scout", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6915), "App" },
-                    { 28, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6916), "App", "PH SIEMENS477D", false, "SIEMENS 477D", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6916), "App" },
-                    { 29, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6917), "App", "PH SIEMENS477DPRO", false, "SIEMENS 477D pro", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6917), "App" },
-                    { 30, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6918), "App", "PH SIEMENS677D", false, "SIEMENS 677D", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6918), "App" },
-                    { 31, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6919), "App", "PH SMARTWATCH", false, "Smartwatch", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6919), "App" },
-                    { 32, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6920), "App", "PH SUPPORT SERVICES", false, "Support", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6920), "App" },
-                    { 33, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6921), "App", "PH TABLET PANASONIC", false, "Tablet Panasonic", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6922), "App" },
-                    { 34, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6922), "App", "PH TABLET SURFACE", false, "Tablet Surface", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6923), "App" },
-                    { 35, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6924), "App", "PH TYPENSCHILD", false, "Typenschild", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6924), "App" },
-                    { 36, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6925), "App", "PH VCI", false, "VCI", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6925), "App" },
-                    { 37, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6983), "App", "PH VMT", false, "VMT", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6983), "App" },
-                    { 38, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6984), "App", "PH WINDOWS SERVER", false, "WINDOWS Server", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6984), "App" },
-                    { 39, new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6985), "App", "PH ZEISS", false, "Zeiss", new DateTime(2022, 4, 24, 0, 40, 48, 630, DateTimeKind.Utc).AddTicks(6986), "App" }
+                    { 1, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6222), "App", "PH 3DMAPPING", false, "3d Mapping", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6222), "App" },
+                    { 2, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6224), "App", "PH ALS", false, "ALS", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6224), "App" },
+                    { 3, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6226), "App", "PH ATLAS DRUCKER", false, "Drukarka Atlas", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6226), "App" },
+                    { 4, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6227), "App", "PH DELLPC", false, "Dell PC", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6227), "App" },
+                    { 5, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6229), "App", "PH EPSON DRUCKER", false, "Drukarka Epson", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6229), "App" },
+                    { 6, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6230), "App", "PH FFT", false, "FFT", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6230), "App" },
+                    { 7, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6231), "App", "PH FIS DRUCKER", false, "Drukarka Fis", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6232), "App" },
+                    { 8, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6233), "App", "PH FIS EQS", false, "EQS", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6233), "App" },
+                    { 9, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6234), "App", "PH FPG", false, "FPG", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6234), "App" },
+                    { 10, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6236), "App", "PH GBA NEC", false, "GBA NEC", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6236), "App" },
+                    { 11, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6237), "App", "PH GBA SIEMENS", false, "GBA Siemens", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6237), "App" },
+                    { 12, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6240), "App", "PH GOM", false, "Gom", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6240), "App" },
+                    { 13, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6241), "App", "PH HDT FIS", false, "HDT Fis", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6241), "App" },
+                    { 14, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6242), "App", "PH HDT LOGISTIK", false, "HDT Logistik", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6242), "App" },
+                    { 15, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6311), "App", "PH HDT ZEBRA", false, "HDT Zebra", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6312), "App" },
+                    { 16, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6313), "App", "PH JUNGMAN", false, "Jungman", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6313), "App" },
+                    { 17, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6314), "App", "PH LOGISTIK DRUCKER", false, "Drukarka logistyczna", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6315), "App" },
+                    { 18, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6316), "App", "PH MASTERPC", false, "MasterPC", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6316), "App" },
+                    { 19, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6317), "App", "PH MDIHOST", false, "MDI Host", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6317), "App" },
+                    { 20, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6318), "App", "PH MFT", false, "MFT", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6318), "App" },
+                    { 21, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6319), "App", "PH OPS", false, "OPS", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6319), "App" },
+                    { 22, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6320), "App", "PH PBL", false, "PBL", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6320), "App" },
+                    { 23, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6321), "App", "PH PC INDUSTRY", false, "PC produkcyjny", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6322), "App" },
+                    { 24, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6323), "App", "PH PEGASUS", false, "Pegasus", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6323), "App" },
+                    { 25, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6324), "App", "PH PHOENIX", false, "Phoenix", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6324), "App" },
+                    { 26, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6325), "App", "PH QSTORQUE", false, "Qs Torque", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6325), "App" },
+                    { 27, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6326), "App", "PH SCOUT", false, "Scout", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6327), "App" },
+                    { 28, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6328), "App", "PH SIEMENS477D", false, "SIEMENS 477D", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6328), "App" },
+                    { 29, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6329), "App", "PH SIEMENS477DPRO", false, "SIEMENS 477D pro", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6329), "App" },
+                    { 30, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6330), "App", "PH SIEMENS677D", false, "SIEMENS 677D", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6330), "App" },
+                    { 31, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6332), "App", "PH SMARTWATCH", false, "Smartwatch", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6332), "App" },
+                    { 32, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6333), "App", "PH SUPPORT SERVICES", false, "Support", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6333), "App" },
+                    { 33, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6334), "App", "PH TABLET PANASONIC", false, "Tablet Panasonic", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6334), "App" },
+                    { 34, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6335), "App", "PH TABLET SURFACE", false, "Tablet Surface", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6335), "App" },
+                    { 35, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6336), "App", "PH TYPENSCHILD", false, "Typenschild", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6336), "App" },
+                    { 36, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6338), "App", "PH VCI", false, "VCI", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6338), "App" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 37, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6339), "App", "PH VMT", false, "VMT", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6339), "App" },
+                    { 38, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6340), "App", "PH WINDOWS SERVER", false, "WINDOWS Server", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6340), "App" },
+                    { 39, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6341), "App", "PH ZEISS", false, "Zeiss", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6342), "App" }
                 });
 
             migrationBuilder.InsertData(
@@ -1257,24 +1382,17 @@ namespace Sc3S.Migrations
                 columns: new[] { "DetailId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(155), "App", "Podstawowy adres IP", false, "IP", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(156), "App" },
-                    { 2, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(158), "App", "Adres MAC", false, "MAC", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(158), "App" },
-                    { 3, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(159), "App", "Nazwa hosta", false, "Hostname", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(160), "App" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Details",
-                columns: new[] { "DetailId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
-                values: new object[,]
-                {
-                    { 4, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(161), "App", "System operacyjny", false, "OS", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(161), "App" },
-                    { 5, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(162), "App", "Procesor", false, "CPU", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(162), "App" },
-                    { 6, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(163), "App", "Pamięć RAM", false, "RAM", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(163), "App" },
-                    { 7, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(164), "App", "Dysk twardy", false, "Pamięć", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(164), "App" },
-                    { 8, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(165), "App", "Karta graficzna", false, "Karta graficzna", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(165), "App" },
-                    { 9, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(166), "App", "Karta sieciowa", false, "Karta sieciowa", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(166), "App" },
-                    { 10, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(167), "App", "Karta rozszerzeń", false, "Karta rozszerzeń", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(167), "App" },
-                    { 11, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(168), "App", "Zasilacz", false, "Zasilacz", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(168), "App" }
+                    { 1, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7534), "App", "Podstawowy adres IP", false, "IP", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7534), "App" },
+                    { 2, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7536), "App", "Adres MAC", false, "MAC", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7537), "App" },
+                    { 3, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7538), "App", "Nazwa hosta", false, "Hostname", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7538), "App" },
+                    { 4, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7539), "App", "System operacyjny", false, "OS", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7539), "App" },
+                    { 5, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7540), "App", "Procesor", false, "CPU", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7540), "App" },
+                    { 6, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7541), "App", "Pamięć RAM", false, "RAM", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7541), "App" },
+                    { 7, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7542), "App", "Dysk twardy", false, "Pamięć", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7542), "App" },
+                    { 8, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7543), "App", "Karta graficzna", false, "Karta graficzna", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7543), "App" },
+                    { 9, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7544), "App", "Karta sieciowa", false, "Karta sieciowa", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7544), "App" },
+                    { 10, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7545), "App", "Karta rozszerzeń", false, "Karta rozszerzeń", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7545), "App" },
+                    { 11, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7546), "App", "Zasilacz", false, "Zasilacz", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7546), "App" }
                 });
 
             migrationBuilder.InsertData(
@@ -1282,10 +1400,10 @@ namespace Sc3S.Migrations
                 columns: new[] { "DeviceId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2848), "App", "Urządzenie drukujące", false, "drukarka", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2848), "App" },
-                    { 2, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2850), "App", "Urządzenie komputerowe", false, "komputer", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2850), "App" },
-                    { 3, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2852), "App", "Wyświetlacz", false, "monitor", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2852), "App" },
-                    { 4, new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2853), "App", "Skaner kodów", false, "Skaner", new DateTime(2022, 4, 24, 0, 40, 48, 634, DateTimeKind.Utc).AddTicks(2853), "App" }
+                    { 1, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9460), "App", "Urządzenie drukujące", false, "drukarka", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9460), "App" },
+                    { 2, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9462), "App", "Urządzenie komputerowe", false, "komputer", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9463), "App" },
+                    { 3, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9464), "App", "Wyświetlacz", false, "monitor", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9464), "App" },
+                    { 4, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9465), "App", "Skaner kodów", false, "Skaner", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9465), "App" }
                 });
 
             migrationBuilder.InsertData(
@@ -1293,11 +1411,11 @@ namespace Sc3S.Migrations
                 columns: new[] { "ParameterId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4674), "App", "Wymiar od podłoża pionowo do góry", false, "Wysokość", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4676), "App" },
-                    { 2, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4678), "App", "Wymiar w najszerszym miejscu od lewej do prawej", false, "Szerokość", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4678), "App" },
-                    { 3, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4679), "App", "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu", false, "Długość", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4680), "App" },
-                    { 4, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4681), "App", "Nazwa producenta", false, "Producent", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4681), "App" },
-                    { 5, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4682), "App", "Rozdzielczość ekranu", false, "Rozdzielczość", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(4682), "App" }
+                    { 1, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5112), "App", "Wymiar od podłoża pionowo do góry", false, "Wysokość", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5112), "App" },
+                    { 2, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5115), "App", "Wymiar w najszerszym miejscu od lewej do prawej", false, "Szerokość", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5115), "App" },
+                    { 3, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5116), "App", "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu", false, "Długość", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5117), "App" },
+                    { 4, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5117), "App", "Nazwa producenta", false, "Producent", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5118), "App" },
+                    { 5, new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5118), "App", "Rozdzielczość ekranu", false, "Rozdzielczość", new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5119), "App" }
                 });
 
             migrationBuilder.InsertData(
@@ -1305,47 +1423,87 @@ namespace Sc3S.Migrations
                 columns: new[] { "PlantId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(5974), "App", "Zakład Poznań Antoninek", false, "P35", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(5975), "App" },
-                    { 2, new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(5977), "App", "Zakład Crafter Września", false, "P69", new DateTime(2022, 4, 24, 0, 40, 48, 635, DateTimeKind.Utc).AddTicks(5977), "App" }
+                    { 1, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1230), "App", "Zakład Poznań Antoninek", false, "P35", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1235), "App" },
+                    { 2, new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1237), "App", "Zakład Crafter Września", false, "P69", new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1237), "App" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "RoleId", "Name" },
-                values: new object[,]
-                {
-                    { "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "Admin" },
-                    { "19d9ba04-7570-4789-8720-8c4fd24fc272", "User" },
-                    { "4de524ca-176d-44b3-aa26-15c17ba2ea0d", "Manager" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Accounts",
-                columns: new[] { "UserId", "Email", "PasswordHash", "RoleId", "UserName" },
-                values: new object[] { "a8598d2a-9734-4544-b87f-d7d69aa790e9", "admin@admin.com", "AQAAAAEAACcQAAAAEDBYyQcm4ZSFMipyqTfE0B5PrDTtJEaJe6YFpT1JJJuhAHLODpVEcjnpP7Fk/INJjA==", "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "admin" });
 
             migrationBuilder.InsertData(
                 table: "Areas",
                 columns: new[] { "AreaId", "CreatedAt", "CreatedBy", "Description", "IsDeleted", "Name", "PlantId", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9470), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Spawalnia", 1, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9503), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
-                    { 2, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9507), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Lakiernia", 1, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9508), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
-                    { 3, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9510), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Montaż", 1, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9511), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
-                    { 4, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9513), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Spawalnia", 2, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9514), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
-                    { 5, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9516), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Lakiernia", 2, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9517), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
-                    { 6, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9519), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Montaż", 2, new DateTime(2022, 4, 24, 2, 40, 48, 628, DateTimeKind.Local).AddTicks(9521), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" }
+                    { 1, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3625), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Spawalnia", 1, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3660), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
+                    { 2, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3663), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Lakiernia", 1, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3664), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
+                    { 3, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3666), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Montaż", 1, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3667), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
+                    { 4, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3669), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Spawalnia", 2, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3670), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
+                    { 5, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3672), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Lakiernia", 2, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3673), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" },
+                    { 6, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3675), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", "", false, "Montaż", 2, new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3677), "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de" }
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Accounts_RoleId",
-                table: "Accounts",
-                column: "RoleId");
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId", "ApplicationUserId" },
+                values: new object[,]
+                {
+                    { "af138749-2fc8-4bcf-8492-fadb9e0d5415", "223eea6c-5cfc-4413-ba83-257db573452c", null },
+                    { "9588cfdb-8071-49c0-82cf-c51f20d305d2", "5877932b-ce30-45be-a63f-12e5e6e42ed3", null },
+                    { "af138749-2fc8-4bcf-8492-fadb9e0d5415", "5877932b-ce30-45be-a63f-12e5e6e42ed3", null },
+                    { "8c916fc5-5d08-4164-8594-7ac0e2b6e16a", "a96d7c75-47f4-409b-a4d1-03f93c105647", null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Areas_PlantId",
                 table: "Areas",
                 column: "PlantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_ApplicationUserId",
+                table: "AspNetUserClaims",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_ApplicationUserId",
+                table: "AspNetUserRoles",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AssetCategories_CategoryId",
@@ -1456,12 +1614,19 @@ namespace Sc3S.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Accounts")
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "AccountsHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
                 name: "AssetCategories")
@@ -1592,12 +1757,10 @@ namespace Sc3S.Migrations
                 .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
 
             migrationBuilder.DropTable(
-                name: "Roles")
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "RolesHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart");
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Assets")
