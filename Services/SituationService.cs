@@ -135,7 +135,7 @@ public class SituationService : ISituationService
             UpdatedBy = assetSituationUpdate.UpdatedBy
         };
         _context.Add(assetSituation);
-        // save changes
+        
 
         try
         {
@@ -184,7 +184,7 @@ public class SituationService : ISituationService
             UpdatedBy = categorySituationUpdate.UpdatedBy
         };
         _context.Add(categorySituation);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -232,7 +232,7 @@ public class SituationService : ISituationService
             UpdatedBy = deviceSituationUpdate.UpdatedBy
         };
         _context.Add(deviceSituation);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -265,7 +265,7 @@ public class SituationService : ISituationService
             UpdatedBy = questionUpdate.UpdatedBy
         };
         _context.Add(question);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -298,7 +298,7 @@ public class SituationService : ISituationService
             UpdatedBy = situationUpdateDto.UpdatedBy
         };
         _context.Add(situation);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -348,7 +348,7 @@ public class SituationService : ISituationService
             UpdatedBy = situationDetailUpdate.UpdatedBy
         };
         _context.Add(situationDetail);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -398,7 +398,7 @@ public class SituationService : ISituationService
             UpdatedBy = situationParameterUpdate.UpdatedBy
         };
         _context.Add(situationParameter);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -448,7 +448,7 @@ public class SituationService : ISituationService
             UpdatedBy = situationQuestionUpdate.UpdatedBy
         };
         _context.Add(situationQuestion);
-        // save changes
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -483,11 +483,11 @@ public class SituationService : ISituationService
         }
         // delete asset situation
         _context.AssetSituations.Remove(assetSituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -522,11 +522,11 @@ public class SituationService : ISituationService
         }
         // delete category situation
         _context.CategorySituations.Remove(categorySituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -562,11 +562,11 @@ public class SituationService : ISituationService
         }
         // delete device situation
         _context.DeviceSituations.Remove(deviceSituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -601,11 +601,11 @@ public class SituationService : ISituationService
         }
         // delete question
         _context.Questions.Remove(question);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -640,11 +640,11 @@ public class SituationService : ISituationService
         }
         // delete situation
         _context.Situations.Remove(situation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -679,11 +679,11 @@ public class SituationService : ISituationService
         }
         // delete situation detail
         _context.SituationDetails.Remove(situationDetail);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -718,11 +718,11 @@ public class SituationService : ISituationService
         }
         // delete situation parameter
         _context.SituationParameters.Remove(situationParameter);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -757,11 +757,11 @@ public class SituationService : ISituationService
         }
         // delete situation question
         _context.SituationQuestions.Remove(situationQuestion);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
@@ -1059,7 +1059,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetSituation
-        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
+        var assetSituation = await _context.AssetSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
@@ -1073,11 +1075,11 @@ public class SituationService : ISituationService
         assetSituation.IsDeleted = true;
         assetSituation.UpdatedBy = assetSituationUpdate.UpdatedBy;
         _context.Update(assetSituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("AssetSituation with id {AssetId}, {SituationId} marked as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
@@ -1090,12 +1092,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteCategorySituation(CategorySituationUpdateCommand categorySituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get categorySituation
-        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cs => cs.CategoryId == categorySituationUpdate.CategoryId && categorySituationUpdate.SituationId == categorySituationUpdate.SituationId);
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
@@ -1107,30 +1111,33 @@ public class SituationService : ISituationService
             return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
         }
         categorySituation.IsDeleted = true;
+        categorySituation.UpdatedBy = categorySituationUpdate.UpdatedBy;
         _context.Update(categorySituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("CategorySituation with id {CategoryId}, {SituationId} marked as deleted", categoryId, situationId);
+            _logger.LogInformation("CategorySituation with id {CategoryId}, {SituationId} marked as deleted", categorySituationUpdate.CategoryId, categorySituationUpdate.SituationId);
             return new ServiceResponse(true, "Zdarzenie dla kategorii zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking categorySituation with id {CategoryId}, {SituationId} as deleted", categoryId, situationId);
+            _logger.LogError(ex, "Error marking categorySituation with id {CategoryId}, {SituationId} as deleted", categorySituationUpdate.CategoryId, categorySituationUpdate.SituationId);
             return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get deviceSituation
-        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(ds => ds.DeviceId == deviceSituationUpdate.DeviceId && ds.SituationId == deviceSituationUpdate.SituationId);
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
@@ -1142,159 +1149,166 @@ public class SituationService : ISituationService
             return new ServiceResponse(false, "Zdarzenie dla urządzenia zostało już oznaczone jako usunięte");
         }
         deviceSituation.IsDeleted = true;
+        deviceSituation.UpdatedBy = deviceSituationUpdate.UpdatedBy;
         _context.Update(deviceSituation);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("DeviceSituation with id {DeviceId}, {SituationId} marked as deleted", deviceId, situationId);
+            _logger.LogInformation("DeviceSituation with id {DeviceId}, {SituationId} marked as deleted", deviceSituationUpdate.DeviceId, deviceSituationUpdate.SituationId);
             return new ServiceResponse(true, "Zdarzenie dla urządzenia zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking deviceSituation with id {DeviceId}, {SituationId} as deleted", deviceId, situationId);
+            _logger.LogError(ex, "Error marking deviceSituation with id {DeviceId}, {SituationId} as deleted", deviceSituationUpdate.DeviceId, deviceSituationUpdate.SituationId);
             return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia dla urządzenia jako usuniętego");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteQuestion(int questionId)
+    public async Task<ServiceResponse> MarkDeleteQuestion(QuestionUpdateCommand questionUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get question
         var question = await _context.Questions
+            .AsNoTracking()
             .Include(q => q.SituationQuestions)
-            .FirstOrDefaultAsync(q => q.QuestionId == questionId);
+            .FirstOrDefaultAsync(q => q.QuestionId == questionUpdate.QuestionId);
         // if question not found
         if (question == null)
         {
-            _logger.LogWarning("Question with id {QuestionId} not found", questionId);
+            _logger.LogWarning("Question with id {QuestionId} not found", questionUpdate.QuestionId);
             return new ServiceResponse(false, "Pytanie nie zostało znalezione");
         }
         // if question is already deleted
         if (question.IsDeleted)
         {
-            _logger.LogWarning("Question with id {QuestionId} is already deleted", questionId);
+            _logger.LogWarning("Question with id {QuestionId} is already deleted", questionUpdate.QuestionId);
             return new ServiceResponse(false, "Pytanie zostało już oznaczone jako usunięte");
         }
         // check if question has SituationQuestions with IsDeleted = false
         if (question.SituationQuestions.Any(sq => sq.IsDeleted == false))
         {
-            _logger.LogWarning("Question with id {QuestionId} has SituationQuestions with IsDeleted = false", questionId);
+            _logger.LogWarning("Question with id {QuestionId} has SituationQuestions with IsDeleted = false", questionUpdate.QuestionId);
             return new ServiceResponse(false, "Pytanie zawiera zdarzenia, które nie zostały oznaczone jako usunięte");
         }
 
         // mark question as deleted
         question.IsDeleted = true;
-        // await using transaction
+        question.UpdatedBy = questionUpdate.UpdatedBy;
+        _context.Questions.Update(question);
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
             // commit transaction
 
             // return success
-            _logger.LogInformation("Question with id {QuestionId} marked as deleted", questionId);
+            _logger.LogInformation("Question with id {QuestionId} marked as deleted", questionUpdate.QuestionId);
             return new ServiceResponse(true, "Pytanie zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking question with id {QuestionId} as deleted", questionId);
+            _logger.LogError(ex, "Error marking question with id {QuestionId} as deleted", questionUpdate.QuestionId);
             return new ServiceResponse(false, "Błąd podczas oznaczania pytania jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteSituation(int situationId)
+    public async Task<ServiceResponse> MarkDeleteSituation(SituationUpdateCommand situationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation
         var situation = await _context.Situations
+            .AsNoTracking()
             .Include(s => s.SituationQuestions)
             .Include(s => s.AssetSituations)
             .Include(s => s.CategorySituations)
             .Include(s => s.DeviceSituations)
             .Include(s => s.SituationDetails)
             .Include(s => s.SituationParameters)
-            .FirstOrDefaultAsync(s => s.SituationId == situationId);
+            .FirstOrDefaultAsync(s => s.SituationId == situationUpdate.SituationId);
         // if situation not found
         if (situation == null)
         {
-            _logger.LogWarning("Situation with id {SituationId} not found", situationId);
+            _logger.LogWarning("Situation with id {SituationId} not found", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
         // if situation is already deleted
         if (situation.IsDeleted)
         {
-            _logger.LogWarning("Situation with id {SituationId} is already deleted", situationId);
+            _logger.LogWarning("Situation with id {SituationId} is already deleted", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
         }
         // check if situation has SituationQuestions with IsDeleted = false
         if (situation.SituationQuestions.Any(sq => sq.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has SituationQuestions with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has SituationQuestions with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera pytania, które nie zostały oznaczone jako usunięte");
         }
         // check if situation has SituationDetails with IsDeleted = false
         if (situation.SituationDetails.Any(sd => sd.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has SituationDetails with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has SituationDetails with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera szczegóły, które nie zostały oznaczone jako usunięte");
         }
         // check if situation has SituationParameters with IsDeleted = false
         if (situation.SituationParameters.Any(sp => sp.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has SituationParameters with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has SituationParameters with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera parametry, które nie zostały oznaczone jako usunięte");
         }
         // check if situation has AssetSituations with IsDeleted = false
         if (situation.AssetSituations.Any(asit => asit.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has AssetSituations with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has AssetSituations with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera zasoby, które nie zostały oznaczone jako usunięte");
         }
         // check if situation has CategorySituations with IsDeleted = false
         if (situation.CategorySituations.Any(cs => cs.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has CategorySituations with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has CategorySituations with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera kategorie, które nie zostały oznaczone jako usunięte");
         }
         // check if situation has DeviceSituations with IsDeleted = false
         if (situation.DeviceSituations.Any(ds => ds.IsDeleted == false))
         {
-            _logger.LogWarning("Situation with id {SituationId} has DeviceSituations with IsDeleted = false", situationId);
+            _logger.LogWarning("Situation with id {SituationId} has DeviceSituations with IsDeleted = false", situationUpdate.SituationId);
             return new ServiceResponse(false, "Zdarzenie zawiera urządzenia, które nie zostały oznaczone jako usunięte");
         }
         // mark delete situation
         situation.IsDeleted = true;
-        _context.Situations.Update(situation);
-        // await using transaction
+        situation.UpdatedBy = situationUpdate.UpdatedBy;
+        _context.Update(situation);
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Situation with id {SituationId} is marked as deleted", situationId);
+            _logger.LogInformation("Situation with id {SituationId} is marked as deleted", situationUpdate.SituationId);
             return new ServiceResponse(true, "Zdarzenie zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error while marking as deleted situation with id {SituationId}", situationId);
+            _logger.LogError(ex, "Error while marking as deleted situation with id {SituationId}", situationUpdate.SituationId);
             return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse> MarkDeleteSituationDetail(SituationDetailUpdateCommand situationDetailUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationDetail
-        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
+        var situationDetail = await _context.SituationDetails
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sd => sd.SituationId == situationDetailUpdate.SituationId && sd.DetailId == situationDetailUpdate.DetailId);
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
@@ -1307,30 +1321,33 @@ public class SituationService : ISituationService
         }
 
         situationDetail.IsDeleted = true;
+        situationDetail.UpdatedBy = situationDetailUpdate.UpdatedBy;
         _context.Update(situationDetail);
-        // await using transaction
+
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("SituationDetail with id {SituationId}, {DetailId} marked as deleted", situationId, detailId);
+            _logger.LogInformation("SituationDetail with id {SituationId}, {DetailId} marked as deleted", situationDetailUpdate.SituationId, situationDetailUpdate.DetailId);
             return new ServiceResponse(true, "Szczegół zdarzenia został oznaczony jako usunięty");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking situationDetail with id {SituationId}, {DetailId} as deleted", situationId, detailId);
+            _logger.LogError(ex, "Error marking situationDetail with id {SituationId}, {DetailId} as deleted", situationDetailUpdate.SituationId, situationDetailUpdate.DetailId);
             return new ServiceResponse(false, "Błąd podczas oznaczania szczegółu zdarzenia jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse> MarkDeleteSituationParameter(SituationParameterUpdateCommand situationParameterUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationParameter
-        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
+        var situationParameter = await _context.SituationParameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sp => sp.SituationId == situationParameterUpdate.SituationId && sp.ParameterId == situationParameterUpdate.ParameterId);
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
@@ -1342,30 +1359,33 @@ public class SituationService : ISituationService
             return new ServiceResponse(false, "Parametr zdarzenia został już oznaczony jako usunięty");
         }
         situationParameter.IsDeleted = true;
+        situationParameter.UpdatedBy = situationParameterUpdate.UpdatedBy;
         _context.Update(situationParameter);
-        // await using transaction
+
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("SituationParameter with id {SituationId}, {ParameterId} marked as deleted", situationId, parameterId);
+            _logger.LogInformation("SituationParameter with id {SituationId}, {ParameterId} marked as deleted", situationParameterUpdate.SituationId, situationParameterUpdate.ParameterId);
             return new ServiceResponse(true, "Parametr zdarzenia został oznaczony jako usunięty");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking situationParameter with id {SituationId}, {ParameterId} as deleted", situationId, parameterId);
+            _logger.LogError(ex, "Error marking situationParameter with id {SituationId}, {ParameterId} as deleted", situationParameterUpdate.SituationId, situationParameterUpdate.ParameterId);
             return new ServiceResponse(false, "Błąd podczas oznaczania parametru zdarzenia jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse> MarkDeleteSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationQuestion
-        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
+        var situationQuestion = await _context.SituationQuestions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sq => sq.SituationId == situationQuestionUpdate.SituationId && sq.QuestionId == situationQuestionUpdate.QuestionId);
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
@@ -1377,30 +1397,34 @@ public class SituationService : ISituationService
             return new ServiceResponse(false, "Pytanie zdarzenia zostało już oznaczone jako usunięte");
         }
         situationQuestion.IsDeleted = true;
+        situationQuestion.UpdatedBy = situationQuestionUpdate.UpdatedBy;
+
         _context.Update(situationQuestion);
-        // await using transaction
+        
 
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("SituationQuestion with id {SituationId}, {QuestionId} marked as deleted", situationId, questionId);
+            _logger.LogInformation("SituationQuestion with id {SituationId}, {QuestionId} marked as deleted", situationQuestionUpdate.SituationId, situationQuestionUpdate.QuestionId);
             return new ServiceResponse(true, "Pytanie zdarzenia zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking situationQuestion with id {SituationId}, {QuestionId} as deleted", situationId, questionId);
+            _logger.LogError(ex, "Error marking situationQuestion with id {SituationId}, {QuestionId} as deleted", situationQuestionUpdate.SituationId, situationQuestionUpdate.QuestionId);
             return new ServiceResponse(false, "Błąd podczas oznaczania pytania zdarzenia jako usunięte");
         }
     }
 
-    public async Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse> UpdateAssetSituation(AssetSituationUpdateCommand assetSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetSituation
-        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(assetId, situationId);
+        var assetSituation = await _context.AssetSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
@@ -1411,20 +1435,26 @@ public class SituationService : ISituationService
             _logger.LogWarning("AssetSituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie zasobu nie zostało oznaczone jako usunięte");
         }
-        var asset = await _context.Assets.FirstOrDefaultAsync(assetId);
+        var asset = await _context.Assets
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.AssetId== assetSituationUpdate.AssetId);
         if (asset == null || asset.IsDeleted)
         {
             _logger.LogWarning("Asset not found");
             return new ServiceResponse(false, "Zasób nie został znaleziony");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a=>a.SituationId == assetSituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
         assetSituation.IsDeleted = false;
-        // save changes
+        assetSituation.UpdatedBy = assetSituationUpdate.UpdatedBy;
+        
+        _context.Update(assetSituation);
 
         try
         {
@@ -1438,12 +1468,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse> UpdateCategorySituation(CategorySituationUpdateCommand categorySituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get categorySituation
-        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cs => cs.CategoryId == categorySituationUpdate.CategoryId && cs.SituationId == categorySituationUpdate.SituationId);
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
@@ -1454,21 +1486,27 @@ public class SituationService : ISituationService
             _logger.LogWarning("CategorySituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie kategorii nie zostało oznaczone jako usunięte");
         }
-        var category = await _context.Categories.FirstOrDefaultAsync(categoryId);
+        var category = await _context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c=> c.CategoryId == categorySituationUpdate.CategoryId);
         if (category == null || category.IsDeleted)
         {
             _logger.LogWarning("Category not found");
             return new ServiceResponse(false, "Kategoria nie została znaleziona");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.SituationId == categorySituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
         categorySituation.IsDeleted = false;
-        // save changes
-
+        categorySituation.UpdatedBy = categorySituationUpdate.UpdatedBy;
+        
+        _context.Update(categorySituation);
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -1481,12 +1519,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse> UpdateDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get deviceSituation
-        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(ds => ds.DeviceId == deviceSituationUpdate.DeviceId && ds.SituationId == deviceSituationUpdate.SituationId);
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
@@ -1497,20 +1537,27 @@ public class SituationService : ISituationService
             _logger.LogWarning("DeviceSituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie urządzenia nie zostało oznaczone jako usunięte");
         }
-        var device = await _context.Devices.FirstOrDefaultAsync(deviceId);
+        var device = await _context.Devices
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.DeviceId == deviceSituationUpdate.DeviceId);
         if (device == null || device.IsDeleted)
         {
             _logger.LogWarning("Device not found");
             return new ServiceResponse(false, "Urządzenie nie zostało znalezione");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.SituationId == deviceSituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
         deviceSituation.IsDeleted = false;
-        // save changes
+        deviceSituation.UpdatedBy = deviceSituationUpdate.UpdatedBy;
+
+        _context.Update(deviceSituation);
+        
 
         try
         {
@@ -1524,35 +1571,38 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
+    public async Task<ServiceResponse> UpdateQuestion(QuestionUpdateCommand questionUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get question
-        var question = await _context.Questions.FirstOrDefaultAsync(m => m.QuestionId == questionId);
+        var question = await _context.Questions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.QuestionId == questionUpdate.QuestionId);
         if (question == null)
         {
             _logger.LogWarning("Question not found");
             return new ServiceResponse(false, "Pytanie nie zostało znalezione");
         }
         // check if question name from dto is already taken
-        var duplicate = await _context.Questions.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Questions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == questionUpdate.Name.ToLower().Trim());
         if (duplicate is not null)
         {
             _logger.LogWarning("Question name is already taken");
             return new ServiceResponse(false, "Nazwa pytania jest już zajęta");
         }
 
-        question.Name = questionUpdateDto.Name;
+        question.Name = questionUpdate.Name;
         // assign userId to update
         question.IsDeleted = false;
+        question.UpdatedBy = questionUpdate.UpdatedBy;
         // update question
         _context.Update(question);
-        // await using transaction
-
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
             // return success
@@ -1566,35 +1616,39 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
+    public async Task<ServiceResponse> UpdateSituation( SituationUpdateCommand situationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation
-        var situation = await _context.Situations.FirstOrDefaultAsync(m => m.SituationId == situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.SituationId == situationUpdate.SituationId);
         if (situation == null)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
         // check if situation name from dto is already taken
-        var duplicate = await _context.Situations.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
+        var duplicate = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == situationUpdate.Name.ToLower().Trim());
         if (duplicate is not null)
         {
             _logger.LogWarning("Situation name is already taken");
             return new ServiceResponse(false, "Nazwa zdarzenia jest już zajęta");
         }
 
-        situation.Name = situationUpdateDto.Name;
+        situation.Name = situationUpdate.Name;
         // assign userId to update
         situation.IsDeleted = false;
+        situation.UpdatedBy = situationUpdate.UpdatedBy;
         // update situation
         _context.Update(situation);
-        // await using transaction
-
+        
         try
         {
-            // save changes
+            
             await _context.SaveChangesAsync();
 
             // return success
@@ -1608,12 +1662,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse> UpdateSituationDetail(SituationDetailUpdateCommand situationDetailUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationDetail
-        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
+        var situationDetail = await _context.SituationDetails
+                .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.SituationId == situationDetailUpdate.SituationId && s.DetailId == situationDetailUpdate.DetailId);
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
@@ -1624,20 +1680,22 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationDetail not marked as deleted");
             return new ServiceResponse(false, "Szczegół zdarzenia nie został oznaczony jako usunięty");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(c => c.SituationId == situationDetailUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var detail = await _context.Details.FirstOrDefaultAsync(detailId);
+        var detail = await _context.Details.FirstOrDefaultAsync(s => s.DetailId == situationDetailUpdate.DetailId);
         if (detail == null || detail.IsDeleted)
         {
             _logger.LogWarning("Detail not found");
             return new ServiceResponse(false, "Szczegół nie został znaleziony");
         }
         situationDetail.IsDeleted = false;
-        // save changes
+        situationDetail.UpdatedBy = situationDetailUpdate.UpdatedBy;
+        _context.Update(situationDetail);
+
 
         try
         {
@@ -1651,12 +1709,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse> UpdateSituationParameter(SituationParameterUpdateCommand situationParameterUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationParameter
-        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
+        var situationParameter = await _context.SituationParameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sp => sp.SituationId == situationParameterUpdate.SituationId && sp.ParameterId == situationParameterUpdate.ParameterId);
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
@@ -1667,20 +1727,25 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationParameter not marked as deleted");
             return new ServiceResponse(false, "Parametr zdarzenia nie został oznaczony jako usunięty");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s=>s.SituationId==situationParameterUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var parameter = await _context.Parameters.FirstOrDefaultAsync(parameterId);
+        var parameter = await _context.Parameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.ParameterId == situationParameterUpdate.ParameterId);
         if (parameter == null || parameter.IsDeleted)
         {
             _logger.LogWarning("Parameter not found");
             return new ServiceResponse(false, "Parametr nie został znaleziony");
         }
         situationParameter.IsDeleted = false;
-        // save changes
+        situationParameter.UpdatedBy = situationParameterUpdate.UpdatedBy;
+        _context.Update(situationParameter);
 
         try
         {
@@ -1694,12 +1759,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse> UpdateSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationQuestion
-        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
+        var situationQuestion = await _context.SituationQuestions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.SituationId == situationQuestionUpdate.SituationId && s.QuestionId == situationQuestionUpdate.QuestionId);
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
@@ -1710,20 +1777,26 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationQuestion not marked as deleted");
             return new ServiceResponse(false, "Pytanie zdarzenia nie zostało oznaczone jako usunięte");
         }
-        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.SituationId == situationQuestionUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var question = await _context.Questions.FirstOrDefaultAsync(questionId);
+        var question = await _context.Questions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.QuestionId == situationQuestionUpdate.QuestionId);
         if (question == null || question.IsDeleted)
         {
             _logger.LogWarning("Question not found");
             return new ServiceResponse(false, "Pytanie nie zostało znalezione");
         }
         situationQuestion.IsDeleted = false;
-        // save changes
+        situationQuestion.UpdatedBy = situationQuestionUpdate.UpdatedBy;
+        _context.Update(situationQuestion);
+
 
         try
         {
