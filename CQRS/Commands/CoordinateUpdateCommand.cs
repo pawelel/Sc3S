@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Commands;
-public class CoordinateUpdateCommand
+
+public class CoordinateUpdateCommand : BaseCommand
 {
     public string Name { get; set; } = string.Empty;
 

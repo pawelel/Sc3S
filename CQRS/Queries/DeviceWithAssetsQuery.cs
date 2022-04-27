@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class DeviceWithAssetsQuery : BaseDto
+
+public class DeviceWithAssetsQuery : BaseQuery
 {
     public int DeviceId { get; set; }
     public string Name { get; set; } = string.Empty;

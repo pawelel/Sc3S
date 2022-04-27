@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.CQRS.Queries;
+
 public class AssetWithSituationsAndCategoriesQuery
 {
     public int AssetId { get; set; }

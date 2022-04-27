@@ -1,5 +1,7 @@
 ﻿using Sc3S.Exceptions;
+
 namespace Sc3S.Middleware;
+
 public class ErrorHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ErrorHandlingMiddleware> _logger;
@@ -8,6 +10,7 @@ public class ErrorHandlingMiddleware : IMiddleware
     {
         _logger = logger;
     }
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try

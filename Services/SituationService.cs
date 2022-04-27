@@ -10,21 +10,21 @@ namespace Sc3S.Services;
 
 public interface ISituationService
 {
-    Task<ServiceResponse<(int, int)>> CreateAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse<(int, int)>> CreateAssetSituation(AssetSituationUpdateCommand assetSituationUpdate);
 
-    Task<ServiceResponse<(int, int)>> CreateCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse<(int, int)>> CreateCategorySituation(CategorySituationUpdateCommand categorySituationUpdate);
 
-    Task<ServiceResponse<(int, int)>> CreateDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse<(int, int)>> CreateDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate);
 
     Task<ServiceResponse<int>> CreateQuestion(QuestionUpdateCommand questionUpdateDto);
 
     Task<ServiceResponse<int>> CreateSituation(SituationUpdateCommand situationUpdateDto);
 
-    Task<ServiceResponse<(int, int)>> CreateSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse<(int, int)>> CreateSituationDetail(SituationDetailUpdateCommand situationDetailUpdate);
 
-    Task<ServiceResponse<(int, int)>> CreateSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse<(int, int)>> CreateSituationParameter(SituationParameterUpdateCommand situationParameterUpdate);
 
-    Task<ServiceResponse<(int, int)>> CreateSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse<(int, int)>> CreateSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate);
 
     Task<ServiceResponse> DeleteAssetSituation(int assetId, int situationId);
 
@@ -58,37 +58,37 @@ public interface ISituationService
 
     Task<ServiceResponse<IEnumerable<SituationWithAssetsAndDetailsQuery>>> GetSituationWithAssetsAndDetails();
 
-    Task<ServiceResponse> MarkDeleteAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse> MarkDeleteAssetSituation(AssetSituationUpdateCommand assetSituationUpdate);
 
-    Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse> MarkDeleteCategorySituation(CategorySituationUpdateCommand categorySituationUpdate);
 
-    Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse> MarkDeleteDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate);
 
-    Task<ServiceResponse> MarkDeleteQuestion(int questionId);
+    Task<ServiceResponse> MarkDeleteQuestion(QuestionUpdateCommand questionUpdate);
 
-    Task<ServiceResponse> MarkDeleteSituation(int situationId);
+    Task<ServiceResponse> MarkDeleteSituation(SituationUpdateCommand situationUpdate);
 
-    Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse> MarkDeleteSituationDetail(SituationDetailUpdateCommand situationDetailUpdate);
 
-    Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse> MarkDeleteSituationParameter(SituationParameterUpdateCommand situationParameterUpdate);
 
-    Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse> MarkDeleteSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate);
 
-    Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId);
+    Task<ServiceResponse> UpdateAssetSituation(AssetSituationUpdateCommand assetSituationUpdate);
 
-    Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId);
+    Task<ServiceResponse> UpdateCategorySituation(CategorySituationUpdateCommand categorySituationUpdate);
 
-    Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId);
+    Task<ServiceResponse> UpdateDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate);
 
-    Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto);
+    Task<ServiceResponse> UpdateQuestion(QuestionUpdateCommand questionUpdateDto);
 
-    Task<ServiceResponse> UpdateSituation(int questionId, SituationUpdateCommand situationUpdateDto);
+    Task<ServiceResponse> UpdateSituation(SituationUpdateCommand situationUpdateDto);
 
-    Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId);
+    Task<ServiceResponse> UpdateSituationDetail(SituationDetailUpdateCommand situationDetailUpdate);
 
-    Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId);
+    Task<ServiceResponse> UpdateSituationParameter(SituationParameterUpdateCommand situationParameterUpdate);
 
-    Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId);
+    Task<ServiceResponse> UpdateSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate);
 }
 
 public class SituationService : ISituationService
@@ -102,21 +102,25 @@ public class SituationService : ISituationService
         _logger = logger;
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse<(int, int)>> CreateAssetSituation(AssetSituationUpdateCommand assetSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetSituation
-        var assetSituation = await _context.AssetSituations.FindAsync(assetId, situationId);
+        var assetSituation = await _context.AssetSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
         if (assetSituation != null)
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie dla assetu już istnieje");
-        var asset = await _context.Assets.FindAsync(assetId);
+        var asset = await _context.Assets
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId);
         if (asset == null || asset.IsDeleted)
         {
             _logger.LogWarning("Asset not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zasób nie został znaleziony");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(a => a.SituationId == assetSituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -124,9 +128,11 @@ public class SituationService : ISituationService
         }
         assetSituation = new AssetSituation
         {
-            AssetId = assetId,
-            SituationId = situationId,
-            IsDeleted = false
+            AssetId = assetSituationUpdate.AssetId,
+            SituationId = assetSituationUpdate.SituationId,
+            IsDeleted = false,
+            CreatedBy = assetSituationUpdate.UpdatedBy,
+            UpdatedBy = assetSituationUpdate.UpdatedBy
         };
         _context.Add(assetSituation);
         // save changes
@@ -135,7 +141,7 @@ public class SituationService : ISituationService
         {
             await _context.SaveChangesAsync();
 
-            return new ServiceResponse<(int, int)>(true, (assetId, situationId), "Zdarzenie dla assetu zostało utworzone");
+            return new ServiceResponse<(int, int)>(true, (assetSituationUpdate.AssetId, assetSituationUpdate.AssetId), "Zdarzenie dla assetu zostało utworzone");
         }
         catch (Exception ex)
         {
@@ -144,21 +150,26 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateCategorySituation(int categoryId, int situationId)
+    public async Task<ServiceResponse<(int, int)>> CreateCategorySituation(CategorySituationUpdateCommand categorySituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // get categorySituation
-        var categorySituation = await _context.CategorySituations.FindAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.CategoryId == categorySituationUpdate.CategoryId && a.SituationId == categorySituationUpdate.SituationId);
         if (categorySituation != null)
+        {
+            _logger.LogWarning("CategorySituation already exists");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie dla kategorii już istnieje");
-        var category = await _context.Categories.FindAsync(categoryId);
+        }
+        var category = await _context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.CategoryId == categorySituationUpdate.CategoryId);
         if (category == null || category.IsDeleted)
         {
             _logger.LogWarning("Category not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Kategoria nie została znaleziona");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(a => a.SituationId == categorySituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -166,19 +177,19 @@ public class SituationService : ISituationService
         }
         categorySituation = new CategorySituation
         {
-            CategoryId = categoryId,
-            SituationId = situationId,
-
-            IsDeleted = false
+            CategoryId = categorySituationUpdate.CategoryId,
+            SituationId = categorySituationUpdate.SituationId,
+            IsDeleted = false,
+            CreatedBy = categorySituationUpdate.UpdatedBy,
+            UpdatedBy = categorySituationUpdate.UpdatedBy
         };
         _context.Add(categorySituation);
         // save changes
-
         try
         {
             await _context.SaveChangesAsync();
-
-            return new ServiceResponse<(int, int)>(true, (categoryId, situationId), "Zdarzenie dla kategorii zostało utworzone");
+            _logger.LogInformation("CategorySituation created");
+            return new ServiceResponse<(int, int)>(true, (categorySituationUpdate.CategoryId, categorySituationUpdate.CategoryId), "Zdarzenie dla kategorii zostało utworzone");
         }
         catch (Exception ex)
         {
@@ -187,21 +198,26 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateDeviceSituation(int deviceId, int situationId)
+    public async Task<ServiceResponse<(int, int)>> CreateDeviceSituation(DeviceSituationUpdateCommand deviceSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // get deviceSituation
-        var deviceSituation = await _context.DeviceSituations.FindAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.DeviceId == deviceSituationUpdate.DeviceId && a.SituationId == deviceSituationUpdate.SituationId);
         if (deviceSituation != null)
+        {
+            _logger.LogWarning("DeviceSituation already exists");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie dla urządzenia już istnieje");
-        var device = await _context.Devices.FindAsync(deviceId);
+        }
+        var device = await _context.Devices
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.DeviceId == deviceSituationUpdate.DeviceId);
         if (device == null || device.IsDeleted)
         {
             _logger.LogWarning("Device not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Urządzenie nie zostało znalezione");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(a => a.SituationId == deviceSituationUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -209,19 +225,19 @@ public class SituationService : ISituationService
         }
         deviceSituation = new DeviceSituation
         {
-            DeviceId = deviceId,
-            SituationId = situationId,
-
-            IsDeleted = false
+            DeviceId = deviceSituationUpdate.DeviceId,
+            SituationId = deviceSituationUpdate.SituationId,
+            IsDeleted = false,
+            CreatedBy = deviceSituationUpdate.UpdatedBy,
+            UpdatedBy = deviceSituationUpdate.UpdatedBy
         };
         _context.Add(deviceSituation);
         // save changes
-
         try
         {
             await _context.SaveChangesAsync();
-
-            return new ServiceResponse<(int, int)>(true, (deviceId, situationId), "Zdarzenie dla urządzenia zostało utworzone");
+            _logger.LogInformation("DeviceSituation created");
+            return new ServiceResponse<(int, int)>(true, (deviceSituationUpdate.DeviceId, deviceSituationUpdate.DeviceId), "Zdarzenie dla urządzenia zostało utworzone");
         }
         catch (Exception ex)
         {
@@ -230,40 +246,35 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse<int>> CreateQuestion(QuestionUpdateCommand questionUpdateDto)
-    {
-        await using var _context = await _factory.CreateDbContextAsync();
-
-        // validate question name
-        var duplicate = await _context.Questions.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
-        if (duplicate is not null)
+        public async Task<ServiceResponse<int>> CreateQuestion(QuestionUpdateCommand questionUpdate)
         {
-            _logger.LogWarning("Question name already exists");
-            return new ServiceResponse<int>(false, -1, "Nazwa pytania już istnieje");
-        }
-
+            await using var _context = await _factory.CreateDbContextAsync();
+            var duplicate = await _context.Questions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == questionUpdate.Name.ToLower().Trim());
+            if (duplicate != null)
+            {
+                _logger.LogWarning("Question already exists");
+                return new ServiceResponse<int>(false, -1, "Pytanie już istnieje");
+            }
         var question = new Question
         {
-            Name = questionUpdateDto.Name,
-            IsDeleted = false
+            Name = questionUpdate.Name,
+            IsDeleted = false,
+            CreatedBy = questionUpdate.UpdatedBy,
+            UpdatedBy = questionUpdate.UpdatedBy
         };
-        // create question
-        _context.Questions.Add(question);
-        // await using transaction
-
+        _context.Add(question);
+        // save changes
         try
         {
-            // save changes
             await _context.SaveChangesAsync();
-            // commit transaction
-
-            _logger.LogInformation("Question with id {QuestionId} created", question.QuestionId);
+            _logger.LogInformation("Question created");
             return new ServiceResponse<int>(true, question.QuestionId, "Pytanie zostało utworzone");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating question");
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia pytania");
         }
     }
@@ -271,77 +282,78 @@ public class SituationService : ISituationService
     public async Task<ServiceResponse<int>> CreateSituation(SituationUpdateCommand situationUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // validate situation name
-        var duplicate = await _context.Situations.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
-        if (duplicate is not null)
+        var duplicate = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
+        if (duplicate != null)
         {
-            _logger.LogWarning("Situation name already exists");
-            return new ServiceResponse<int>(false, -1, "Nazwa zdarzenia już istnieje");
+            _logger.LogWarning("Situation already exists");
+            return new ServiceResponse<int>(false, -1, "Zdarzenie już istnieje");
         }
-
         var situation = new Situation
         {
             Name = situationUpdateDto.Name,
-            Description = situationUpdateDto.Description,
-            IsDeleted = false
+            IsDeleted = false,
+            CreatedBy = situationUpdateDto.UpdatedBy,
+            UpdatedBy = situationUpdateDto.UpdatedBy
         };
-        // create situation
-        _context.Situations.Add(situation);
-        // await using transaction
-
+        _context.Add(situation);
+        // save changes
         try
         {
-            // save changes
             await _context.SaveChangesAsync();
-            // commit transaction
-
-            _logger.LogInformation("Situation with id {SituationId} created", situation.SituationId);
+            _logger.LogInformation("Situation created");
             return new ServiceResponse<int>(true, situation.SituationId, "Zdarzenie zostało utworzone");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error creating situation");
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia zdarzenia");
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateSituationDetail(int situationId, int detailId)
+    public async Task<ServiceResponse<(int, int)>> CreateSituationDetail(SituationDetailUpdateCommand situationDetailUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // get situationDetail
-        var situationDetail = await _context.SituationDetails.FindAsync(situationId, detailId);
-        if (situationDetail != null)
+        var duplicate = await _context.SituationDetails
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationDetailUpdate.SituationId && a.DetailId == situationDetailUpdate.DetailId);
+        if (duplicate != null)
+        {
+            _logger.LogWarning("SituationDetail already exists");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Szczegół zdarzenia już istnieje");
-        var situation = await _context.Situations.FindAsync(situationId);
+        }
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationDetailUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie nie zostało znalezione");
         }
-        var detail = await _context.Details.FindAsync(detailId);
+        var detail = await _context.Details
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.DetailId == situationDetailUpdate.DetailId);
         if (detail == null || detail.IsDeleted)
         {
             _logger.LogWarning("Detail not found");
-            return new ServiceResponse<(int, int)>(false, (-1, -1), "Szczegół nie został znaleziony");
+            return new ServiceResponse<(int, int)>(false, (-1, -1), "Szczegół nie zostało znaleziony");
         }
-        situationDetail = new SituationDetail
+        var situationDetail = new SituationDetail
         {
-            SituationId = situationId,
-            DetailId = detailId,
-
-            IsDeleted = false
+            SituationId = situationDetailUpdate.SituationId,
+            DetailId = situationDetailUpdate.DetailId,
+            IsDeleted = false,
+            CreatedBy = situationDetailUpdate.UpdatedBy,
+            UpdatedBy = situationDetailUpdate.UpdatedBy
         };
         _context.Add(situationDetail);
         // save changes
-
         try
         {
             await _context.SaveChangesAsync();
-
-            return new ServiceResponse<(int, int)>(true, (situationId, detailId), "Szczegół zdarzenia został utworzony");
+            _logger.LogInformation("SituationDetail created");
+            return new ServiceResponse<(int, int)>(true, (situationDetailUpdate.SituationId, situationDetailUpdate.DetailId), "Szczegół zdarzenia został utworzony");
         }
         catch (Exception ex)
         {
@@ -350,41 +362,48 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateSituationParameter(int situationId, int parameterId)
+    public async Task<ServiceResponse<(int, int)>> CreateSituationParameter(SituationParameterUpdateCommand situationParameterUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // get situationParameter
-        var situationParameter = await _context.SituationParameters.FindAsync(situationId, parameterId);
-        if (situationParameter != null)
+        var duplicate = await _context.SituationParameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationParameterUpdate.SituationId && a.ParameterId == situationParameterUpdate.ParameterId);
+        if (duplicate != null)
+        {
+            _logger.LogWarning("SituationParameter already exists");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Parametr zdarzenia już istnieje");
-        var situation = await _context.Situations.FindAsync(situationId);
+        }
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationParameterUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie nie zostało znalezione");
         }
-        var parameter = await _context.Parameters.FindAsync(parameterId);
+        var parameter = await _context.Parameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.ParameterId == situationParameterUpdate.ParameterId);
         if (parameter == null || parameter.IsDeleted)
         {
             _logger.LogWarning("Parameter not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Parametr nie został znaleziony");
         }
-        situationParameter = new SituationParameter
+        var situationParameter = new SituationParameter
         {
-            SituationId = situationId,
-            ParameterId = parameterId,
-
-            IsDeleted = false
+            SituationId = situationParameterUpdate.SituationId,
+            ParameterId = situationParameterUpdate.ParameterId,
+            IsDeleted = false,
+            CreatedBy = situationParameterUpdate.UpdatedBy,
+            UpdatedBy = situationParameterUpdate.UpdatedBy
         };
         _context.Add(situationParameter);
         // save changes
-
         try
         {
             await _context.SaveChangesAsync();
-
-            return new ServiceResponse<(int, int)>(true, (situationId, parameterId), "Parametr zdarzenia został utworzony");
+            _logger.LogInformation("SituationParameter created");
+            return new ServiceResponse<(int, int)>(true, (situationParameterUpdate.SituationId, situationParameterUpdate.ParameterId), "Parametr zdarzenia został utworzony");
         }
         catch (Exception ex)
         {
@@ -393,41 +412,48 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateSituationQuestion(int situationId, int questionId)
+    public async Task<ServiceResponse<(int, int)>> CreateSituationQuestion(SituationQuestionUpdateCommand situationQuestionUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
-        // get situationQuestion
-        var situationQuestion = await _context.SituationQuestions.FindAsync(situationId, questionId);
-        if (situationQuestion != null)
+        var duplicate = await _context.SituationQuestions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationQuestionUpdate.SituationId && a.QuestionId == situationQuestionUpdate.QuestionId);
+        if (duplicate != null)
+        {
+            _logger.LogWarning("SituationQuestion already exists");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Pytanie zdarzenia już istnieje");
-        var situation = await _context.Situations.FindAsync(situationId);
+        }
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.SituationId == situationQuestionUpdate.SituationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Zdarzenie nie zostało znalezione");
         }
-        var question = await _context.Questions.FindAsync(questionId);
+        var question = await _context.Questions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.QuestionId == situationQuestionUpdate.QuestionId);
         if (question == null || question.IsDeleted)
         {
             _logger.LogWarning("Question not found");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Pytanie nie zostało znalezione");
         }
-        situationQuestion = new SituationQuestion
+        var situationQuestion = new SituationQuestion
         {
-            SituationId = situationId,
-            QuestionId = questionId,
-
-            IsDeleted = false
+            SituationId = situationQuestionUpdate.SituationId,
+            QuestionId = situationQuestionUpdate.QuestionId,
+            IsDeleted = false,
+            CreatedBy = situationQuestionUpdate.UpdatedBy,
+            UpdatedBy = situationQuestionUpdate.UpdatedBy
         };
         _context.Add(situationQuestion);
         // save changes
-
         try
         {
             await _context.SaveChangesAsync();
-
-            return new ServiceResponse<(int, int)>(true, (situationId, questionId), "Pytanie zdarzenia zostało utworzone");
+            _logger.LogInformation("SituationQuestion created");
+            return new ServiceResponse<(int, int)>(true, (situationQuestionUpdate.SituationId, situationQuestionUpdate.QuestionId), "Pytanie zdarzenia zostało utworzony");
         }
         catch (Exception ex)
         {
@@ -441,7 +467,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get asset situation
-        var assetSituation = await _context.AssetSituations.FindAsync(assetId, situationId);
+        var assetSituation = await _context.AssetSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a=>a.AssetId == assetId && a.SituationId== situationId);
         if (assetSituation == null)
         {
             _logger.LogWarning("Asset situation not found");
@@ -478,7 +506,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get category situation
-        var categorySituation = await _context.CategorySituations.FindAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.CategoryId == categoryId && a.SituationId == situationId);
         if (categorySituation == null)
         {
             _logger.LogWarning("Category situation not found");
@@ -516,7 +546,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get device situation
-        var deviceSituation = await _context.DeviceSituations.FindAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(ds => ds.DeviceId == deviceId && ds.SituationId == situationId);
         if (deviceSituation == null)
         {
             _logger.LogWarning("Device situation not found");
@@ -548,12 +580,14 @@ public class SituationService : ISituationService
         }
     }
 
-    public async Task<ServiceResponse> DeleteQuestion(int situationId)
+    public async Task<ServiceResponse> DeleteQuestion(int questionId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get question
-        var question = await _context.Questions.FindAsync(situationId);
+        var question = await _context.Questions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(q => q.QuestionId == questionId);
         if (question == null)
         {
             _logger.LogWarning("Question not found");
@@ -590,7 +624,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.SituationId == situationId);
         if (situation == null)
         {
             _logger.LogWarning("Situation not found");
@@ -627,7 +663,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation detail
-        var situationDetail = await _context.SituationDetails.FindAsync(situationId, detailId);
+        var situationDetail = await _context.SituationDetails
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sd => sd.SituationId == situationId && sd.DetailId == detailId);
         if (situationDetail == null)
         {
             _logger.LogWarning("Situation detail not found");
@@ -664,7 +702,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation parameter
-        var situationParameter = await _context.SituationParameters.FindAsync(situationId, parameterId);
+        var situationParameter = await _context.SituationParameters
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sp => sp.SituationId == situationId && sp.ParameterId == parameterId);
         if (situationParameter == null)
         {
             _logger.LogWarning("Situation parameter not found");
@@ -701,7 +741,9 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situation question
-        var situationQuestion = await _context.SituationQuestions.FindAsync(situationId, questionId);
+        var situationQuestion = await _context.SituationQuestions
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sq => sq.SituationId == situationId && sq.QuestionId == questionId);
         if (situationQuestion == null)
         {
             _logger.LogWarning("Situation question not found");
@@ -745,7 +787,10 @@ public class SituationService : ISituationService
                 QuestionId = q.QuestionId,
                 Name = q.Name,
                 IsDeleted = q.IsDeleted,
-                UserId = q.UpdatedBy
+                UpdatedBy = q.UpdatedBy,
+                UpdatedOn = q.UpdatedOn,
+                CreatedBy = q.CreatedBy,
+                CreatedOn = q.CreatedOn
             })
             .FirstOrDefaultAsync(c => c.QuestionId == questionId);
         if (question == null)
@@ -770,7 +815,10 @@ public class SituationService : ISituationService
                 QuestionId = q.QuestionId,
                 Name = q.Name,
                 IsDeleted = q.IsDeleted,
-                UserId = q.UpdatedBy
+                UpdatedBy = q.UpdatedBy,
+                UpdatedOn = q.UpdatedOn,
+                CreatedBy = q.CreatedBy,
+                CreatedOn = q.CreatedOn
             })
             .ToListAsync();
         if (questions is null)
@@ -796,7 +844,10 @@ public class SituationService : ISituationService
                 Name = s.Name,
                 Description = s.Description,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn
             })
             .FirstOrDefaultAsync(c => c.SituationId == situationId);
         if (situation == null)
@@ -822,7 +873,10 @@ public class SituationService : ISituationService
                 Name = s.Name,
                 Description = s.Description,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn
             })
             .ToListAsync();
         if (situations is null)
@@ -848,14 +902,20 @@ public class SituationService : ISituationService
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy,
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn,
                 Assets = s.AssetSituations.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Asset.Name,
                     Description = a.Asset.Description,
                     IsDeleted = a.Asset.IsDeleted,
-                    UserId = a.Asset.UpdatedBy
+                    UpdatedBy = a.Asset.UpdatedBy,
+                    UpdatedOn = a.Asset.UpdatedOn,
+                    CreatedBy = a.Asset.CreatedBy,
+                    CreatedOn = a.Asset.CreatedOn
                 }).ToList()
             }).ToListAsync();
         if (situations is null)
@@ -881,14 +941,20 @@ public class SituationService : ISituationService
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy,
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn,
                 Categories = s.CategorySituations.Select(c => new CategoryQuery
                 {
                     CategoryId = c.CategoryId,
                     Name = c.Category.Name,
                     Description = c.Category.Description,
                     IsDeleted = c.Category.IsDeleted,
-                    UserId = c.Category.UpdatedBy
+                    UpdatedBy = c.Category.UpdatedBy,
+                    UpdatedOn = c.Category.UpdatedOn,
+                    CreatedBy = c.Category.CreatedBy,
+                    CreatedOn = c.Category.CreatedOn
                 }).ToList()
             }).ToListAsync();
         if (situations is null)
@@ -914,12 +980,18 @@ public class SituationService : ISituationService
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy,
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn,
                 Questions = s.SituationQuestions.Select(q => new QuestionQuery
                 {
                     QuestionId = q.QuestionId,
                     IsDeleted = q.Question.IsDeleted,
-                    UserId = q.Question.UpdatedBy
+                    UpdatedBy = q.Question.UpdatedBy,
+                    UpdatedOn = q.Question.UpdatedOn,
+                    CreatedBy = q.Question.CreatedBy,
+                    CreatedOn = q.Question.CreatedOn
                 }).ToList()
             }).ToListAsync();
         if (situations is null)
@@ -945,20 +1017,29 @@ public class SituationService : ISituationService
                 Description = s.Description,
                 SituationId = s.SituationId,
                 IsDeleted = s.IsDeleted,
-                UserId = s.UpdatedBy,
+                UpdatedBy = s.UpdatedBy,
+                UpdatedOn = s.UpdatedOn,
+                CreatedBy = s.CreatedBy,
+                CreatedOn = s.CreatedOn,
                 Assets = s.AssetSituations.Select(a => new AssetWithDetailsDisplayQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Asset.Name,
                     Description = a.Asset.Description,
                     IsDeleted = a.Asset.IsDeleted,
-                    UserId = a.Asset.UpdatedBy,
+                    UpdatedBy = a.Asset.UpdatedBy,
+                    UpdatedOn = a.Asset.UpdatedOn,
+                    CreatedBy = a.Asset.CreatedBy,
+                    CreatedOn = a.Asset.CreatedOn,
                     Details = a.Asset.AssetDetails.Select(d => new AssetDetailDisplayQuery
                     {
                         Name = d.Detail.Name,
                         Description = d.Detail.Description,
                         IsDeleted = d.Detail.IsDeleted,
-                        UserId = d.Detail.UpdatedBy
+                        UpdatedBy = d.Detail.UpdatedBy,
+                        UpdatedOn = d.Detail.UpdatedOn,
+                        CreatedBy = d.Detail.CreatedBy,
+                        CreatedOn = d.Detail.CreatedOn
                     }).ToList()
                 }).ToList()
             }).ToListAsync();
@@ -973,12 +1054,12 @@ public class SituationService : ISituationService
         return new ServiceResponse<IEnumerable<SituationWithAssetsAndDetailsQuery>>(true, situations, "Zdarzenia zostały zwrócone");
     }
 
-    public async Task<ServiceResponse> MarkDeleteAssetSituation(int assetId, int situationId)
+    public async Task<ServiceResponse> MarkDeleteAssetSituation(AssetSituationUpdateCommand assetSituationUpdate)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetSituation
-        var assetSituation = await _context.AssetSituations.FindAsync(assetId, situationId);
+        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
@@ -990,6 +1071,7 @@ public class SituationService : ISituationService
             return new ServiceResponse(false, "Zdarzenie dla zasobu zostało już oznaczone jako usunięte");
         }
         assetSituation.IsDeleted = true;
+        assetSituation.UpdatedBy = assetSituationUpdate.UpdatedBy;
         _context.Update(assetSituation);
         // await using transaction
 
@@ -998,12 +1080,12 @@ public class SituationService : ISituationService
             // save changes
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("AssetSituation with id {AssetId}, {SituationId} marked as deleted", assetId, situationId);
+            _logger.LogInformation("AssetSituation with id {AssetId}, {SituationId} marked as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
             return new ServiceResponse(true, "Zdarzenie dla zasobu zostało oznaczone jako usunięte");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error marking assetSituation with id {AssetId}, {SituationId} as deleted", assetId, situationId);
+            _logger.LogError(ex, "Error marking assetSituation with id {AssetId}, {SituationId} as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
             return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
         }
     }
@@ -1013,7 +1095,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get categorySituation
-        var categorySituation = await _context.CategorySituations.FindAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
@@ -1048,7 +1130,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get deviceSituation
-        var deviceSituation = await _context.DeviceSituations.FindAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
@@ -1212,7 +1294,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationDetail
-        var situationDetail = await _context.SituationDetails.FindAsync(situationId, detailId);
+        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
@@ -1248,7 +1330,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationParameter
-        var situationParameter = await _context.SituationParameters.FindAsync(situationId, parameterId);
+        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
@@ -1283,7 +1365,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationQuestion
-        var situationQuestion = await _context.SituationQuestions.FindAsync(situationId, questionId);
+        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
@@ -1318,7 +1400,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetSituation
-        var assetSituation = await _context.AssetSituations.FindAsync(assetId, situationId);
+        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(assetId, situationId);
         if (assetSituation == null)
         {
             _logger.LogWarning("AssetSituation not found");
@@ -1329,13 +1411,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("AssetSituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie zasobu nie zostało oznaczone jako usunięte");
         }
-        var asset = await _context.Assets.FindAsync(assetId);
+        var asset = await _context.Assets.FirstOrDefaultAsync(assetId);
         if (asset == null || asset.IsDeleted)
         {
             _logger.LogWarning("Asset not found");
             return new ServiceResponse(false, "Zasób nie został znaleziony");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -1361,7 +1443,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get categorySituation
-        var categorySituation = await _context.CategorySituations.FindAsync(categoryId, situationId);
+        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
         if (categorySituation == null)
         {
             _logger.LogWarning("CategorySituation not found");
@@ -1372,13 +1454,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("CategorySituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie kategorii nie zostało oznaczone jako usunięte");
         }
-        var category = await _context.Categories.FindAsync(categoryId);
+        var category = await _context.Categories.FirstOrDefaultAsync(categoryId);
         if (category == null || category.IsDeleted)
         {
             _logger.LogWarning("Category not found");
             return new ServiceResponse(false, "Kategoria nie została znaleziona");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -1404,7 +1486,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get deviceSituation
-        var deviceSituation = await _context.DeviceSituations.FindAsync(deviceId, situationId);
+        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
         if (deviceSituation == null)
         {
             _logger.LogWarning("DeviceSituation not found");
@@ -1415,13 +1497,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("DeviceSituation not marked as deleted");
             return new ServiceResponse(false, "Zdarzenie urządzenia nie zostało oznaczone jako usunięte");
         }
-        var device = await _context.Devices.FindAsync(deviceId);
+        var device = await _context.Devices.FirstOrDefaultAsync(deviceId);
         if (device == null || device.IsDeleted)
         {
             _logger.LogWarning("Device not found");
             return new ServiceResponse(false, "Urządzenie nie zostało znalezione");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
@@ -1531,7 +1613,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationDetail
-        var situationDetail = await _context.SituationDetails.FindAsync(situationId, detailId);
+        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
         if (situationDetail == null)
         {
             _logger.LogWarning("SituationDetail not found");
@@ -1542,13 +1624,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationDetail not marked as deleted");
             return new ServiceResponse(false, "Szczegół zdarzenia nie został oznaczony jako usunięty");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var detail = await _context.Details.FindAsync(detailId);
+        var detail = await _context.Details.FirstOrDefaultAsync(detailId);
         if (detail == null || detail.IsDeleted)
         {
             _logger.LogWarning("Detail not found");
@@ -1574,7 +1656,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationParameter
-        var situationParameter = await _context.SituationParameters.FindAsync(situationId, parameterId);
+        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
         if (situationParameter == null)
         {
             _logger.LogWarning("SituationParameter not found");
@@ -1585,13 +1667,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationParameter not marked as deleted");
             return new ServiceResponse(false, "Parametr zdarzenia nie został oznaczony jako usunięty");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var parameter = await _context.Parameters.FindAsync(parameterId);
+        var parameter = await _context.Parameters.FirstOrDefaultAsync(parameterId);
         if (parameter == null || parameter.IsDeleted)
         {
             _logger.LogWarning("Parameter not found");
@@ -1617,7 +1699,7 @@ public class SituationService : ISituationService
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get situationQuestion
-        var situationQuestion = await _context.SituationQuestions.FindAsync(situationId, questionId);
+        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
         if (situationQuestion == null)
         {
             _logger.LogWarning("SituationQuestion not found");
@@ -1628,13 +1710,13 @@ public class SituationService : ISituationService
             _logger.LogWarning("SituationQuestion not marked as deleted");
             return new ServiceResponse(false, "Pytanie zdarzenia nie zostało oznaczone jako usunięte");
         }
-        var situation = await _context.Situations.FindAsync(situationId);
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
         if (situation == null || situation.IsDeleted)
         {
             _logger.LogWarning("Situation not found");
             return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
         }
-        var question = await _context.Questions.FindAsync(questionId);
+        var question = await _context.Questions.FirstOrDefaultAsync(questionId);
         if (question == null || question.IsDeleted)
         {
             _logger.LogWarning("Question not found");

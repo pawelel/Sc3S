@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using Sc3S.CQRS.Commands;
 using Sc3S.CQRS.Queries;
 using Sc3S.Data;
-using Sc3S.DTO;
 using Sc3S.Entities;
-using Sc3S.Exceptions;
 using Sc3S.Helpers;
 
 namespace Sc3S.Services;
@@ -20,17 +16,17 @@ public interface IStuffService
 
     Task<ServiceResponse<(int, int)>> CreateAssetCategory(int assetId, int categoryId);
 
-    Task<ServiceResponse<(int, int)>> CreateAssetDetail(AssetDetailDto assetDetailDto);
+    Task<ServiceResponse<(int, int)>> CreateAssetDetail(AssetDetailQuery assetDetailDto);
 
     Task<ServiceResponse<int>> CreateCategory(CategoryUpdateCommand categoryUpdateDto);
 
     Task<ServiceResponse<int>> CreateDetail(DetailUpdateCommand detailUpdateDto);
 
     Task<ServiceResponse<int>> CreateDevice(DeviceUpdateCommand deviceUpdateDto);
-    
+
     Task<ServiceResponse<int>> CreateModel(ModelUpdateCommand modelUpdateDto);
 
-    Task<ServiceResponse<(int, int)>> CreateModelParameter(ModelParameterDto modelParameterDto);
+    Task<ServiceResponse<(int, int)>> CreateModelParameter(ModelParameterQuery modelParameterDto);
 
     Task<ServiceResponse<int>> CreateParameter(ParameterUpdateCommand parameterUpdateDto);
 
@@ -63,7 +59,9 @@ public interface IStuffService
     Task<ServiceResponse<IEnumerable<CategoryWithAssetsQuery>>> GetCategoriesWithAssets();
 
     Task<ServiceResponse<IEnumerable<DeviceWithAssetsQuery>>> GetDevicesWithAssets();
+
     Task<ServiceResponse<DeviceWithAssetsQuery>> GetDeviceWithAssets(int deviceId);
+
     Task<ServiceResponse<CategoryQuery>> GetCategoryById(int categoryId);
 
     Task<ServiceResponse<CategoryWithAssetsQuery>> GetCategoryByIdWithAssets(int categoryId);
@@ -75,7 +73,6 @@ public interface IStuffService
     Task<ServiceResponse<IEnumerable<DetailWithAssetsQuery>>> GetDetailsWithAssets();
 
     Task<ServiceResponse<DeviceQuery>> GetDeviceById(int deviceId);
-   
 
     Task<ServiceResponse<IEnumerable<DeviceQuery>>> GetDevicesWithModels();
 
@@ -101,7 +98,7 @@ public interface IStuffService
 
     Task<ServiceResponse> MarkDeleteDetail(int detailId);
 
-    Task<ServiceResponse> MarkDeleteDevice(int deviceId);
+    Task<ServiceResponse> MarkDeleteDevice(string userName, int deviceId);
 
     Task<ServiceResponse> MarkDeleteModel(int modelId);
 
@@ -113,7 +110,7 @@ public interface IStuffService
 
     Task<ServiceResponse> UpdateAssetCategory(int assetId, int categoryId);
 
-    Task<ServiceResponse> UpdateAssetDetail(AssetDetailDto assetDetailDto);
+    Task<ServiceResponse> UpdateAssetDetail(AssetDetailQuery assetDetailDto);
 
     Task<ServiceResponse> UpdateCategory(CategoryUpdateCommand categoryUpdateDto);
 
@@ -122,13 +119,14 @@ public interface IStuffService
     Task<ServiceResponse> UpdateDevice(DeviceUpdateCommand deviceUpdateDto);
 
     Task<ServiceResponse> UpdateModel(ModelUpdateCommand modelUpdateDto);
-    
-    Task<ServiceResponse> UpdateModelParameter(ModelParameterDto modelParameterDto);
+
+    Task<ServiceResponse> UpdateModelParameter(ModelParameterQuery modelParameterDto);
 
     Task<ServiceResponse> UpdateParameter(ParameterUpdateCommand parameterUpdateDto);
-    
+
     Task<ServiceResponse<IEnumerable<DeviceQuery>>> GetDevices();
 }
+
 public class StuffService : IStuffService
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
@@ -140,12 +138,9 @@ public class StuffService : IStuffService
         _logger = logger;
     }
 
-
     public async Task<ServiceResponse> ChangeModelOfAsset(int assetId, int modelId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         var asset = await _context.Assets.FirstOrDefaultAsync(a => a.AssetId == assetId);
         if (asset == null)
@@ -182,14 +177,12 @@ public class StuffService : IStuffService
             // save changes
             await _context.SaveChangesAsync();
 
-
             _logger.LogInformation("Asset with id {AssetId} updated", assetId);
             return new ServiceResponse(true, $"Asset o id id {assetId} został zaktualizowany");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating asset with id {AssetId}", assetId);
-
 
             return new ServiceResponse(false, $"Błąd podczas aktualizacji assetu o id {assetId}");
         }
@@ -198,7 +191,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateAsset(AssetUpdateCommand assetUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get model
         var model = await _context.Models.Include(m => m.Assets).AsNoTracking().FirstOrDefaultAsync(m => m.ModelId == assetUpdateDto.ModelId);
@@ -248,7 +240,6 @@ public class StuffService : IStuffService
         // create asset
         _context.Attach(asset);
 
-
         try
         {
             // save changes
@@ -262,6 +253,7 @@ public class StuffService : IStuffService
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia assetu");
         }
     }
+
     public async Task<ServiceResponse<(int, int)>> CreateAssetCategory(int assetId, int categoryId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
@@ -300,13 +292,12 @@ public class StuffService : IStuffService
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error creating assetCategory");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Błąd podczas tworzenia assetCategory");
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateAssetDetail(AssetDetailDto assetDetailDto)
+    public async Task<ServiceResponse<(int, int)>> CreateAssetDetail(AssetDetailQuery assetDetailDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -347,7 +338,6 @@ public class StuffService : IStuffService
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error creating assetDetail");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Błąd podczas tworzenia assetDetail");
         }
@@ -356,7 +346,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateCategory(CategoryUpdateCommand categoryUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // validate category name
         var duplicate = await _context.Categories.AnyAsync(c => c.Name.ToLower().Trim() == categoryUpdateDto.Name.ToLower().Trim());
@@ -376,12 +365,10 @@ public class StuffService : IStuffService
         _context.ChangeTracker.Clear();
         _context.Categories.Attach(category);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Category with id {CategoryId} created", category.CategoryId);
             return new ServiceResponse<int>(true, category.CategoryId, $"Kategoria została utworzona");
@@ -390,7 +377,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error creating category");
 
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia kategorii");
         }
     }
@@ -398,7 +384,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateDetail(DetailUpdateCommand detailUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // validate detail name
         var duplicate = await _context.Details.AnyAsync(d => d.Name.ToLower().Trim() == detailUpdateDto.Name.ToLower().Trim());
@@ -417,12 +402,10 @@ public class StuffService : IStuffService
         // create detail
         _context.Details.Attach(detail);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Detail with id {DetailId} created", detail.DetailId);
             return new ServiceResponse<int>(true, detail.DetailId, $"Szczegół został utworzony");
@@ -431,7 +414,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error creating detail");
 
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia szczegółu");
         }
     }
@@ -439,7 +421,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateDevice(DeviceUpdateCommand deviceUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // validate device name
         var duplicate = await _context.Devices.AnyAsync(d => d.Name.ToLower().Trim() == deviceUpdateDto.Name.ToLower().Trim());
@@ -453,17 +434,17 @@ public class StuffService : IStuffService
         {
             Name = deviceUpdateDto.Name,
             Description = deviceUpdateDto.Description,
-            IsDeleted = false
+            IsDeleted = false,
+            CreatedBy = deviceUpdateDto.UserName,
+            UpdatedBy = deviceUpdateDto.UserName
         };
         // create device
         _context.Devices.Attach(device);
-
 
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Device with id {DeviceId} created", device.DeviceId);
             return new ServiceResponse<int>(true, device.DeviceId, $"Urządzenie zostało utworzone");
@@ -472,7 +453,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error creating device");
 
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia urządzenia");
         }
     }
@@ -480,7 +460,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateModel(ModelUpdateCommand modelUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get device
         var device = await _context.Devices.Include(d => d.Models).AsNoTracking().FirstOrDefaultAsync(d => d.DeviceId == modelUpdateDto.DeviceId);
@@ -515,7 +494,6 @@ public class StuffService : IStuffService
             // save changes
             await _context.SaveChangesAsync();
 
-
             _logger.LogInformation("Model with id {ModelId} created", model.ModelId);
             return new ServiceResponse<int>(true, model.ModelId, $"Model został utworzony");
         }
@@ -523,12 +501,11 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error creating model");
 
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia modelu");
         }
     }
 
-    public async Task<ServiceResponse<(int, int)>> CreateModelParameter(ModelParameterDto modelParameterDto)
+    public async Task<ServiceResponse<(int, int)>> CreateModelParameter(ModelParameterQuery modelParameterDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
@@ -567,7 +544,6 @@ public class StuffService : IStuffService
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error creating modelParameter");
             return new ServiceResponse<(int, int)>(false, (-1, -1), "Błąd podczas dodawania parametru do modelu");
         }
@@ -576,7 +552,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse<int>> CreateParameter(ParameterUpdateCommand parameterUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // validate parameter name
         var duplicate = await _context.Parameters.AnyAsync(p => p.Name.ToLower().Trim() == parameterUpdateDto.Name.ToLower().Trim());
@@ -587,7 +562,6 @@ public class StuffService : IStuffService
         }
         var parameter = new Parameter
         {
-
             Name = parameterUpdateDto.Name,
             Description = parameterUpdateDto.Description,
             IsDeleted = false
@@ -595,12 +569,10 @@ public class StuffService : IStuffService
         // create parameter
         _context.Parameters.Attach(parameter);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Parameter with id {ParameterId} created", parameter.ParameterId);
             return new ServiceResponse<int>(true, parameter.ParameterId, $"Parametr został utworzony");
@@ -609,7 +581,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error creating parameter");
 
-
             return new ServiceResponse<int>(false, -1, "Błąd podczas tworzenia parametru");
         }
     }
@@ -617,7 +588,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse> DeleteAsset(int assetId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get asset
         var asset = await _context.Assets.FindAsync(assetId);
@@ -635,12 +605,10 @@ public class StuffService : IStuffService
         // delete asset
         _context.Assets.Remove(asset);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Asset with id {AssetId} deleted", asset.AssetId);
             return new ServiceResponse(true, "Asset został usunięty");
@@ -649,7 +617,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error deleting asset");
 
-
             return new ServiceResponse(false, "Błąd podczas usuwania assetu");
         }
     }
@@ -657,7 +624,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse> DeleteAssetCategory(int assetId, int categoryId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         var assetCategory = await _context.AssetCategories.FindAsync(assetId, categoryId);
         // get assetCategory
@@ -673,7 +639,6 @@ public class StuffService : IStuffService
         }
 
         _context.AssetCategories.Remove(assetCategory);
-
 
         try
         {
@@ -709,8 +674,6 @@ public class StuffService : IStuffService
             return new ServiceResponse(false, "AssetDetail nie jest oznaczony jako usunięty");
         }
 
-
-
         try
         {
             _context.AssetDetails.Remove(assetDetail);
@@ -732,7 +695,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get category
         var category = await _context.Categories.FindAsync(categoryId);
         if (category == null)
@@ -749,12 +711,10 @@ public class StuffService : IStuffService
         // delete category
         _context.Categories.Remove(category);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Category with id {CategoryId} deleted", category.CategoryId);
             return new ServiceResponse(true, "Kategoria została usunięta");
@@ -763,7 +723,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error deleting category");
 
-
             return new ServiceResponse(false, "Błąd podczas usuwania kategorii");
         }
     }
@@ -771,7 +730,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse> DeleteDetail(int detailId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get detail
         var detail = await _context.Details.FindAsync(detailId);
@@ -794,14 +752,12 @@ public class StuffService : IStuffService
             // save changes
             await _context.SaveChangesAsync();
 
-
             _logger.LogInformation("Detail with id {DetailId} deleted", detail.DetailId);
             return new ServiceResponse(true, "Szczegół został usunięty");
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting detail");
-
 
             return new ServiceResponse(false, "Błąd podczas usuwania szczegółu");
         }
@@ -810,7 +766,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse> DeleteDevice(int deviceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get device
         var device = await _context.Devices.FindAsync(deviceId);
@@ -828,12 +783,10 @@ public class StuffService : IStuffService
         // delete device
         _context.Devices.Remove(device);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Device with id {DeviceId} deleted", device.DeviceId);
             return new ServiceResponse(true, "Urządzenie zostało usunięte");
@@ -841,7 +794,6 @@ public class StuffService : IStuffService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting device");
-
 
             return new ServiceResponse(false, "Błąd podczas usuwania urządzenia");
         }
@@ -867,12 +819,10 @@ public class StuffService : IStuffService
         // delete model
         _context.Models.Remove(model);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-
 
             _logger.LogInformation("Model with id {ModelId} deleted", model.ModelId);
             return new ServiceResponse(true, "Model został usunięty");
@@ -880,7 +830,6 @@ public class StuffService : IStuffService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error deleting model");
-
 
             return new ServiceResponse(false, "Błąd podczas usuwania modelu");
         }
@@ -900,7 +849,6 @@ public class StuffService : IStuffService
         }
         if (modelParameter.IsDeleted)
         {
-
             try
             {
                 _context.ModelParameters.Remove(modelParameter);
@@ -924,7 +872,6 @@ public class StuffService : IStuffService
     public async Task<ServiceResponse> DeleteParameter(int parameterId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get parameter
         var parameter = await _context.Parameters.FindAsync(parameterId);
@@ -953,7 +900,6 @@ public class StuffService : IStuffService
         {
             _logger.LogError(ex, "Error deleting parameter");
 
-
             return new ServiceResponse(false, "Błąd podczas usuwania parametru");
         }
     }
@@ -962,7 +908,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get asset
         var asset = await _context.Assets.AsNoTracking().Select(a => new AssetQuery
         {
@@ -970,7 +915,7 @@ public class StuffService : IStuffService
             Name = a.Name,
             Description = a.Description,
             IsDeleted = a.IsDeleted,
-            UserId = a.UpdatedBy,
+            UpdatedBy = a.UpdatedBy,
             Status = a.Status,
             CoordinateId = a.CoordinateId,
             ModelId = a.ModelId,
@@ -990,7 +935,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get asset
         var query = await _context.Assets
             .AsNoTracking()
@@ -1008,12 +952,12 @@ public class StuffService : IStuffService
                 CoordinateName = a.Coordinate.Name,
                 Status = a.Status,
                 IsDeleted = a.IsDeleted,
-                UserId = a.UpdatedBy,
+                UpdatedBy = a.UpdatedBy,
                 Categories = a.AssetCategories.Select(ac => new AssetCategoryDisplayQuery
                 {
                     Name = ac.Category.Name,
                     AssetId = ac.AssetId,
-                    UserId = ac.UpdatedBy,
+                    UpdatedBy = ac.UpdatedBy,
                     CategoryId = ac.CategoryId,
                     Description = ac.Category.Description,
                     IsDeleted = ac.IsDeleted
@@ -1023,7 +967,7 @@ public class StuffService : IStuffService
                     Name = ad.Detail.Name,
                     Value = ad.Value,
                     DetailId = ad.DetailId,
-                    UserId = ad.UpdatedBy,
+                    UpdatedBy = ad.UpdatedBy,
                     AssetId = ad.AssetId,
                     Description = ad.Detail.Description,
                     IsDeleted = ad.IsDeleted
@@ -1033,7 +977,7 @@ public class StuffService : IStuffService
                     Name = mp.Parameter.Name,
                     Value = mp.Value,
                     ParameterId = mp.ParameterId,
-                    UserId = mp.UpdatedBy,
+                    UpdatedBy = mp.UpdatedBy,
                     ModelId = mp.ModelId,
                     Description = mp.Parameter.Description,
                     IsDeleted = mp.IsDeleted
@@ -1053,7 +997,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get assets
         var assets = await _context.Assets
             .AsNoTracking()
@@ -1063,7 +1006,7 @@ public class StuffService : IStuffService
                 Name = a.Name,
                 Description = a.Description,
                 IsDeleted = a.IsDeleted,
-                UserId = a.UpdatedBy,
+                UpdatedBy = a.UpdatedBy,
                 Status = a.Status,
                 CoordinateId = a.CoordinateId,
                 ModelId = a.ModelId,
@@ -1092,7 +1035,7 @@ public class StuffService : IStuffService
                 Description = c.Description,
                 CategoryId = c.CategoryId,
                 IsDeleted = c.IsDeleted,
-                UserId = c.UpdatedBy
+                UpdatedBy = c.UpdatedBy
             }).ToListAsync();
         if (query is null)
         {
@@ -1108,7 +1051,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get categories
         var query = await _context.Categories
             .AsNoTracking()
@@ -1117,7 +1059,7 @@ public class StuffService : IStuffService
                 CategoryId = c.CategoryId,
                 Name = c.Name,
                 Description = c.Description,
-                UserId = c.UpdatedBy,
+                UpdatedBy = c.UpdatedBy,
                 IsDeleted = c.IsDeleted,
                 Assets = c.AssetCategories.Select(ac => new AssetQuery
                 {
@@ -1125,7 +1067,7 @@ public class StuffService : IStuffService
                     Description = ac.Asset.Description,
                     AssetId = ac.AssetId,
                     Status = ac.Asset.Status,
-                    UserId = ac.UpdatedBy,
+                    UpdatedBy = ac.UpdatedBy,
                     Process = ac.Asset.Process,
                     IsDeleted = ac.Asset.IsDeleted
                 }).ToList()
@@ -1144,14 +1086,13 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get category
         var query = await _context.Categories
             .AsNoTracking()
             .Select(c => new CategoryQuery
             {
                 Name = c.Name,
-                UserId = c.UpdatedBy,
+                UpdatedBy = c.UpdatedBy,
                 IsDeleted = c.IsDeleted,
                 Description = c.Description,
                 CategoryId = c.CategoryId
@@ -1170,7 +1111,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get category
         var query = await _context.Categories
             .AsNoTracking()
@@ -1179,14 +1119,14 @@ public class StuffService : IStuffService
                 CategoryId = c.CategoryId,
                 Name = c.Name,
                 Description = c.Description,
-                UserId = c.UpdatedBy,
+                UpdatedBy = c.UpdatedBy,
                 IsDeleted = c.IsDeleted,
                 Assets = c.AssetCategories.Select(ac => new AssetQuery
                 {
                     Name = ac.Asset.Name,
                     Description = ac.Asset.Description,
                     AssetId = ac.AssetId,
-                    UserId = ac.UpdatedBy,
+                    UpdatedBy = ac.UpdatedBy,
                     IsDeleted = ac.IsDeleted,
                     Status = ac.Asset.Status,
                     Process = ac.Asset.Process
@@ -1206,7 +1146,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get detail
         var query = await _context.Details
             .AsNoTracking()
@@ -1214,7 +1153,7 @@ public class StuffService : IStuffService
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted
             }).FirstOrDefaultAsync(d => d.DetailId == detailId);
@@ -1238,7 +1177,7 @@ public class StuffService : IStuffService
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted
             }).ToListAsync();
@@ -1257,7 +1196,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get details
         var query = await _context.Details
             .AsNoTracking()
@@ -1265,7 +1203,7 @@ public class StuffService : IStuffService
             {
                 DetailId = d.DetailId,
                 Name = d.Name,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
                 Assets = d.AssetDetails.Select(ad => new AssetQuery
@@ -1273,7 +1211,7 @@ public class StuffService : IStuffService
                     Name = ad.Asset.Name,
                     Description = ad.Asset.Description,
                     AssetId = ad.AssetId,
-                    UserId = ad.UpdatedBy,
+                    UpdatedBy = ad.UpdatedBy,
                     Status = ad.Asset.Status,
                     Process = ad.Asset.Process,
                     IsDeleted = ad.Asset.IsDeleted
@@ -1288,6 +1226,7 @@ public class StuffService : IStuffService
         _logger.LogInformation("Details found");
         return new ServiceResponse<IEnumerable<DetailWithAssetsQuery>>(true, query, "Szczegóły zostały znalezione");
     }
+
     public async Task<ServiceResponse<DeviceQuery>> GetDeviceById(int deviceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1297,7 +1236,7 @@ public class StuffService : IStuffService
             .Select(d => new DeviceQuery
             {
                 DeviceId = d.DeviceId,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted
@@ -1311,10 +1250,10 @@ public class StuffService : IStuffService
         _logger.LogInformation("Device found");
         return new ServiceResponse<DeviceQuery>(true, query, "Urządzenie zostało znalezione");
     }
+
     public async Task<ServiceResponse<IEnumerable<DeviceQuery>>> GetDevices()
     {
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get devices
         var query = await _context.Devices
@@ -1325,7 +1264,9 @@ public class StuffService : IStuffService
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                UserId = d.UpdatedBy
+                UpdatedBy = d.UpdatedBy,
+                CreatedOn = d.CreatedOn,
+                UpdatedOn = d.UpdatedOn
             }).ToListAsync();
         if (query is null)
         {
@@ -1349,14 +1290,14 @@ public class StuffService : IStuffService
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Models = d.Models.Select(m => new ModelQuery
                 {
                     ModelId = m.ModelId,
                     Name = m.Name,
                     Description = m.Description,
                     IsDeleted = m.IsDeleted,
-                    UserId = m.UpdatedBy
+                    UpdatedBy = m.UpdatedBy
                 }).ToList()
             }).ToListAsync();
         if (query is null)
@@ -1381,14 +1322,14 @@ public class StuffService : IStuffService
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
                     Description = a.Description,
                     IsDeleted = a.IsDeleted,
-                    UserId = a.UpdatedBy
+                    UpdatedBy = a.UpdatedBy
                 }).ToList()
             }).ToListAsync();
         if (query is null)
@@ -1400,6 +1341,7 @@ public class StuffService : IStuffService
         _logger.LogInformation("Devices found");
         return new ServiceResponse<IEnumerable<DeviceWithAssetsQuery>>(true, query, "Urządzenia zostały znalezione");
     }
+
     public async Task<ServiceResponse<DeviceWithAssetsQuery>> GetDeviceWithAssets(int deviceId)
     {
         await using var _context = await _factory.CreateDbContextAsync();
@@ -1412,14 +1354,14 @@ public class StuffService : IStuffService
                 Name = d.Name,
                 Description = d.Description,
                 IsDeleted = d.IsDeleted,
-                UserId = d.UpdatedBy,
+                UpdatedBy = d.UpdatedBy,
                 Assets = d.Models.SelectMany(m => m.Assets).Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
                     Description = a.Description,
                     IsDeleted = a.IsDeleted,
-                    UserId = a.UpdatedBy
+                    UpdatedBy = a.UpdatedBy
                 }).ToList()
             }).FirstOrDefaultAsync(d => d.DeviceId == deviceId);
         if (query is null)
@@ -1445,7 +1387,7 @@ public class StuffService : IStuffService
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
-                UserId = m.UpdatedBy
+                UpdatedBy = m.UpdatedBy
             }).FirstOrDefaultAsync(m => m.ModelId == modelId);
         if (query == null)
         {
@@ -1461,7 +1403,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get models
         var query = await _context.Models
             .AsNoTracking()
@@ -1471,7 +1412,7 @@ public class StuffService : IStuffService
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
-                UserId = m.UpdatedBy
+                UpdatedBy = m.UpdatedBy
             }).ToListAsync();
         if (query is null)
         {
@@ -1487,7 +1428,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get models
         var query = await _context.Models
             .AsNoTracking()
@@ -1497,14 +1437,14 @@ public class StuffService : IStuffService
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
-                UserId = m.UpdatedBy,
+                UpdatedBy = m.UpdatedBy,
                 Assets = m.Assets.Select(a => new AssetQuery
                 {
                     AssetId = a.AssetId,
                     Name = a.Name,
                     Description = a.Description,
                     IsDeleted = a.IsDeleted,
-                    UserId = a.UpdatedBy
+                    UpdatedBy = a.UpdatedBy
                 }).ToList()
             }).ToListAsync();
         if (query is null)
@@ -1530,7 +1470,7 @@ public class StuffService : IStuffService
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
-                UserId = m.UpdatedBy
+                UpdatedBy = m.UpdatedBy
             }).FirstOrDefaultAsync(m => m.ParameterId == parameterId);
         if (query == null)
         {
@@ -1546,7 +1486,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get parameters
         var query = await _context.Parameters
             .AsNoTracking()
@@ -1556,7 +1495,7 @@ public class StuffService : IStuffService
                 Name = m.Name,
                 Description = m.Description,
                 IsDeleted = m.IsDeleted,
-                UserId = m.UpdatedBy
+                UpdatedBy = m.UpdatedBy
             }).ToListAsync();
         if (query is null)
         {
@@ -1572,7 +1511,6 @@ public class StuffService : IStuffService
     {
         await using var _context = await _factory.CreateDbContextAsync();
 
-
         // get parameters
         var query = await _context.Parameters
             .AsNoTracking()
@@ -1582,14 +1520,14 @@ public class StuffService : IStuffService
                 Name = p.Name,
                 Description = p.Description,
                 IsDeleted = p.IsDeleted,
-                UserId = p.UpdatedBy,
+                UpdatedBy = p.UpdatedBy,
                 Models = p.ModelParameters.Select(mp => new ModelQuery
                 {
                     ModelId = mp.ModelId,
                     Name = mp.Model.Name,
                     Description = mp.Model.Description,
                     IsDeleted = mp.Model.IsDeleted,
-                    UserId = mp.Model.UpdatedBy
+                    UpdatedBy = mp.Model.UpdatedBy
                 }).ToList()
             }).ToListAsync();
         if (query is null)
@@ -1604,9 +1542,7 @@ public class StuffService : IStuffService
 
     public async Task<ServiceResponse> MarkDeleteAsset(int assetId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get asset
         var asset = await _context.Assets
@@ -1627,12 +1563,10 @@ public class StuffService : IStuffService
         // update asset
         _context.Update(asset);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Asset marked as deleted");
@@ -1641,7 +1575,6 @@ public class StuffService : IStuffService
         catch (Exception e)
         {
             _logger.LogError(e, "Error marking asset as deleted");
-            
 
             return new ServiceResponse(false, "Błąd podczas oznaczania zasobu jako usuniętego");
         }
@@ -1649,9 +1582,7 @@ public class StuffService : IStuffService
 
     public async Task<ServiceResponse> MarkDeleteAssetCategory(int assetId, int categoryId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get assetCategory
         var assetCategory = await _context.AssetCategories.FindAsync(assetId, categoryId);
@@ -1687,9 +1618,7 @@ public class StuffService : IStuffService
 
     public async Task<ServiceResponse> MarkDeleteAssetDetail(int assetId, int detailId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get assetDetail
         var assetDetail = await _context.AssetDetails.FindAsync(assetId, detailId);
@@ -1706,7 +1635,6 @@ public class StuffService : IStuffService
         }
         assetDetail.IsDeleted = true;
         _context.Update(assetDetail);
-
 
         try
         {
@@ -1726,9 +1654,7 @@ public class StuffService : IStuffService
 
     public async Task<ServiceResponse> MarkDeleteCategory(int categoryId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get category
         var category = await _context.Categories
@@ -1749,12 +1675,10 @@ public class StuffService : IStuffService
         // update category
         _context.Update(category);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Category marked as deleted");
@@ -1764,16 +1688,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error marking category as deleted");
 
-
             return new ServiceResponse(false, "Błąd podczas oznaczania kategorii jako usuniętej");
         }
     }
 
     public async Task<ServiceResponse> MarkDeleteDetail(int detailId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get detail
         var detail = await _context.Details
@@ -1794,12 +1715,10 @@ public class StuffService : IStuffService
         // update detail
         _context.Update(detail);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Detail marked as deleted");
@@ -1809,16 +1728,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error marking detail as deleted");
 
-
             return new ServiceResponse(false, "Błąd podczas oznaczania szczegółu jako usuniętego");
         }
     }
 
-    public async Task<ServiceResponse> MarkDeleteDevice(int deviceId)
+    public async Task<ServiceResponse> MarkDeleteDevice(string userId, int deviceId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get device
         var device = await _context.Devices
@@ -1836,15 +1752,14 @@ public class StuffService : IStuffService
         }
         // mark device as deleted
         device.IsDeleted = true;
+        device.UpdatedBy = userId;
         // update device
         _context.Update(device);
-
 
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Device marked as deleted");
@@ -1854,16 +1769,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error marking device as deleted");
 
-
             return new ServiceResponse(false, "Błąd podczas oznaczania urządzenia jako usuniętego");
         }
     }
 
     public async Task<ServiceResponse> MarkDeleteModel(int modelId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get model
         var model = await _context.Models
@@ -1884,12 +1796,10 @@ public class StuffService : IStuffService
         // update model
         _context.Update(model);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Model marked as deleted");
@@ -1899,16 +1809,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error marking model as deleted");
 
-
             return new ServiceResponse(false, "Błąd podczas oznaczania modelu jako usuniętego");
         }
     }
 
     public async Task<ServiceResponse> MarkDeleteModelParameter(int modelId, int parameterId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         var modelParameter = await _context.ModelParameters.FindAsync(modelId, parameterId);
         if (modelParameter == null)
@@ -1923,7 +1830,6 @@ public class StuffService : IStuffService
         }
         modelParameter.IsDeleted = true;
         _context.Update(modelParameter);
-
 
         try
         {
@@ -1943,9 +1849,7 @@ public class StuffService : IStuffService
 
     public async Task<ServiceResponse> MarkDeleteParameter(int parameterId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get parameter
         var parameter = await _context.Parameters
@@ -1966,12 +1870,10 @@ public class StuffService : IStuffService
         // update parameter
         _context.Update(parameter);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Parameter marked as deleted");
@@ -1981,14 +1883,12 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error marking parameter as deleted");
 
-
             return new ServiceResponse(false, "Błąd podczas oznaczania parametru jako usuniętego");
         }
     }
 
     public async Task<ServiceResponse> UpdateAsset(AssetUpdateCommand assetUpdateDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get asset with all related data
@@ -2030,7 +1930,6 @@ public class StuffService : IStuffService
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Asset updated");
@@ -2042,10 +1941,9 @@ public class StuffService : IStuffService
             return new ServiceResponse(false, "Błąd podczas aktualizacji zasobu");
         }
     }
-       
+
     public async Task<ServiceResponse> UpdateAssetCategory(int assetId, int categoryId)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
 
         // get assetCategory
@@ -2079,16 +1977,13 @@ public class StuffService : IStuffService
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error updating assetCategory");
             return new ServiceResponse(false, "Błąd podczas aktualizacji kategorii zasobu");
         }
-       
     }
 
-    public async Task<ServiceResponse> UpdateAssetDetail(AssetDetailDto assetDetailDto)
+    public async Task<ServiceResponse> UpdateAssetDetail(AssetDetailQuery assetDetailDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
 
         var assetDetail = await _context.AssetDetails.FindAsync(assetDetailDto.AssetId, assetDetailDto.DetailId);
@@ -2120,11 +2015,9 @@ public class StuffService : IStuffService
             _context.AssetDetails.Update(assetDetail);
             await _context.SaveChangesAsync();
             return new ServiceResponse(true, "Szczegół zasobu został zaktualizowany");
-
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error updating assetDetail");
             return new ServiceResponse(false, "Błąd podczas aktualizacji szczegółu zasobu");
         }
@@ -2135,7 +2028,6 @@ public class StuffService : IStuffService
         // dodatkowy int
         // duplikat nazwy
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get category with all related data
         var category = await _context.Categories.FirstOrDefaultAsync(m => m.CategoryId == categoryUpdateDto.CategoryId);
@@ -2151,7 +2043,7 @@ public class StuffService : IStuffService
             _logger.LogWarning("Category name already exists");
             return new ServiceResponse(false, "Nazwa kategorii jest już zajęta");
         }
-               
+
         category.Name = categoryUpdateDto.Name;
         // assign userId to update
         category.Description = categoryUpdateDto.Description;
@@ -2164,7 +2056,6 @@ public class StuffService : IStuffService
             // save changes
             await _context.SaveChangesAsync();
 
-
             // return success
             _logger.LogInformation("Category updated");
             return new ServiceResponse(true, "Kategoria została zaktualizowana");
@@ -2173,12 +2064,11 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error updating category");
 
-
             return new ServiceResponse(false, "Błąd podczas aktualizacji kategorii");
         }
     }
 
-    public async Task<ServiceResponse> UpdateDetail( DetailUpdateCommand detailUpdateDto)
+    public async Task<ServiceResponse> UpdateDetail(DetailUpdateCommand detailUpdateDto)
     {
         await using var _context = await _factory.CreateDbContextAsync();
         // get detail
@@ -2206,7 +2096,7 @@ public class StuffService : IStuffService
         {
             // save changes
             await _context.SaveChangesAsync();
-                        // return success
+            // return success
             _logger.LogInformation("Detail updated");
             return new ServiceResponse(true, "Szczegół został zaktualizowany");
         }
@@ -2214,16 +2104,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error updating detail");
 
-
             return new ServiceResponse(false, "Błąd podczas aktualizacji szczegółu");
         }
     }
 
-    public async Task<ServiceResponse> UpdateDevice( DeviceUpdateCommand deviceUpdateDto)
+    public async Task<ServiceResponse> UpdateDevice(DeviceUpdateCommand deviceUpdateDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get device
         var device = await _context.Devices.AsNoTracking().FirstOrDefaultAsync(m => m.DeviceId == deviceUpdateDto.DeviceId);
@@ -2251,7 +2138,6 @@ public class StuffService : IStuffService
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Device updated");
@@ -2261,16 +2147,13 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error updating device");
 
-
             return new ServiceResponse(false, "Błąd podczas aktualizacji urządzenia");
         }
     }
-    
-    public async Task<ServiceResponse> UpdateModel( ModelUpdateCommand modelUpdateDto)
+
+    public async Task<ServiceResponse> UpdateModel(ModelUpdateCommand modelUpdateDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get model
         var model = await _context.Models.FirstOrDefaultAsync(m => m.ModelId == modelUpdateDto.ModelId);
@@ -2293,7 +2176,6 @@ public class StuffService : IStuffService
         // update model
         _context.Update(model);
 
-
         try
         {
             // save changes
@@ -2301,20 +2183,17 @@ public class StuffService : IStuffService
             // return success
             _logger.LogInformation("Model updated");
             return new ServiceResponse(true, "Model został zaktualizowany");
-
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error updating model");
 
-
             return new ServiceResponse(false, "Błąd podczas aktualizacji modelu");
         }
     }
 
-    public async Task<ServiceResponse> UpdateModelParameter(ModelParameterDto modelParameterDto)
+    public async Task<ServiceResponse> UpdateModelParameter(ModelParameterQuery modelParameterDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
 
         var modelParameter = await _context.ModelParameters.FindAsync(modelParameterDto.ModelId, modelParameterDto.ParameterId);
@@ -2348,17 +2227,14 @@ public class StuffService : IStuffService
         }
         catch (Exception ex)
         {
-
             _logger.LogError(ex, "Error updating modelParameter");
             return new ServiceResponse(false, "Błąd podczas aktualizacji parametru modelu");
         }
     }
-    
-    public async Task<ServiceResponse> UpdateParameter( ParameterUpdateCommand parameterUpdateDto)
+
+    public async Task<ServiceResponse> UpdateParameter(ParameterUpdateCommand parameterUpdateDto)
     {
-
         await using var _context = await _factory.CreateDbContextAsync();
-
 
         // get parameter
         var parameter = await _context.Parameters.FirstOrDefaultAsync(p => p.ParameterId == parameterUpdateDto.ParameterId);
@@ -2381,12 +2257,10 @@ public class StuffService : IStuffService
         // update parameter
         _context.Update(parameter);
 
-
         try
         {
             // save changes
             await _context.SaveChangesAsync();
-            
 
             // return success
             _logger.LogInformation("Parameter updated");
@@ -2396,9 +2270,7 @@ public class StuffService : IStuffService
         {
             _logger.LogError(e, "Error updating parameter");
 
-
             return new ServiceResponse(false, "Błąd podczas aktualizacji parametru");
         }
     }
 }
-

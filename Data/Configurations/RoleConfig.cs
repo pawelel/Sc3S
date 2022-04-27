@@ -19,7 +19,7 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4"
         }, new()
         {
-            Name ="Manager",
+            Name = "Manager",
             RoleId = "4de524ca-176d-44b3-aa26-15c17ba2ea0d"
         },
         new()
@@ -27,7 +27,7 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
             Name = "User",
             RoleId = "19d9ba04-7570-4789-8720-8c4fd24fc272"
         }
-        
+
         );
     }
 }

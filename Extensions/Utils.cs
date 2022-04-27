@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
+
 using Sc3S.Enumerations;
+
 using System.Collections.Specialized;
 
 using System.Reflection;
@@ -9,6 +11,7 @@ using System.Reflection;
 using System.Web;
 
 namespace Sc3S.Extensions;
+
 public static class Utils
 {
     public static readonly int[] PageSizeOptions = { 5, 10, 25, 50, 100 };
@@ -21,15 +24,19 @@ public static class Utils
             case Status.Retired:
                 color = Color.Error;
                 break;
+
             case Status.InUse:
                 color = Color.Default;
                 break;
+
             case Status.InStock:
                 color = Color.Success;
                 break;
+
             case Status.Unknown:
                 color = Color.Warning;
                 break;
+
             case Status.InRepair:
                 color = Color.Secondary;
                 break;
@@ -46,6 +53,7 @@ public static class Utils
     {
         return string.IsNullOrEmpty(value) ? "Brak danych" : value;
     }
+
     public static NameValueCollection QueryString(this NavigationManager navigationManager)
     {
         return HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
@@ -55,6 +63,7 @@ public static class Utils
     {
         return navigationManager.QueryString()[key] ?? string.Empty;
     }
+
     public static TAttribute GetAttribute<TAttribute>(this Enum enumValue)
         where TAttribute : Attribute
     {

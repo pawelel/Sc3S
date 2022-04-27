@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 
-using Microsoft.EntityFrameworkCore;
-
 using Sc3S.CQRS.Commands;
-using Sc3S.Data;
 
 namespace Sc3S.Validators;
 
@@ -12,8 +9,8 @@ public class CategoryUpdateCommandValidator : AbstractValidator<CategoryUpdateCo
     public CategoryUpdateCommandValidator()
     {
         CascadeMode = CascadeMode.Stop;
-        RuleFor(x => x.Name).NotEmpty().NotNull().Length(3,50);
-        RuleFor(x => x.Description).MaximumLength( 200);
-        RuleFor(x=>x.CategoryId).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Name).NotEmpty().NotNull().Length(3, 50);
+        RuleFor(x => x.Description).MaximumLength(200);
+        RuleFor(x => x.CategoryId).GreaterThanOrEqualTo(0);
     }
 }

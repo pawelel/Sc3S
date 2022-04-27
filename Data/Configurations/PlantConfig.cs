@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Sc3S.Entities;
 
 namespace Sc3S.Data.Configurations;
@@ -28,6 +29,5 @@ public class PlantConfig : IEntityTypeConfiguration<Plant>
                 Name = "P69",
                 Description = "Zakład Crafter Września"
             });
-
     }
 }

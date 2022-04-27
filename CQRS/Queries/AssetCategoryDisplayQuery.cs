@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class AssetCategoryDisplayQuery : BaseDto
+
+public class AssetCategoryDisplayQuery : BaseQuery
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

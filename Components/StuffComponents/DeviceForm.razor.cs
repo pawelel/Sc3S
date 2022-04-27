@@ -1,24 +1,23 @@
 ﻿using AutoMapper;
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using MudBlazor;
 
 using Sc3S.CQRS.Commands;
 using Sc3S.Services;
-using Sc3S.Validators;
 
 namespace Sc3S.Components.StuffComponents;
+
 public partial class DeviceForm : ComponentBase
 {
-
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+
     [Inject]
     private IStuffService StuffService { get; set; } = default!;
-    [Inject] IMapper Mapper { get; set; } = default!;
 
+    [Inject] private IMapper Mapper { get; set; } = default!;
+    [Parameter] public string UserName { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Parameter] public int DeviceId { get; set; }
     private DeviceUpdateCommand _device = new();
@@ -28,12 +27,12 @@ public partial class DeviceForm : ComponentBase
         MudDialog.Cancel();
     }
 
-    async Task GetDevice(int deviceId)
+    private async Task GetDevice(int deviceId)
     {
         var result = await StuffService.GetDeviceById(deviceId);
-        if (result.Success)
+        if (result.IsSuccess)
         {
-            _device = Mapper.Map<DeviceUpdateCommand>(result.Data);
+            _device = Mapper.Map<DeviceUpdateCommand>(result.Value);
         }
         else
         {
@@ -48,9 +47,10 @@ public partial class DeviceForm : ComponentBase
             await GetDevice(DeviceId);
         }
     }
+
     private async Task HandleSave()
     {
-
+        _device.UserName = UserName;
 
         if (DeviceId > 0)
         {
@@ -65,8 +65,8 @@ public partial class DeviceForm : ComponentBase
         }
         else
         {
-          var result =  await StuffService.CreateDevice(_device);
-            if (result.Success)
+            var result = await StuffService.CreateDevice(_device);
+            if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
                 MudDialog.Close(DialogResult.Ok(true));
@@ -74,7 +74,5 @@ public partial class DeviceForm : ComponentBase
             }
             Snackbar.Add(result.Message, Severity.Error);
         }
-        
-
     }
 }

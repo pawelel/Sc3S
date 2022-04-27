@@ -1,10 +1,9 @@
-﻿using Sc3S.DTO;
+﻿namespace Sc3S.CQRS.Queries;
 
-namespace Sc3S.CQRS.Queries;
-public class ModelFlat : BaseDto
+public class ModelFlat : BaseQuery
 {
     public int ModelId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public virtual List<ModelParameterDto> ModelParameters { get; set; } = new();
+    public virtual List<ModelParameterQuery> ModelParameters { get; set; } = new();
 }

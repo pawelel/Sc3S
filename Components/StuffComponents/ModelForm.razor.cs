@@ -3,7 +3,8 @@
 using MudBlazor;
 
 namespace Sc3S.Components.StuffComponents;
+
 public partial class ModelForm : ComponentBase
 {
-    MudForm _form = new();
+    private MudForm _form = new();
 }

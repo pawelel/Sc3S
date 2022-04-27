@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Device : BaseEntity
 {
     public int DeviceId { get; set; }

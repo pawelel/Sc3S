@@ -1,7 +1,7 @@
 ﻿namespace Sc3S.Entities;
+
 public class CommunicateCategory : BaseEntity
 {
-
     public int CommunicateId { get; set; }
     public virtual Communicate Communicate { get; set; } = new();
     public int CategoryId { get; set; }

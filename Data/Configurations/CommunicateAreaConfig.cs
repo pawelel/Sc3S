@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Sc3S.Entities;
+
 public class CommunicateAreaConfig : IEntityTypeConfiguration<CommunicateArea>
 {
     public void Configure(EntityTypeBuilder<CommunicateArea> builder)

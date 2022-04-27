@@ -1,26 +1,18 @@
-using FluentValidation;
-
 using MediatR;
 
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using MudBlazor;
 using MudBlazor.Services;
 
 using Sc3S.Components.Authentication;
-using Sc3S.CQRS.Commands;
 using Sc3S.Data;
 using Sc3S.Entities;
-using Sc3S.Extensions;
 using Sc3S.Middleware;
 using Sc3S.Services;
-using Sc3S.Validators;
 
 using Serilog;
 
@@ -45,17 +37,11 @@ builder.Services.AddRazorPages();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddHttpContextAccessor();
-builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IStuffService, StuffService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICommunicateService, CommunicateService>();
 builder.Services.AddTransient<ISituationService, SituationService>();
-builder.Services.AddTransient<IUserContextService, UserContextService>();
-builder.Services.AddTransient<IStuffService, StuffService>();
-builder.Services.AddTransient<ICommunicateService, CommunicateService>();
-builder.Services.AddTransient<ISituationService, SituationService>();
-builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());

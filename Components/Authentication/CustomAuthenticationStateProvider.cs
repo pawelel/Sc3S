@@ -43,6 +43,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             return await Task.FromResult(new AuthenticationState(_anonymous));
         }
     }
+
     public async Task UpdateAuthenticationState(UserSession userSession)
     {
         ClaimsPrincipal claimsPrincipal;

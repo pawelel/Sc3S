@@ -8,7 +8,7 @@ using Sc3S.Data;
 
 namespace Sc3S.CQRS.Handlers;
 
-public class LoginAccountCommandHandler : IRequestHandler<LoginAccountCommand, UserSession>
+public class LoginAccountCommandHandler : IRequestHandler<AccountLoginCommand, UserSession>
 {
     private readonly IDbContextFactory<Sc3SContext> _factory;
     private readonly ILogger<LoginAccountCommandHandler> _logger;
@@ -19,7 +19,7 @@ public class LoginAccountCommandHandler : IRequestHandler<LoginAccountCommand, U
         _logger = logger;
     }
 
-    public async Task<UserSession> Handle(LoginAccountCommand request, CancellationToken cancellationToken)
+    public async Task<UserSession> Handle(AccountLoginCommand request, CancellationToken cancellationToken)
     {
         try
         {

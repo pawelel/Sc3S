@@ -1,7 +1,8 @@
-﻿using Sc3S.DTO;
-using Sc3S.Enumerations;
+﻿using Sc3S.Enumerations;
+
 namespace Sc3S.CQRS.Queries;
-public class SpaceQuery : BaseDto
+
+public class SpaceQuery : BaseQuery
 {
     public int SpaceId { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -10,5 +11,5 @@ public class SpaceQuery : BaseDto
     public SpaceType SpaceType { get; set; }
     public virtual List<CoordinateQuery> Coordinates { get; set; } = new();
 
-    public virtual List<CommunicateSpaceDto> CommunicateSpaces { get; set; } = new();
+    public virtual List<CommunicateSpaceQuery> CommunicateSpaces { get; set; } = new();
 }

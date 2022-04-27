@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Model : BaseEntity
 {
     public int ModelId { get; set; }

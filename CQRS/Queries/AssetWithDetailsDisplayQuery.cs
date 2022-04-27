@@ -1,6 +1,8 @@
 ﻿using Sc3S.Enumerations;
+
 namespace Sc3S.CQRS.Queries;
-public class AssetWithDetailsDisplayQuery : BaseDto
+
+public class AssetWithDetailsDisplayQuery : BaseQuery
 {
     public int AssetId { get; set; }
     public string Name { get; set; } = string.Empty;

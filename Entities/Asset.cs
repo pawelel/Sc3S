@@ -1,6 +1,7 @@
 ﻿using Sc3S.Enumerations;
 
 namespace Sc3S.Entities;
+
 public class Asset : BaseEntity
 {
     public int AssetId { get; set; }

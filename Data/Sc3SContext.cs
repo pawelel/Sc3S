@@ -1,8 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using Sc3S.Entities;
-using Sc3S.Services;
 
 using System.Reflection;
 
@@ -10,15 +8,13 @@ namespace Sc3S.Data;
 
 public class Sc3SContext : DbContext
 {
-    private readonly IUserContextService _userContextService;
-    public Sc3SContext(DbContextOptions<Sc3SContext> options, IUserContextService userContextService)
+    public Sc3SContext(DbContextOptions<Sc3SContext> options)
         : base(options)
     {
-        _userContextService = userContextService;
     }
+
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)
     {
-        var userId = _userContextService.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
         var now = DateTime.Now;
         var entries = ChangeTracker.Entries();
         foreach (var entry in entries)
@@ -26,11 +22,10 @@ public class Sc3SContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Property("CreatedBy").CurrentValue = userId;
                     entry.Property("CreatedAt").CurrentValue = now;
                     break;
+
                 case EntityState.Modified:
-                    entry.Property("UpdatedBy").CurrentValue = userId;
                     entry.Property("UpdatedAt").CurrentValue = now;
                     break;
             }
@@ -38,13 +33,19 @@ public class Sc3SContext : DbContext
         return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
-
-
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Role> Roles => Set<Role>();
+
     //stuff
     public virtual DbSet<Asset> Assets => Set<Asset>();
+
     public virtual DbSet<AssetCategory> AssetCategories => Set<AssetCategory>();
+
+    internal Task FirstOrDefaultAsync()
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual DbSet<AssetDetail> AssetDetails => Set<AssetDetail>();
     public virtual DbSet<Category> Categories => Set<Category>();
     public virtual DbSet<Detail> Details => Set<Detail>();
@@ -53,8 +54,10 @@ public class Sc3SContext : DbContext
     public virtual DbSet<ModelParameter> ModelParameters => Set<ModelParameter>();
     public virtual DbSet<Parameter> Parameters => Set<Parameter>();
     public virtual DbSet<Plant> Plants => Set<Plant>();
+
     // information
     public virtual DbSet<CommunicateArea> CommunicateAreas => Set<CommunicateArea>();
+
     public virtual DbSet<CommunicateAsset> CommunicateAssets => Set<CommunicateAsset>();
     public virtual DbSet<Communicate> Communicates => Set<Communicate>();
     public virtual DbSet<CommunicateCoordinate> CommunicateCoordinates => Set<CommunicateCoordinate>();
@@ -65,11 +68,13 @@ public class Sc3SContext : DbContext
 
     // location
     public virtual DbSet<Area> Areas => Set<Area>();
+
     public virtual DbSet<Coordinate> Coordinates => Set<Coordinate>();
     public virtual DbSet<Space> Spaces => Set<Space>();
 
     // occurence
     public virtual DbSet<DeviceSituation> DeviceSituations => Set<DeviceSituation>();
+
     public virtual DbSet<CategorySituation> CategorySituations => Set<CategorySituation>();
     public virtual DbSet<Question> Questions => Set<Question>();
     public virtual DbSet<Situation> Situations => Set<Situation>();

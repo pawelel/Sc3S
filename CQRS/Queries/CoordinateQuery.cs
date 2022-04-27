@@ -1,13 +1,13 @@
-﻿using Sc3S.DTO;
+﻿namespace Sc3S.CQRS.Queries;
 
-namespace Sc3S.CQRS.Queries;
-public class CoordinateQuery : BaseDto
+public class CoordinateQuery : BaseQuery
 {
     public int CoordinateId { get; set; }
     public string Name { get; set; } = string.Empty;
+    public int SpaceId { get; set; }
 
     public string Description { get; set; } = string.Empty;
 
-    public virtual List<CommunicateCoordinateDto> CommunicateCoordinates { get; set; } = new();
+    public virtual List<CommunicateCoordinateQuery> CommunicateCoordinates { get; set; } = new();
     public virtual List<AssetQuery> Assets { get; set; } = new();
 }

@@ -1,4 +1,5 @@
 namespace Sc3S.Entities;
+
 public class Category : BaseEntity
 {
     public int CategoryId { get; set; }

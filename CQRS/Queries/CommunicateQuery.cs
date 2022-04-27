@@ -1,7 +1,8 @@
-﻿using Sc3S.DTO;
-using Sc3S.Enumerations;
+﻿using Sc3S.Enumerations;
+
 namespace Sc3S.CQRS.Queries;
-public class CommunicateQuery : BaseDto
+
+public class CommunicateQuery : BaseQuery
 {
     public int CommunicateId { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -11,11 +12,11 @@ public class CommunicateQuery : BaseDto
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 
-    public virtual List<CommunicateAreaDto> CommunicateAreas { get; set; } = new();
-    public virtual List<CommunicateAssetDto> CommunicateAssets { get; set; } = new();
-    public virtual List<CommunicateCoordinateDto> CommunicateCoordinates { get; set; } = new();
-    public virtual List<CommunicateDeviceDto> CommunicateDevices { get; set; } = new();
-    public virtual List<CommunicateModelDto> CommunicateModels { get; set; } = new();
-    public virtual List<CommunicateSpaceDto> CommunicateSpaces { get; set; } = new();
-    public virtual List<CommunicateCategoryDto> CommunicateCategories { get; set; } = new();
+    public virtual List<CommunicateAreaQuery> CommunicateAreas { get; set; } = new();
+    public virtual List<CommunicateAssetQuery> CommunicateAssets { get; set; } = new();
+    public virtual List<CommunicateCoordinateQuery> CommunicateCoordinates { get; set; } = new();
+    public virtual List<CommunicateDeviceQuery> CommunicateDevices { get; set; } = new();
+    public virtual List<CommunicateModelQuery> CommunicateModels { get; set; } = new();
+    public virtual List<CommunicateSpaceQuery> CommunicateSpaces { get; set; } = new();
+    public virtual List<CommunicateCategoryQuery> CommunicateCategories { get; set; } = new();
 }

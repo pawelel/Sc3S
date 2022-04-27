@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class SituationParameter : BaseEntity
 {
     public int SituationId { get; set; }

@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.CQRS.Queries;
+
 public class QuestionWithSituationsQuery
 {
     public int QuestionId { get; set; }

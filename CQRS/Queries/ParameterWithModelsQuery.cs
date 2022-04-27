@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class ParameterWithModelsQuery : BaseDto
+
+public class ParameterWithModelsQuery : BaseQuery
 {
     public int ParameterId { get; set; }
     public string Name { get; set; } = string.Empty;

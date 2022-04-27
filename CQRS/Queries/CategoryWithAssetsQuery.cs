@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class CategoryWithAssetsQuery : BaseDto
+
+public class CategoryWithAssetsQuery : BaseQuery
 {
     public int CategoryId { get; set; }
     public string Name { get; set; } = string.Empty;

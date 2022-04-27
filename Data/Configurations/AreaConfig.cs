@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Sc3S.Entities;
 
 namespace Sc3S.Data.Configurations;
+
 public class AreaConfig : IEntityTypeConfiguration<Area>
 {
     public void Configure(EntityTypeBuilder<Area> builder)

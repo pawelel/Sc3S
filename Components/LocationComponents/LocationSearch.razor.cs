@@ -11,11 +11,11 @@ public partial class LocationSearch
            Coordinate = "Location 1"
        }
    };
-    string _searchString = string.Empty;
+
+    private string _searchString = string.Empty;
+
     private Func<LocationQuery, bool> LocationFilter => x =>
-    {
-        return _searchString != null && typeof(LocationQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
-    };
+     {
+         return _searchString != null && typeof(LocationQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
+     };
 }
-
-

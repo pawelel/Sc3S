@@ -7,32 +7,33 @@ using Sc3S.Enumerations;
 using Sc3S.Services;
 
 namespace Sc3S.Components.StuffComponents;
+
 public partial class AssetSearch : ComponentBase
 {
     private IEnumerable<AssetDisplayQuery> _assets = new List<AssetDisplayQuery>();
     private IEnumerable<AssetDisplayQuery> _filteredAssets = new List<AssetDisplayQuery>();
-    [Inject] ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
     private string _searchString = string.Empty;
     private string _selectedFilters = string.Empty;
     [Inject] private IStuffService StuffService { get; set; } = default!;
 
     private Func<AssetDisplayQuery, bool> AssetFilter => x =>
-    {
-        return _searchString != null && typeof(AssetDisplayQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
-    };
+     {
+         return _searchString != null && typeof(AssetDisplayQuery).GetProperties().Any(p => p.GetValue(x)?.ToString()?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) == true);
+     };
+
     protected override async Task OnInitializedAsync()
     {
         await GetAssets();
         _filteredAssets = _assets;
-
     }
 
     private async Task GetAssets()
     {
         var result = await StuffService.GetAssetDisplays();
-        if (result.Success)
+        if (result.IsSuccess)
         {
-            _assets = result.Data!;
+            _assets = result.Value!;
         }
         else
         {
@@ -62,6 +63,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {category} ({count})";
         }
     }
+
     private void FilterByStatus(Status status)
     {
         var count = 0;
@@ -72,6 +74,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {status} ({count})";
         }
     }
+
     private void FilterByModel(string model)
     {
         var count = 0;
@@ -85,6 +88,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {model} ({count})";
         }
     }
+
     private void FilterByArea(string area)
     {
         var count = 0;
@@ -95,6 +99,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {area} ({count})";
         }
     }
+
     private void FilterBySpace(string space)
     {
         var count = 0;
@@ -105,6 +110,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {space} ({count})";
         }
     }
+
     private void FilterByCoordinate(string coordinate)
     {
         var count = 0;
@@ -115,6 +121,7 @@ public partial class AssetSearch : ComponentBase
             _selectedFilters += $" {coordinate} ({count})";
         }
     }
+
     private void FilterByDevice(string device)
     {
         var count = 0;
@@ -124,6 +131,5 @@ public partial class AssetSearch : ComponentBase
             count = _filteredAssets.Count();
             _selectedFilters += $" {device} ({count})";
         }
-
     }
 }

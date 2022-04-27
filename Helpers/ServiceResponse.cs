@@ -4,15 +4,16 @@ public class ServiceResponse<T>
 {
     public ServiceResponse(bool success, T? data, string message)
     {
-        Success = success;
-        Data = data;
+        IsSuccess = success;
+        Value = data;
         Message = message;
     }
 
-    public bool Success { get; set; } = true;
-    public T? Data { get; set; } 
+    public bool IsSuccess { get; set; } = true;
+    public T? Value { get; set; }
     public string Message { get; set; }
 }
+
 public class ServiceResponse
 {
     public ServiceResponse(bool success, string message)
@@ -22,5 +23,5 @@ public class ServiceResponse
     }
 
     public bool Success { get; set; } = true;
-    public string Message { get; set; } 
+    public string Message { get; set; }
 }

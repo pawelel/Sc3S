@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class DetailWithAssetsQuery : BaseDto
+
+public class DetailWithAssetsQuery : BaseQuery
 {
     public int DetailId { get; set; }
     public string Name { get; set; } = string.Empty;

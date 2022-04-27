@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class DeviceSituation : BaseEntity
 {
     public virtual Situation Situation { get; set; } = new();

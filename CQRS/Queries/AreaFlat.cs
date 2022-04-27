@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class AreaFlat : BaseDto
+
+public class AreaFlat : BaseQuery
 {
     public int AreaId { get; set; }
     public string Name { get; set; } = string.Empty;

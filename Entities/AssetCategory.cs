@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class AssetCategory : BaseEntity
 {
     public int AssetId { get; set; }

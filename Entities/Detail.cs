@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Detail : BaseEntity
 {
     public int DetailId { get; set; }

@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Coordinate : BaseEntity
 {
     public int CoordinateId { get; set; }

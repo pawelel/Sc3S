@@ -1,5 +1,7 @@
 ﻿using Sc3S.Enumerations;
+
 namespace Sc3S.Entities;
+
 public class Space : BaseEntity
 {
     public int SpaceId { get; set; }

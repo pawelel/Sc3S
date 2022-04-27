@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Sc3S.Entities;
+
 namespace Sc3S.Data.Configurations;
+
 public class ModelConfig : IEntityTypeConfiguration<Model>
 {
     public void Configure(EntityTypeBuilder<Model> builder)
@@ -12,6 +15,6 @@ public class ModelConfig : IEntityTypeConfiguration<Model>
         builder.Property(x => x.Name).HasMaxLength(50).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(200);
         builder.Property(x => x.DeviceId).IsRequired();
-        builder.HasOne(x=>x.Device).WithMany(x=>x.Models).HasForeignKey(x=>x.DeviceId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Device).WithMany(x => x.Models).HasForeignKey(x => x.DeviceId).OnDelete(DeleteBehavior.Restrict);
     }
 }

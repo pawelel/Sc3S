@@ -1,6 +1,8 @@
 ﻿using Sc3S.Enumerations;
+
 namespace Sc3S.CQRS.Commands;
-public class CommunicateUpdateCommand
+
+public class CommunicateUpdateCommand : BaseCommand
 {
     public string Name { get; set; } = string.Empty;
 

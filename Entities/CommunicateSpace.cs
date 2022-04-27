@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class CommunicateSpace : BaseEntity
 {
     public int SpaceId { get; set; }

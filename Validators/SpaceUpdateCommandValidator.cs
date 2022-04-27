@@ -1,15 +1,11 @@
 ﻿using FluentValidation;
 
-using Microsoft.EntityFrameworkCore;
-
 using Sc3S.CQRS.Commands;
-using Sc3S.Data;
 
 namespace Sc3S.Validators;
 
 public class SpaceUpdateCommandValidator : AbstractValidator<SpaceUpdateCommand>
 {
-
     public SpaceUpdateCommandValidator()
     {
         CascadeMode = CascadeMode.Stop;

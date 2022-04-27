@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Sc3S.Entities;
+
 namespace Sc3S.Data.Configurations;
+
 public class ParameterConfig : IEntityTypeConfiguration<Parameter>
 {
     public void Configure(EntityTypeBuilder<Parameter> builder)

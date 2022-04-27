@@ -1,6 +1,6 @@
 ﻿namespace Sc3S.Entities;
 
-public class Role
+public class Role : BaseEntity
 {
     public string RoleId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

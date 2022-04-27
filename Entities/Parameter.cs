@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Parameter : BaseEntity
 {
     public int ParameterId { get; set; }

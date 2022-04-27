@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class SituationWithAssetsAndDetailsQuery : BaseDto
+
+public class SituationWithAssetsAndDetailsQuery : BaseQuery
 {
     public int SituationId { get; set; }
     public string Name { get; set; } = string.Empty;

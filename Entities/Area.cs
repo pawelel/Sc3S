@@ -1,4 +1,5 @@
 ﻿namespace Sc3S.Entities;
+
 public class Area : BaseEntity
 {
     public int AreaId { get; set; }

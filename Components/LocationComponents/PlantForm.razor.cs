@@ -5,18 +5,20 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 using Sc3S.CQRS.Commands;
-using Sc3S.Helpers;
 using Sc3S.Services;
 
 namespace Sc3S.Components.LocationComponents;
+
 public partial class PlantForm : ComponentBase
 {
     private PlantUpdateCommand _plantUpdate = new();
     private MudForm _form = new();
 
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+
     [Inject]
     private ILocationService LocationService { get; set; } = default!;
+
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Parameter] public int PlantId { get; set; }
     [Inject] public IMapper Mapper { get; set; } = default!;
@@ -25,13 +27,11 @@ public partial class PlantForm : ComponentBase
     {
         MudDialog.Close(DialogResult.Ok(true));
     }
+
     private void Cancel()
     {
         MudDialog.Cancel();
     }
-
-
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,9 +44,9 @@ public partial class PlantForm : ComponentBase
     private async Task GetPlant()
     {
         var result = await LocationService.GetPlantById(PlantId);
-        if (result.Success)
+        if (result.IsSuccess)
         {
-            _plantUpdate = Mapper.Map<PlantUpdateCommand>(result.Data);
+            _plantUpdate = Mapper.Map<PlantUpdateCommand>(result.Value);
             return;
         }
         _plantUpdate = new();
@@ -56,8 +56,7 @@ public partial class PlantForm : ComponentBase
     {
         if (PlantId > 0)
         {
-
-         var  result =  await LocationService.UpdatePlant(_plantUpdate);
+            var result = await LocationService.UpdatePlant(_plantUpdate);
             if (result.Success)
             {
                 Snackbar.Add(result.Message, Severity.Success);
@@ -68,8 +67,8 @@ public partial class PlantForm : ComponentBase
         }
         else
         {
-          var result =  await LocationService.CreatePlant(_plantUpdate);
-            if (result.Success)
+            var result = await LocationService.CreatePlant(_plantUpdate);
+            if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
                 MudDialog.Close(DialogResult.Ok(true));
@@ -77,7 +76,6 @@ public partial class PlantForm : ComponentBase
             }
             Snackbar.Add(result.Message, Severity.Error);
         }
-
 
         await _form.Validate();
         if (_form.IsValid)
@@ -91,6 +89,5 @@ public partial class PlantForm : ComponentBase
             {
                 Snackbar.Add(ex.Message, Severity.Error);
             }
-
     }
 }

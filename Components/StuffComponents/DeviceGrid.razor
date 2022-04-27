@@ -1,1 +1,34 @@
-﻿
+﻿<MudDataGrid Dense=true T="DeviceQuery" Items="_devices" Sortable="true" Filterable="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_search" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+   <Columns>
+  
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.DeviceId)" Title="Id"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.Name)" Title="Nazwa"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.Description)" Title="Opis"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.IsDeleted)" Title="Usunięty/Aktywny">
+        <CellTemplate>
+            <MudText Color="@(context.Item.IsDeleted?Color.Error:Color.Success)">@(context.Item.IsDeleted?"Usunięty":"Aktywny")</MudText>
+        </CellTemplate>    
+        </Column>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.CreatedBy)" Title="Autor"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.CreatedOn)" Title="Data utworzenia"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.UpdatedBy)" Title="Ostatnia aktualizacja"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.UpdatedOn)" Title="Data aktualizacji"/>
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.DeviceId)" Title="Id">
+            <CellTemplate>
+                 <AuthorizeView Roles="Manager, Admin" Context="manager">
+                     <MudFab OnClick="@(()=>Edit(context.Item.DeviceId))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" IconSize="Size.Small" Size="Size.Small"/>
+            <MudFab OnClick="@(()=>MarkDelete(manager.User.Identity?.Name!, context.Item.DeviceId))" Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" IconSize="Size.Small" Size="Size.Small"/>
+                     </AuthorizeView>
+                     <AuthorizeView Roles="Admin" Context="admin">
+                <MudFab OnClick="@(()=>Delete(context.Item.DeviceId))" Color="Color.Error" Icon="@Icons.Filled.DeleteForever" IconSize="Size.Small" Size="Size.Small"/>
+                </AuthorizeView>
+            </CellTemplate>
+        </Column>
+   </Columns>
+</MudDataGrid>

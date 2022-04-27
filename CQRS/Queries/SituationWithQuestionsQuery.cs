@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class SituationWithQuestionsQuery : BaseDto
+
+public class SituationWithQuestionsQuery : BaseQuery
 {
     public int SituationId { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -1,5 +1,6 @@
 ﻿namespace Sc3S.CQRS.Queries;
-public class PlantQuery : BaseDto
+
+public class PlantQuery : BaseQuery
 {
     public int PlantId { get; set; }
     public string Name { get; set; } = string.Empty;

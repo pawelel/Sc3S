@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Sc3S.Entities;
+
 namespace Sc3S.Data.Configurations;
+
 public class CommunicateDeviceConfig : IEntityTypeConfiguration<CommunicateDevice>
 {
     public void Configure(EntityTypeBuilder<CommunicateDevice> builder)
