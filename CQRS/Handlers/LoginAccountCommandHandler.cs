@@ -26,17 +26,14 @@ public class LoginAccountCommandHandler : IRequestHandler<AccountLoginCommand, U
         try
         {
             await using var ctx = await _factory.CreateDbContextAsync(cancellationToken);
-            var user = await ctx.Users.AsNoTracking().FirstOrDefaultAsync(a => a.UserName.ToLower() == request.UserName.ToLower() || a.Email.ToLower() == request.UserName.ToLower(), cancellationToken: cancellationToken);
+            var user = await ctx.Accounts.Include(a=>a.Role).AsNoTracking().FirstOrDefaultAsync(a => a.UserName.ToLower() == request.UserName.ToLower() || a.Email.ToLower() == request.UserName.ToLower(), cancellationToken: cancellationToken);
             if (user is not null)
             {
-                List<string> roles = (from ur in ctx.UserRoles
-                                      join r in ctx.Roles on ur.RoleId equals r.Id
-                                      where ur.UserId == user.Id
-                                      select r.Name).ToList();
+                
                 return new()
                 {
                     UserName = user.UserName,
-                    Roles = roles
+                    Role = user.Role.Name
                 };
             }
         }

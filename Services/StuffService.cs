@@ -435,8 +435,8 @@ public class StuffService : IStuffService
             Name = deviceUpdateDto.Name,
             Description = deviceUpdateDto.Description,
             IsDeleted = false,
-            CreatedBy = deviceUpdateDto.UserName,
-            UpdatedBy = deviceUpdateDto.UserName
+            CreatedBy = deviceUpdateDto.UpdatedBy,
+            UpdatedBy = deviceUpdateDto.UpdatedBy
         };
         // create device
         _context.Devices.Attach(device);

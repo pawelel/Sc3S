@@ -50,7 +50,7 @@ public partial class DeviceForm : ComponentBase
 
     private async Task HandleSave()
     {
-        _device.UserName = UserName;
+        _device.UpdatedBy = UserName;
 
         if (DeviceId > 0)
         {

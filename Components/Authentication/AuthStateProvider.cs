@@ -32,12 +32,12 @@ public class AuthStateProvider : AuthenticationStateProvider
             }
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, userSession.UserName)
+                new Claim(ClaimTypes.Name, userSession.UserName),
+                new Claim(ClaimTypes.Role, userSession.Role)
             };
-            foreach (var item in userSession.Roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, item));
-            }
+            
+           
+            
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims
         , "CustomAuth"));
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
@@ -57,12 +57,10 @@ public class AuthStateProvider : AuthenticationStateProvider
             await _browserStorage.SetAsync("UserSession", userSession);
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, userSession.UserName)
+                new Claim(ClaimTypes.Name, userSession.UserName),
+                new Claim(ClaimTypes.Role, userSession.Role)
             };
-            foreach (var item in userSession.Roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, item));
-            }
+        
             claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
         }
         else
