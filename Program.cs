@@ -1,3 +1,10 @@
+using FluentValidation;
+
+
+using Microsoft.AspNetCore.Components;
+
+
+
 using MediatR;
 
 using Microsoft.AspNetCore.Components.Authorization;
@@ -29,25 +36,44 @@ var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContextFactory<Sc3SContext>(options =>
 {
     options.UseSqlServer(cs);
+    options.EnableSensitiveDataLogging();
 });
 // Add builder.Services to the container.
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
+        options => {
+            options.SignIn.RequireConfirmedAccount = false;
+            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedPhoneNumber = false;
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequiredLength = 8;
+            options.Password.RequiredUniqueChars = 1;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+            })
+    .AddEntityFrameworkStores<Sc3SContext>();
+
+
 builder.Services.AddRazorPages();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddTransient<IStuffService, StuffService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ICommunicateService, CommunicateService>();
 builder.Services.AddTransient<ISituationService, SituationService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
-builder.Services.AddScoped<CustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<CustomAuthenticationStateProvider>());
+builder.Services.AddScoped<AuthStateProvider, AuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<AuthStateProvider>());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
+builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter;

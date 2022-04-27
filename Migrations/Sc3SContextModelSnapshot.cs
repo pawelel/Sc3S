@@ -22,63 +22,312 @@ namespace Sc3S.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Sc3S.Entities.Account", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<string>("UserId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8c916fc5-5d08-4164-8594-7ac0e2b6e16a",
+                            ConcurrencyStamp = "83256a0f-8959-4eb8-a15e-e9c74c782841",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "af138749-2fc8-4bcf-8492-fadb9e0d5415",
+                            ConcurrencyStamp = "6d68df77-faee-4dab-bb84-4c445d4cc7a1",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = "9588cfdb-8071-49c0-82cf-c51f20d305d2",
+                            ConcurrencyStamp = "83e0991b-0ddb-4291-bfe6-f9217019fde5",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
 
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("PeriodStart");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("PeriodEnd");
-                        }
-                    ));
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            UserId = "a8598d2a-9734-4544-b87f-d7d69aa790e9",
+                            UserId = "a96d7c75-47f4-409b-a4d1-03f93c105647",
+                            RoleId = "8c916fc5-5d08-4164-8594-7ac0e2b6e16a"
+                        },
+                        new
+                        {
+                            UserId = "223eea6c-5cfc-4413-ba83-257db573452c",
+                            RoleId = "af138749-2fc8-4bcf-8492-fadb9e0d5415"
+                        },
+                        new
+                        {
+                            UserId = "5877932b-ce30-45be-a63f-12e5e6e42ed3",
+                            RoleId = "9588cfdb-8071-49c0-82cf-c51f20d305d2"
+                        },
+                        new
+                        {
+                            UserId = "5877932b-ce30-45be-a63f-12e5e6e42ed3",
+                            RoleId = "af138749-2fc8-4bcf-8492-fadb9e0d5415"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Sc3S.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a96d7c75-47f4-409b-a4d1-03f93c105647",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e96b1cfb-ce12-4fdd-b2e0-3f024bb13dd4",
                             Email = "admin@admin.com",
+<<<<<<< HEAD
                             PasswordHash = "AQAAAAEAACcQAAAAEBYfdrZpf+Eb22f+IX6vx5admdPqGH3vvuP6jyn1NHqMIUfz1DG93SktUM00kN9qSA==",
                             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
                             UserName = "admin"
+=======
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ADMIN.COM",
+                            NormalizedUserName = "ADMIN@ADMIN.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOJxql4s2FpyWe+2F6bp03NBv556mn0oRM7kp4J93b4extb2+r1Yc8eH7VO/tV5gRQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f0a48fb6-f7f9-496a-be66-92ed1965ea9a",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@admin.com"
+                        },
+                        new
+                        {
+                            Id = "223eea6c-5cfc-4413-ba83-257db573452c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "cec394b7-28cb-4ef3-a351-d274f4b47631",
+                            Email = "manager@manager.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MANAGER@MANAGER.COM",
+                            NormalizedUserName = "MANAGER@MANAGER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOE91CAPVWB9iO2LYg7dM9Y0NWZtfcL/Dv07300QdpquUZzsS8FuJKGtHFQUyuubHA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7ae12fce-1a3e-4b67-8380-02ca0ca92ba9",
+                            TwoFactorEnabled = false,
+                            UserName = "manager@manager.com"
+                        },
+                        new
+                        {
+                            Id = "5877932b-ce30-45be-a63f-12e5e6e42ed3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e9a43eca-5620-443a-be1c-dce507bb752d",
+                            Email = "user@user.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER@USER.COM",
+                            NormalizedUserName = "USER@USER.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAELuwO02g8/v4Z9ruPQ32cYKywJGOHHB6iz3RSViXhAa8sqUfcMY3hcPX0JqtN4nQMg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "764db6ea-8c8d-4990-b629-7b5f37ba3d8f",
+                            TwoFactorEnabled = false,
+                            UserName = "user@user.com"
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                         });
                 });
 
@@ -149,73 +398,121 @@ namespace Sc3S.Migrations
                         new
                         {
                             AreaId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9163),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3625),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Spawalnia",
                             PlantId = 1,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9191),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3660),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         },
                         new
                         {
                             AreaId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9194),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3663),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Lakiernia",
                             PlantId = 1,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9195),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3664),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         },
                         new
                         {
                             AreaId = 3,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9197),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3666),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Montaż",
                             PlantId = 1,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9199),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3667),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         },
                         new
                         {
                             AreaId = 4,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9200),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3669),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Spawalnia",
                             PlantId = 2,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9202),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3670),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         },
                         new
                         {
                             AreaId = 5,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9204),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3672),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Lakiernia",
                             PlantId = 2,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9205),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3673),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         },
                         new
                         {
                             AreaId = 6,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9207),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3675),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                             Description = "",
                             IsDeleted = false,
                             Name = "Montaż",
                             PlantId = 2,
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 16, 56, 33, 637, DateTimeKind.Local).AddTicks(9208),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 12, 45, 16, 164, DateTimeKind.Local).AddTicks(3677),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
                         });
                 });
@@ -522,430 +819,742 @@ namespace Sc3S.Migrations
                         new
                         {
                             CategoryId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8580),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6222),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH 3DMAPPING",
                             IsDeleted = false,
                             Name = "3d Mapping",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8581),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6222),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8583),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6224),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH ALS",
                             IsDeleted = false,
                             Name = "ALS",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8583),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6224),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 3,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8585),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6226),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH ATLAS DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Atlas",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8585),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6226),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 4,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8586),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6227),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH DELLPC",
                             IsDeleted = false,
                             Name = "Dell PC",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8586),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6227),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 5,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8587),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6229),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH EPSON DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Epson",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8588),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6229),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 6,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8655),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6230),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH FFT",
                             IsDeleted = false,
                             Name = "FFT",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8656),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6230),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 7,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8657),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6231),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH FIS DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Fis",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8657),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6232),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 8,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8658),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6233),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH FIS EQS",
                             IsDeleted = false,
                             Name = "EQS",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8659),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6233),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 9,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8660),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6234),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH FPG",
                             IsDeleted = false,
                             Name = "FPG",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8660),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6234),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 10,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8661),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6236),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH GBA NEC",
                             IsDeleted = false,
                             Name = "GBA NEC",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8661),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6236),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 11,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8663),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6237),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH GBA SIEMENS",
                             IsDeleted = false,
                             Name = "GBA Siemens",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8663),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6237),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 12,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8664),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6240),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH GOM",
                             IsDeleted = false,
                             Name = "Gom",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8664),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6240),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 13,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8665),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6241),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH HDT FIS",
                             IsDeleted = false,
                             Name = "HDT Fis",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8665),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6241),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 14,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8666),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6242),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH HDT LOGISTIK",
                             IsDeleted = false,
                             Name = "HDT Logistik",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8667),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6242),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 15,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8668),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6311),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH HDT ZEBRA",
                             IsDeleted = false,
                             Name = "HDT Zebra",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8668),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6312),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 16,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8669),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6313),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH JUNGMAN",
                             IsDeleted = false,
                             Name = "Jungman",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8669),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6313),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 17,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8671),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6314),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH LOGISTIK DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka logistyczna",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8671),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6315),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 18,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8672),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6316),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH MASTERPC",
                             IsDeleted = false,
                             Name = "MasterPC",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8672),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6316),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 19,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8673),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6317),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH MDIHOST",
                             IsDeleted = false,
                             Name = "MDI Host",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8673),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6317),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 20,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8674),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6318),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH MFT",
                             IsDeleted = false,
                             Name = "MFT",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8675),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6318),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 21,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8676),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6319),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH OPS",
                             IsDeleted = false,
                             Name = "OPS",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8676),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6319),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 22,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8677),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6320),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH PBL",
                             IsDeleted = false,
                             Name = "PBL",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8677),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6320),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 23,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8678),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6321),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH PC INDUSTRY",
                             IsDeleted = false,
                             Name = "PC produkcyjny",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8679),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6322),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 24,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8680),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6323),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH PEGASUS",
                             IsDeleted = false,
                             Name = "Pegasus",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8680),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6323),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 25,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8681),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6324),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH PHOENIX",
                             IsDeleted = false,
                             Name = "Phoenix",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8681),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6324),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 26,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8682),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6325),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH QSTORQUE",
                             IsDeleted = false,
                             Name = "Qs Torque",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8682),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6325),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 27,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8683),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6326),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SCOUT",
                             IsDeleted = false,
                             Name = "Scout",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8683),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6327),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 28,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8684),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6328),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SIEMENS477D",
                             IsDeleted = false,
                             Name = "SIEMENS 477D",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8685),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6328),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 29,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8686),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6329),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SIEMENS477DPRO",
                             IsDeleted = false,
                             Name = "SIEMENS 477D pro",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8686),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6329),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 30,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8687),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6330),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SIEMENS677D",
                             IsDeleted = false,
                             Name = "SIEMENS 677D",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8687),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6330),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 31,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8688),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6332),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SMARTWATCH",
                             IsDeleted = false,
                             Name = "Smartwatch",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8688),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6332),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 32,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8689),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6333),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH SUPPORT SERVICES",
                             IsDeleted = false,
                             Name = "Support",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8690),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6333),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 33,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8690),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6334),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH TABLET PANASONIC",
                             IsDeleted = false,
                             Name = "Tablet Panasonic",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8691),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6334),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 34,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8692),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6335),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH TABLET SURFACE",
                             IsDeleted = false,
                             Name = "Tablet Surface",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8692),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6335),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 35,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8693),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6336),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH TYPENSCHILD",
                             IsDeleted = false,
                             Name = "Typenschild",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8693),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6336),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 36,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8694),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6338),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH VCI",
                             IsDeleted = false,
                             Name = "VCI",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8695),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6338),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 37,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8696),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6339),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH VMT",
                             IsDeleted = false,
                             Name = "VMT",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8696),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6339),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 38,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8697),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6340),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH WINDOWS SERVER",
                             IsDeleted = false,
                             Name = "WINDOWS Server",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8697),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6340),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             CategoryId = 39,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8698),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6341),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "PH ZEISS",
                             IsDeleted = false,
                             Name = "Zeiss",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 639, DateTimeKind.Utc).AddTicks(8698),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(6342),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         });
                 });
@@ -1575,122 +2184,210 @@ namespace Sc3S.Migrations
                         new
                         {
                             DetailId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4458),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7534),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Podstawowy adres IP",
                             IsDeleted = false,
                             Name = "IP",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4459),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7534),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4462),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7536),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Adres MAC",
                             IsDeleted = false,
                             Name = "MAC",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4462),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7537),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 3,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4464),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7538),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Nazwa hosta",
                             IsDeleted = false,
                             Name = "Hostname",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4464),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7538),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 4,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4508),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7539),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "System operacyjny",
                             IsDeleted = false,
                             Name = "OS",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4509),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7539),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 5,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4510),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7540),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Procesor",
                             IsDeleted = false,
                             Name = "CPU",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4510),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7540),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 6,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4511),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7541),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Pamięć RAM",
                             IsDeleted = false,
                             Name = "RAM",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4511),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7541),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 7,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4513),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7542),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Dysk twardy",
                             IsDeleted = false,
                             Name = "Pamięć",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4513),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7542),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 8,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4514),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7543),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Karta graficzna",
                             IsDeleted = false,
                             Name = "Karta graficzna",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4514),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7543),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 9,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4515),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7544),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Karta sieciowa",
                             IsDeleted = false,
                             Name = "Karta sieciowa",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4515),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7544),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 10,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4516),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7545),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Karta rozszerzeń",
                             IsDeleted = false,
                             Name = "Karta rozszerzeń",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4516),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7545),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DetailId = 11,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4517),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7546),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Zasilacz",
                             IsDeleted = false,
                             Name = "Zasilacz",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(4517),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(7546),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         });
                 });
@@ -1759,45 +2456,77 @@ namespace Sc3S.Migrations
                         new
                         {
                             DeviceId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5817),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9460),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Urządzenie drukujące",
                             IsDeleted = false,
                             Name = "drukarka",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5818),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9460),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DeviceId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5820),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9462),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Urządzenie komputerowe",
                             IsDeleted = false,
                             Name = "komputer",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5820),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9463),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DeviceId = 3,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5822),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9464),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Wyświetlacz",
                             IsDeleted = false,
                             Name = "monitor",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5822),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9464),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             DeviceId = 4,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5823),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9465),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Skaner kodów",
                             IsDeleted = false,
                             Name = "Skaner",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 643, DateTimeKind.Utc).AddTicks(5823),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(9465),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         });
                 });
@@ -2043,56 +2772,96 @@ namespace Sc3S.Migrations
                         new
                         {
                             ParameterId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8846),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5112),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Wymiar od podłoża pionowo do góry",
                             IsDeleted = false,
                             Name = "Wysokość",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8847),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5112),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             ParameterId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8849),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5115),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Wymiar w najszerszym miejscu od lewej do prawej",
                             IsDeleted = false,
                             Name = "Szerokość",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8849),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5115),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             ParameterId = 3,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8851),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5116),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu",
                             IsDeleted = false,
                             Name = "Długość",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8851),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5117),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             ParameterId = 4,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8852),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5117),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Nazwa producenta",
                             IsDeleted = false,
                             Name = "Producent",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8852),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5118),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             ParameterId = 5,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8853),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5118),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Rozdzielczość ekranu",
                             IsDeleted = false,
                             Name = "Rozdzielczość",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 644, DateTimeKind.Utc).AddTicks(8853),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 165, DateTimeKind.Utc).AddTicks(5119),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         });
                 });
@@ -2161,23 +2930,39 @@ namespace Sc3S.Migrations
                         new
                         {
                             PlantId = 1,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 645, DateTimeKind.Utc).AddTicks(177),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1230),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Zakład Poznań Antoninek",
                             IsDeleted = false,
                             Name = "P35",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 645, DateTimeKind.Utc).AddTicks(178),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1235),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         },
                         new
                         {
                             PlantId = 2,
+<<<<<<< HEAD
                             CreatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 645, DateTimeKind.Utc).AddTicks(180),
+=======
+                            CreatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1237),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             CreatedBy = "App",
                             Description = "Zakład Crafter Września",
                             IsDeleted = false,
                             Name = "P69",
+<<<<<<< HEAD
                             UpdatedAt = new DateTime(2022, 4, 26, 14, 56, 33, 645, DateTimeKind.Utc).AddTicks(180),
+=======
+                            UpdatedAt = new DateTime(2022, 4, 26, 10, 45, 16, 164, DateTimeKind.Utc).AddTicks(1237),
+>>>>>>> 9324f5ea5a31ced57ebbea41ef3ebf749d2db1e7
                             UpdatedBy = "App"
                         });
                 });
@@ -2236,59 +3021,6 @@ namespace Sc3S.Migrations
                                 .HasColumnName("PeriodEnd");
                         }
                     ));
-                });
-
-            modelBuilder.Entity("Sc3S.Entities.Role", b =>
-                {
-                    b.Property<string>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PeriodEnd")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodEnd");
-
-                    b.Property<DateTime>("PeriodStart")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasColumnName("PeriodStart");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles", (string)null);
-
-                    b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("PeriodStart");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("PeriodEnd");
-                        }
-                    ));
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            RoleId = "4de524ca-176d-44b3-aa26-15c17ba2ea0d",
-                            Name = "Manager"
-                        },
-                        new
-                        {
-                            RoleId = "19d9ba04-7570-4789-8720-8c4fd24fc272",
-                            Name = "User"
-                        });
                 });
 
             modelBuilder.Entity("Sc3S.Entities.Situation", b =>
@@ -2580,15 +3312,63 @@ namespace Sc3S.Migrations
                     ));
                 });
 
-            modelBuilder.Entity("Sc3S.Entities.Account", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Sc3S.Entities.Role", "Role")
-                        .WithMany("Accounts")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany("Claims")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Sc3S.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Sc3S.Entities.Area", b =>
@@ -2958,6 +3738,13 @@ namespace Sc3S.Migrations
                     b.Navigation("Area");
                 });
 
+            modelBuilder.Entity("Sc3S.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("Sc3S.Entities.Area", b =>
                 {
                     b.Navigation("CommunicateAreas");
@@ -3049,11 +3836,6 @@ namespace Sc3S.Migrations
             modelBuilder.Entity("Sc3S.Entities.Question", b =>
                 {
                     b.Navigation("SituationQuestions");
-                });
-
-            modelBuilder.Entity("Sc3S.Entities.Role", b =>
-                {
-                    b.Navigation("Accounts");
                 });
 
             modelBuilder.Entity("Sc3S.Entities.Situation", b =>
