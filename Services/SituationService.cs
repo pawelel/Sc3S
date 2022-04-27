@@ -1053,687 +1053,687 @@ public class SituationService : ISituationService
         _logger.LogInformation("Situations with asset details returned");
         return new ServiceResponse<IEnumerable<SituationWithAssetsAndDetailsQuery>>(true, situations, "Zdarzenia zostały zwrócone");
     }
-}
-public async Task<ServiceResponse> MarkDeleteAssetSituation(AssetSituationUpdateCommand assetSituationUpdate)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
 
-    // get assetSituation
-    var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
-    if (assetSituation == null)
+    public async Task<ServiceResponse> MarkDeleteAssetSituation(AssetSituationUpdateCommand assetSituationUpdate)
     {
-        _logger.LogWarning("AssetSituation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    if (assetSituation.IsDeleted)
-    {
-        _logger.LogWarning("AssetSituation already marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie dla zasobu zostało już oznaczone jako usunięte");
-    }
-    assetSituation.IsDeleted = true;
-    assetSituation.UpdatedBy = assetSituationUpdate.UpdatedBy;
-    _context.Update(assetSituation);
-    // await using transaction
+        await using var _context = await _factory.CreateDbContextAsync();
 
-    try
+        // get assetSituation
+        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(a => a.AssetId == assetSituationUpdate.AssetId && a.SituationId == assetSituationUpdate.SituationId);
+        if (assetSituation == null)
+        {
+            _logger.LogWarning("AssetSituation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        if (assetSituation.IsDeleted)
+        {
+            _logger.LogWarning("AssetSituation already marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie dla zasobu zostało już oznaczone jako usunięte");
+        }
+        assetSituation.IsDeleted = true;
+        assetSituation.UpdatedBy = assetSituationUpdate.UpdatedBy;
+        _context.Update(assetSituation);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("AssetSituation with id {AssetId}, {SituationId} marked as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
+            return new ServiceResponse(true, "Zdarzenie dla zasobu zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking assetSituation with id {AssetId}, {SituationId} as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId)
     {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get categorySituation
+        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
+        if (categorySituation == null)
+        {
+            _logger.LogWarning("CategorySituation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        if (categorySituation.IsDeleted)
+        {
+            _logger.LogWarning("CategorySituation already marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
+        }
+        categorySituation.IsDeleted = true;
+        _context.Update(categorySituation);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("CategorySituation with id {CategoryId}, {SituationId} marked as deleted", categoryId, situationId);
+            return new ServiceResponse(true, "Zdarzenie dla kategorii zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking categorySituation with id {CategoryId}, {SituationId} as deleted", categoryId, situationId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get deviceSituation
+        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
+        if (deviceSituation == null)
+        {
+            _logger.LogWarning("DeviceSituation not found");
+            return new ServiceResponse(false, "Zdarzenie dla urządzenia nie zostało znalezione");
+        }
+        if (deviceSituation.IsDeleted)
+        {
+            _logger.LogWarning("DeviceSituation already marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie dla urządzenia zostało już oznaczone jako usunięte");
+        }
+        deviceSituation.IsDeleted = true;
+        _context.Update(deviceSituation);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("DeviceSituation with id {DeviceId}, {SituationId} marked as deleted", deviceId, situationId);
+            return new ServiceResponse(true, "Zdarzenie dla urządzenia zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking deviceSituation with id {DeviceId}, {SituationId} as deleted", deviceId, situationId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia dla urządzenia jako usuniętego");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteQuestion(int questionId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get question
+        var question = await _context.Questions
+            .Include(q => q.SituationQuestions)
+            .FirstOrDefaultAsync(q => q.QuestionId == questionId);
+        // if question not found
+        if (question == null)
+        {
+            _logger.LogWarning("Question with id {QuestionId} not found", questionId);
+            return new ServiceResponse(false, "Pytanie nie zostało znalezione");
+        }
+        // if question is already deleted
+        if (question.IsDeleted)
+        {
+            _logger.LogWarning("Question with id {QuestionId} is already deleted", questionId);
+            return new ServiceResponse(false, "Pytanie zostało już oznaczone jako usunięte");
+        }
+        // check if question has SituationQuestions with IsDeleted = false
+        if (question.SituationQuestions.Any(sq => sq.IsDeleted == false))
+        {
+            _logger.LogWarning("Question with id {QuestionId} has SituationQuestions with IsDeleted = false", questionId);
+            return new ServiceResponse(false, "Pytanie zawiera zdarzenia, które nie zostały oznaczone jako usunięte");
+        }
+
+        // mark question as deleted
+        question.IsDeleted = true;
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+            // commit transaction
+
+            // return success
+            _logger.LogInformation("Question with id {QuestionId} marked as deleted", questionId);
+            return new ServiceResponse(true, "Pytanie zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking question with id {QuestionId} as deleted", questionId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania pytania jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteSituation(int situationId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situation
+        var situation = await _context.Situations
+            .Include(s => s.SituationQuestions)
+            .Include(s => s.AssetSituations)
+            .Include(s => s.CategorySituations)
+            .Include(s => s.DeviceSituations)
+            .Include(s => s.SituationDetails)
+            .Include(s => s.SituationParameters)
+            .FirstOrDefaultAsync(s => s.SituationId == situationId);
+        // if situation not found
+        if (situation == null)
+        {
+            _logger.LogWarning("Situation with id {SituationId} not found", situationId);
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        // if situation is already deleted
+        if (situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation with id {SituationId} is already deleted", situationId);
+            return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
+        }
+        // check if situation has SituationQuestions with IsDeleted = false
+        if (situation.SituationQuestions.Any(sq => sq.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has SituationQuestions with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera pytania, które nie zostały oznaczone jako usunięte");
+        }
+        // check if situation has SituationDetails with IsDeleted = false
+        if (situation.SituationDetails.Any(sd => sd.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has SituationDetails with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera szczegóły, które nie zostały oznaczone jako usunięte");
+        }
+        // check if situation has SituationParameters with IsDeleted = false
+        if (situation.SituationParameters.Any(sp => sp.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has SituationParameters with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera parametry, które nie zostały oznaczone jako usunięte");
+        }
+        // check if situation has AssetSituations with IsDeleted = false
+        if (situation.AssetSituations.Any(asit => asit.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has AssetSituations with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera zasoby, które nie zostały oznaczone jako usunięte");
+        }
+        // check if situation has CategorySituations with IsDeleted = false
+        if (situation.CategorySituations.Any(cs => cs.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has CategorySituations with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera kategorie, które nie zostały oznaczone jako usunięte");
+        }
+        // check if situation has DeviceSituations with IsDeleted = false
+        if (situation.DeviceSituations.Any(ds => ds.IsDeleted == false))
+        {
+            _logger.LogWarning("Situation with id {SituationId} has DeviceSituations with IsDeleted = false", situationId);
+            return new ServiceResponse(false, "Zdarzenie zawiera urządzenia, które nie zostały oznaczone jako usunięte");
+        }
+        // mark delete situation
+        situation.IsDeleted = true;
+        _context.Situations.Update(situation);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Situation with id {SituationId} is marked as deleted", situationId);
+            return new ServiceResponse(true, "Zdarzenie zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while marking as deleted situation with id {SituationId}", situationId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situationDetail
+        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
+        if (situationDetail == null)
+        {
+            _logger.LogWarning("SituationDetail not found");
+            return new ServiceResponse(false, "Szczegół zdarzenia nie został znaleziony");
+        }
+        if (situationDetail.IsDeleted)
+        {
+            _logger.LogWarning("SituationDetail already marked as deleted");
+            return new ServiceResponse(false, "Szczegół zdarzenia został już oznaczony jako usunięty");
+        }
+
+        situationDetail.IsDeleted = true;
+        _context.Update(situationDetail);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("SituationDetail with id {SituationId}, {DetailId} marked as deleted", situationId, detailId);
+            return new ServiceResponse(true, "Szczegół zdarzenia został oznaczony jako usunięty");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking situationDetail with id {SituationId}, {DetailId} as deleted", situationId, detailId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania szczegółu zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situationParameter
+        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
+        if (situationParameter == null)
+        {
+            _logger.LogWarning("SituationParameter not found");
+            return new ServiceResponse(false, "Parametr zdarzenia nie został znaleziony");
+        }
+        if (situationParameter.IsDeleted)
+        {
+            _logger.LogWarning("SituationParameter already marked as deleted");
+            return new ServiceResponse(false, "Parametr zdarzenia został już oznaczony jako usunięty");
+        }
+        situationParameter.IsDeleted = true;
+        _context.Update(situationParameter);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("SituationParameter with id {SituationId}, {ParameterId} marked as deleted", situationId, parameterId);
+            return new ServiceResponse(true, "Parametr zdarzenia został oznaczony jako usunięty");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking situationParameter with id {SituationId}, {ParameterId} as deleted", situationId, parameterId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania parametru zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situationQuestion
+        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
+        if (situationQuestion == null)
+        {
+            _logger.LogWarning("SituationQuestion not found");
+            return new ServiceResponse(false, "Pytanie zdarzenia nie zostało znalezione");
+        }
+        if (situationQuestion.IsDeleted)
+        {
+            _logger.LogWarning("SituationQuestion already marked as deleted");
+            return new ServiceResponse(false, "Pytanie zdarzenia zostało już oznaczone jako usunięte");
+        }
+        situationQuestion.IsDeleted = true;
+        _context.Update(situationQuestion);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("SituationQuestion with id {SituationId}, {QuestionId} marked as deleted", situationId, questionId);
+            return new ServiceResponse(true, "Pytanie zdarzenia zostało oznaczone jako usunięte");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error marking situationQuestion with id {SituationId}, {QuestionId} as deleted", situationId, questionId);
+            return new ServiceResponse(false, "Błąd podczas oznaczania pytania zdarzenia jako usunięte");
+        }
+    }
+
+    public async Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get assetSituation
+        var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(assetId, situationId);
+        if (assetSituation == null)
+        {
+            _logger.LogWarning("AssetSituation not found");
+            return new ServiceResponse(false, "Zdarzenie dla zasobu nie zostało znalezione");
+        }
+        if (!assetSituation.IsDeleted)
+        {
+            _logger.LogWarning("AssetSituation not marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie zasobu nie zostało oznaczone jako usunięte");
+        }
+        var asset = await _context.Assets.FirstOrDefaultAsync(assetId);
+        if (asset == null || asset.IsDeleted)
+        {
+            _logger.LogWarning("Asset not found");
+            return new ServiceResponse(false, "Zasób nie został znaleziony");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        assetSituation.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
 
-        _logger.LogInformation("AssetSituation with id {AssetId}, {SituationId} marked as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
-        return new ServiceResponse(true, "Zdarzenie dla zasobu zostało oznaczone jako usunięte");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Zdarzenie zasobu zostało pomyślnie przywrócone");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating assetSituation");
+            return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia zasobu");
+        }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking assetSituation with id {AssetId}, {SituationId} as deleted", assetSituationUpdate.AssetId, assetSituationUpdate.SituationId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
-    }
-}
 
-public async Task<ServiceResponse> MarkDeleteCategorySituation(int categoryId, int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
+    public async Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
 
-    // get categorySituation
-    var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
-    if (categorySituation == null)
-    {
-        _logger.LogWarning("CategorySituation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    if (categorySituation.IsDeleted)
-    {
-        _logger.LogWarning("CategorySituation already marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
-    }
-    categorySituation.IsDeleted = true;
-    _context.Update(categorySituation);
-    // await using transaction
-
-    try
-    {
+        // get categorySituation
+        var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
+        if (categorySituation == null)
+        {
+            _logger.LogWarning("CategorySituation not found");
+            return new ServiceResponse(false, "Zdarzenie dla kategorii nie zostało znalezione");
+        }
+        if (!categorySituation.IsDeleted)
+        {
+            _logger.LogWarning("CategorySituation not marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie kategorii nie zostało oznaczone jako usunięte");
+        }
+        var category = await _context.Categories.FirstOrDefaultAsync(categoryId);
+        if (category == null || category.IsDeleted)
+        {
+            _logger.LogWarning("Category not found");
+            return new ServiceResponse(false, "Kategoria nie została znaleziona");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        categorySituation.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
 
-        _logger.LogInformation("CategorySituation with id {CategoryId}, {SituationId} marked as deleted", categoryId, situationId);
-        return new ServiceResponse(true, "Zdarzenie dla kategorii zostało oznaczone jako usunięte");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Zdarzenie kategorii zostało pomyślnie przywrócone");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating categorySituation");
+            return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia kategorii");
+        }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking categorySituation with id {CategoryId}, {SituationId} as deleted", categoryId, situationId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
-    }
-}
 
-public async Task<ServiceResponse> MarkDeleteDeviceSituation(int deviceId, int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
+    public async Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
 
-    // get deviceSituation
-    var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
-    if (deviceSituation == null)
-    {
-        _logger.LogWarning("DeviceSituation not found");
-        return new ServiceResponse(false, "Zdarzenie dla urządzenia nie zostało znalezione");
-    }
-    if (deviceSituation.IsDeleted)
-    {
-        _logger.LogWarning("DeviceSituation already marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie dla urządzenia zostało już oznaczone jako usunięte");
-    }
-    deviceSituation.IsDeleted = true;
-    _context.Update(deviceSituation);
-    // await using transaction
-
-    try
-    {
+        // get deviceSituation
+        var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
+        if (deviceSituation == null)
+        {
+            _logger.LogWarning("DeviceSituation not found");
+            return new ServiceResponse(false, "Zdarzenie dla urządzenia nie zostało znalezione");
+        }
+        if (!deviceSituation.IsDeleted)
+        {
+            _logger.LogWarning("DeviceSituation not marked as deleted");
+            return new ServiceResponse(false, "Zdarzenie urządzenia nie zostało oznaczone jako usunięte");
+        }
+        var device = await _context.Devices.FirstOrDefaultAsync(deviceId);
+        if (device == null || device.IsDeleted)
+        {
+            _logger.LogWarning("Device not found");
+            return new ServiceResponse(false, "Urządzenie nie zostało znalezione");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        deviceSituation.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
 
-        _logger.LogInformation("DeviceSituation with id {DeviceId}, {SituationId} marked as deleted", deviceId, situationId);
-        return new ServiceResponse(true, "Zdarzenie dla urządzenia zostało oznaczone jako usunięte");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking deviceSituation with id {DeviceId}, {SituationId} as deleted", deviceId, situationId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia dla urządzenia jako usuniętego");
-    }
-}
-
-public async Task<ServiceResponse> MarkDeleteQuestion(int questionId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get question
-    var question = await _context.Questions
-        .Include(q => q.SituationQuestions)
-        .FirstOrDefaultAsync(q => q.QuestionId == questionId);
-    // if question not found
-    if (question == null)
-    {
-        _logger.LogWarning("Question with id {QuestionId} not found", questionId);
-        return new ServiceResponse(false, "Pytanie nie zostało znalezione");
-    }
-    // if question is already deleted
-    if (question.IsDeleted)
-    {
-        _logger.LogWarning("Question with id {QuestionId} is already deleted", questionId);
-        return new ServiceResponse(false, "Pytanie zostało już oznaczone jako usunięte");
-    }
-    // check if question has SituationQuestions with IsDeleted = false
-    if (question.SituationQuestions.Any(sq => sq.IsDeleted == false))
-    {
-        _logger.LogWarning("Question with id {QuestionId} has SituationQuestions with IsDeleted = false", questionId);
-        return new ServiceResponse(false, "Pytanie zawiera zdarzenia, które nie zostały oznaczone jako usunięte");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Zdarzenie urządzenia zostało pomyślnie przywrócone");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating deviceSituation");
+            return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia urządzenia");
+        }
     }
 
-    // mark question as deleted
-    question.IsDeleted = true;
-    // await using transaction
-
-    try
+    public async Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
     {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get question
+        var question = await _context.Questions.FirstOrDefaultAsync(m => m.QuestionId == questionId);
+        if (question == null)
+        {
+            _logger.LogWarning("Question not found");
+            return new ServiceResponse(false, "Pytanie nie zostało znalezione");
+        }
+        // check if question name from dto is already taken
+        var duplicate = await _context.Questions.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
+        if (duplicate is not null)
+        {
+            _logger.LogWarning("Question name is already taken");
+            return new ServiceResponse(false, "Nazwa pytania jest już zajęta");
+        }
+
+        question.Name = questionUpdateDto.Name;
+        // assign userId to update
+        question.IsDeleted = false;
+        // update question
+        _context.Update(question);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            // return success
+            _logger.LogInformation("Question updated");
+            return new ServiceResponse(true, "Pytanie zostało pomyślnie zaktualizowane");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error updating question");
+            return new ServiceResponse(false, "Błąd podczas aktualizacji pytania");
+        }
+    }
+
+    public async Task<ServiceResponse> UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situation
+        var situation = await _context.Situations.FirstOrDefaultAsync(m => m.SituationId == situationId);
+        if (situation == null)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        // check if situation name from dto is already taken
+        var duplicate = await _context.Situations.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
+        if (duplicate is not null)
+        {
+            _logger.LogWarning("Situation name is already taken");
+            return new ServiceResponse(false, "Nazwa zdarzenia jest już zajęta");
+        }
+
+        situation.Name = situationUpdateDto.Name;
+        // assign userId to update
+        situation.IsDeleted = false;
+        // update situation
+        _context.Update(situation);
+        // await using transaction
+
+        try
+        {
+            // save changes
+            await _context.SaveChangesAsync();
+
+            // return success
+            _logger.LogInformation("Situation updated");
+            return new ServiceResponse(true, "Zdarzenie zostało pomyślnie zaktualizowane");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error updating situation");
+            return new ServiceResponse(false, "Błąd podczas aktualizacji zdarzenia");
+        }
+    }
+
+    public async Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situationDetail
+        var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
+        if (situationDetail == null)
+        {
+            _logger.LogWarning("SituationDetail not found");
+            return new ServiceResponse(false, "Szczegół zdarzenia nie został znaleziony");
+        }
+        if (!situationDetail.IsDeleted)
+        {
+            _logger.LogWarning("SituationDetail not marked as deleted");
+            return new ServiceResponse(false, "Szczegół zdarzenia nie został oznaczony jako usunięty");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        var detail = await _context.Details.FirstOrDefaultAsync(detailId);
+        if (detail == null || detail.IsDeleted)
+        {
+            _logger.LogWarning("Detail not found");
+            return new ServiceResponse(false, "Szczegół nie został znaleziony");
+        }
+        situationDetail.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
-        // commit transaction
 
-        // return success
-        _logger.LogInformation("Question with id {QuestionId} marked as deleted", questionId);
-        return new ServiceResponse(true, "Pytanie zostało oznaczone jako usunięte");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Szczegół zdarzenia został pomyślnie przywrócony");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating situationDetail");
+            return new ServiceResponse(false, "Błąd podczas przywracania szczegółu zdarzenia");
+        }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking question with id {QuestionId} as deleted", questionId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania pytania jako usunięte");
-    }
-}
 
-public async Task<ServiceResponse> MarkDeleteSituation(int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
+    public async Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId)
+    {
+        await using var _context = await _factory.CreateDbContextAsync();
 
-    // get situation
-    var situation = await _context.Situations
-        .Include(s => s.SituationQuestions)
-        .Include(s => s.AssetSituations)
-        .Include(s => s.CategorySituations)
-        .Include(s => s.DeviceSituations)
-        .Include(s => s.SituationDetails)
-        .Include(s => s.SituationParameters)
-        .FirstOrDefaultAsync(s => s.SituationId == situationId);
-    // if situation not found
-    if (situation == null)
-    {
-        _logger.LogWarning("Situation with id {SituationId} not found", situationId);
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    // if situation is already deleted
-    if (situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation with id {SituationId} is already deleted", situationId);
-        return new ServiceResponse(false, "Zdarzenie zostało już oznaczone jako usunięte");
-    }
-    // check if situation has SituationQuestions with IsDeleted = false
-    if (situation.SituationQuestions.Any(sq => sq.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has SituationQuestions with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera pytania, które nie zostały oznaczone jako usunięte");
-    }
-    // check if situation has SituationDetails with IsDeleted = false
-    if (situation.SituationDetails.Any(sd => sd.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has SituationDetails with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera szczegóły, które nie zostały oznaczone jako usunięte");
-    }
-    // check if situation has SituationParameters with IsDeleted = false
-    if (situation.SituationParameters.Any(sp => sp.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has SituationParameters with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera parametry, które nie zostały oznaczone jako usunięte");
-    }
-    // check if situation has AssetSituations with IsDeleted = false
-    if (situation.AssetSituations.Any(asit => asit.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has AssetSituations with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera zasoby, które nie zostały oznaczone jako usunięte");
-    }
-    // check if situation has CategorySituations with IsDeleted = false
-    if (situation.CategorySituations.Any(cs => cs.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has CategorySituations with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera kategorie, które nie zostały oznaczone jako usunięte");
-    }
-    // check if situation has DeviceSituations with IsDeleted = false
-    if (situation.DeviceSituations.Any(ds => ds.IsDeleted == false))
-    {
-        _logger.LogWarning("Situation with id {SituationId} has DeviceSituations with IsDeleted = false", situationId);
-        return new ServiceResponse(false, "Zdarzenie zawiera urządzenia, które nie zostały oznaczone jako usunięte");
-    }
-    // mark delete situation
-    situation.IsDeleted = true;
-    _context.Situations.Update(situation);
-    // await using transaction
-
-    try
-    {
+        // get situationParameter
+        var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
+        if (situationParameter == null)
+        {
+            _logger.LogWarning("SituationParameter not found");
+            return new ServiceResponse(false, "Parametr zdarzenia nie został znaleziony");
+        }
+        if (!situationParameter.IsDeleted)
+        {
+            _logger.LogWarning("SituationParameter not marked as deleted");
+            return new ServiceResponse(false, "Parametr zdarzenia nie został oznaczony jako usunięty");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        var parameter = await _context.Parameters.FirstOrDefaultAsync(parameterId);
+        if (parameter == null || parameter.IsDeleted)
+        {
+            _logger.LogWarning("Parameter not found");
+            return new ServiceResponse(false, "Parametr nie został znaleziony");
+        }
+        situationParameter.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Situation with id {SituationId} is marked as deleted", situationId);
-        return new ServiceResponse(true, "Zdarzenie zostało oznaczone jako usunięte");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error while marking as deleted situation with id {SituationId}", situationId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania zdarzenia jako usunięte");
-    }
-}
-
-public async Task<ServiceResponse> MarkDeleteSituationDetail(int situationId, int detailId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationDetail
-    var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
-    if (situationDetail == null)
-    {
-        _logger.LogWarning("SituationDetail not found");
-        return new ServiceResponse(false, "Szczegół zdarzenia nie został znaleziony");
-    }
-    if (situationDetail.IsDeleted)
-    {
-        _logger.LogWarning("SituationDetail already marked as deleted");
-        return new ServiceResponse(false, "Szczegół zdarzenia został już oznaczony jako usunięty");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Parametr zdarzenia został pomyślnie przywrócony");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating situationParameter");
+            return new ServiceResponse(false, "Błąd podczas przywracania parametru zdarzenia");
+        }
     }
 
-    situationDetail.IsDeleted = true;
-    _context.Update(situationDetail);
-    // await using transaction
-
-    try
+    public async Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId)
     {
+        await using var _context = await _factory.CreateDbContextAsync();
+
+        // get situationQuestion
+        var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
+        if (situationQuestion == null)
+        {
+            _logger.LogWarning("SituationQuestion not found");
+            return new ServiceResponse(false, "Pytanie zdarzenia nie zostało znalezione");
+        }
+        if (!situationQuestion.IsDeleted)
+        {
+            _logger.LogWarning("SituationQuestion not marked as deleted");
+            return new ServiceResponse(false, "Pytanie zdarzenia nie zostało oznaczone jako usunięte");
+        }
+        var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
+        if (situation == null || situation.IsDeleted)
+        {
+            _logger.LogWarning("Situation not found");
+            return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
+        }
+        var question = await _context.Questions.FirstOrDefaultAsync(questionId);
+        if (question == null || question.IsDeleted)
+        {
+            _logger.LogWarning("Question not found");
+            return new ServiceResponse(false, "Pytanie nie zostało znalezione");
+        }
+        situationQuestion.IsDeleted = false;
         // save changes
-        await _context.SaveChangesAsync();
 
-        _logger.LogInformation("SituationDetail with id {SituationId}, {DetailId} marked as deleted", situationId, detailId);
-        return new ServiceResponse(true, "Szczegół zdarzenia został oznaczony jako usunięty");
+        try
+        {
+            await _context.SaveChangesAsync();
+            return new ServiceResponse(true, "Pytanie zdarzenia zostało pomyślnie przywrócone");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating situationQuestion");
+            return new ServiceResponse(false, "Błąd podczas przywracania pytania zdarzenia");
+        }
     }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking situationDetail with id {SituationId}, {DetailId} as deleted", situationId, detailId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania szczegółu zdarzenia jako usunięte");
-    }
-}
-
-public async Task<ServiceResponse> MarkDeleteSituationParameter(int situationId, int parameterId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationParameter
-    var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
-    if (situationParameter == null)
-    {
-        _logger.LogWarning("SituationParameter not found");
-        return new ServiceResponse(false, "Parametr zdarzenia nie został znaleziony");
-    }
-    if (situationParameter.IsDeleted)
-    {
-        _logger.LogWarning("SituationParameter already marked as deleted");
-        return new ServiceResponse(false, "Parametr zdarzenia został już oznaczony jako usunięty");
-    }
-    situationParameter.IsDeleted = true;
-    _context.Update(situationParameter);
-    // await using transaction
-
-    try
-    {
-        // save changes
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation("SituationParameter with id {SituationId}, {ParameterId} marked as deleted", situationId, parameterId);
-        return new ServiceResponse(true, "Parametr zdarzenia został oznaczony jako usunięty");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking situationParameter with id {SituationId}, {ParameterId} as deleted", situationId, parameterId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania parametru zdarzenia jako usunięte");
-    }
-}
-
-public async Task<ServiceResponse> MarkDeleteSituationQuestion(int situationId, int questionId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationQuestion
-    var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
-    if (situationQuestion == null)
-    {
-        _logger.LogWarning("SituationQuestion not found");
-        return new ServiceResponse(false, "Pytanie zdarzenia nie zostało znalezione");
-    }
-    if (situationQuestion.IsDeleted)
-    {
-        _logger.LogWarning("SituationQuestion already marked as deleted");
-        return new ServiceResponse(false, "Pytanie zdarzenia zostało już oznaczone jako usunięte");
-    }
-    situationQuestion.IsDeleted = true;
-    _context.Update(situationQuestion);
-    // await using transaction
-
-    try
-    {
-        // save changes
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation("SituationQuestion with id {SituationId}, {QuestionId} marked as deleted", situationId, questionId);
-        return new ServiceResponse(true, "Pytanie zdarzenia zostało oznaczone jako usunięte");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error marking situationQuestion with id {SituationId}, {QuestionId} as deleted", situationId, questionId);
-        return new ServiceResponse(false, "Błąd podczas oznaczania pytania zdarzenia jako usunięte");
-    }
-}
-
-public async Task<ServiceResponse> UpdateAssetSituation(int assetId, int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get assetSituation
-    var assetSituation = await _context.AssetSituations.FirstOrDefaultAsync(assetId, situationId);
-    if (assetSituation == null)
-    {
-        _logger.LogWarning("AssetSituation not found");
-        return new ServiceResponse(false, "Zdarzenie dla zasobu nie zostało znalezione");
-    }
-    if (!assetSituation.IsDeleted)
-    {
-        _logger.LogWarning("AssetSituation not marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie zasobu nie zostało oznaczone jako usunięte");
-    }
-    var asset = await _context.Assets.FirstOrDefaultAsync(assetId);
-    if (asset == null || asset.IsDeleted)
-    {
-        _logger.LogWarning("Asset not found");
-        return new ServiceResponse(false, "Zasób nie został znaleziony");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    assetSituation.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Zdarzenie zasobu zostało pomyślnie przywrócone");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating assetSituation");
-        return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia zasobu");
-    }
-}
-
-public async Task<ServiceResponse> UpdateCategorySituation(int categoryId, int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get categorySituation
-    var categorySituation = await _context.CategorySituations.FirstOrDefaultAsync(categoryId, situationId);
-    if (categorySituation == null)
-    {
-        _logger.LogWarning("CategorySituation not found");
-        return new ServiceResponse(false, "Zdarzenie dla kategorii nie zostało znalezione");
-    }
-    if (!categorySituation.IsDeleted)
-    {
-        _logger.LogWarning("CategorySituation not marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie kategorii nie zostało oznaczone jako usunięte");
-    }
-    var category = await _context.Categories.FirstOrDefaultAsync(categoryId);
-    if (category == null || category.IsDeleted)
-    {
-        _logger.LogWarning("Category not found");
-        return new ServiceResponse(false, "Kategoria nie została znaleziona");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    categorySituation.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Zdarzenie kategorii zostało pomyślnie przywrócone");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating categorySituation");
-        return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia kategorii");
-    }
-}
-
-public async Task<ServiceResponse> UpdateDeviceSituation(int deviceId, int situationId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get deviceSituation
-    var deviceSituation = await _context.DeviceSituations.FirstOrDefaultAsync(deviceId, situationId);
-    if (deviceSituation == null)
-    {
-        _logger.LogWarning("DeviceSituation not found");
-        return new ServiceResponse(false, "Zdarzenie dla urządzenia nie zostało znalezione");
-    }
-    if (!deviceSituation.IsDeleted)
-    {
-        _logger.LogWarning("DeviceSituation not marked as deleted");
-        return new ServiceResponse(false, "Zdarzenie urządzenia nie zostało oznaczone jako usunięte");
-    }
-    var device = await _context.Devices.FirstOrDefaultAsync(deviceId);
-    if (device == null || device.IsDeleted)
-    {
-        _logger.LogWarning("Device not found");
-        return new ServiceResponse(false, "Urządzenie nie zostało znalezione");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    deviceSituation.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Zdarzenie urządzenia zostało pomyślnie przywrócone");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating deviceSituation");
-        return new ServiceResponse(false, "Błąd podczas przywracania zdarzenia urządzenia");
-    }
-}
-
-public async Task<ServiceResponse> UpdateQuestion(int questionId, QuestionUpdateCommand questionUpdateDto)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get question
-    var question = await _context.Questions.FirstOrDefaultAsync(m => m.QuestionId == questionId);
-    if (question == null)
-    {
-        _logger.LogWarning("Question not found");
-        return new ServiceResponse(false, "Pytanie nie zostało znalezione");
-    }
-    // check if question name from dto is already taken
-    var duplicate = await _context.Questions.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == questionUpdateDto.Name.ToLower().Trim());
-    if (duplicate is not null)
-    {
-        _logger.LogWarning("Question name is already taken");
-        return new ServiceResponse(false, "Nazwa pytania jest już zajęta");
-    }
-
-    question.Name = questionUpdateDto.Name;
-    // assign userId to update
-    question.IsDeleted = false;
-    // update question
-    _context.Update(question);
-    // await using transaction
-
-    try
-    {
-        // save changes
-        await _context.SaveChangesAsync();
-
-        // return success
-        _logger.LogInformation("Question updated");
-        return new ServiceResponse(true, "Pytanie zostało pomyślnie zaktualizowane");
-    }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Error updating question");
-        return new ServiceResponse(false, "Błąd podczas aktualizacji pytania");
-    }
-}
-
-public async Task<ServiceResponse> UpdateSituation(int situationId, SituationUpdateCommand situationUpdateDto)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situation
-    var situation = await _context.Situations.FirstOrDefaultAsync(m => m.SituationId == situationId);
-    if (situation == null)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    // check if situation name from dto is already taken
-    var duplicate = await _context.Situations.FirstOrDefaultAsync(a => a.Name.ToLower().Trim() == situationUpdateDto.Name.ToLower().Trim());
-    if (duplicate is not null)
-    {
-        _logger.LogWarning("Situation name is already taken");
-        return new ServiceResponse(false, "Nazwa zdarzenia jest już zajęta");
-    }
-
-    situation.Name = situationUpdateDto.Name;
-    // assign userId to update
-    situation.IsDeleted = false;
-    // update situation
-    _context.Update(situation);
-    // await using transaction
-
-    try
-    {
-        // save changes
-        await _context.SaveChangesAsync();
-
-        // return success
-        _logger.LogInformation("Situation updated");
-        return new ServiceResponse(true, "Zdarzenie zostało pomyślnie zaktualizowane");
-    }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Error updating situation");
-        return new ServiceResponse(false, "Błąd podczas aktualizacji zdarzenia");
-    }
-}
-
-public async Task<ServiceResponse> UpdateSituationDetail(int situationId, int detailId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationDetail
-    var situationDetail = await _context.SituationDetails.FirstOrDefaultAsync(situationId, detailId);
-    if (situationDetail == null)
-    {
-        _logger.LogWarning("SituationDetail not found");
-        return new ServiceResponse(false, "Szczegół zdarzenia nie został znaleziony");
-    }
-    if (!situationDetail.IsDeleted)
-    {
-        _logger.LogWarning("SituationDetail not marked as deleted");
-        return new ServiceResponse(false, "Szczegół zdarzenia nie został oznaczony jako usunięty");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    var detail = await _context.Details.FirstOrDefaultAsync(detailId);
-    if (detail == null || detail.IsDeleted)
-    {
-        _logger.LogWarning("Detail not found");
-        return new ServiceResponse(false, "Szczegół nie został znaleziony");
-    }
-    situationDetail.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Szczegół zdarzenia został pomyślnie przywrócony");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating situationDetail");
-        return new ServiceResponse(false, "Błąd podczas przywracania szczegółu zdarzenia");
-    }
-}
-
-public async Task<ServiceResponse> UpdateSituationParameter(int situationId, int parameterId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationParameter
-    var situationParameter = await _context.SituationParameters.FirstOrDefaultAsync(situationId, parameterId);
-    if (situationParameter == null)
-    {
-        _logger.LogWarning("SituationParameter not found");
-        return new ServiceResponse(false, "Parametr zdarzenia nie został znaleziony");
-    }
-    if (!situationParameter.IsDeleted)
-    {
-        _logger.LogWarning("SituationParameter not marked as deleted");
-        return new ServiceResponse(false, "Parametr zdarzenia nie został oznaczony jako usunięty");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    var parameter = await _context.Parameters.FirstOrDefaultAsync(parameterId);
-    if (parameter == null || parameter.IsDeleted)
-    {
-        _logger.LogWarning("Parameter not found");
-        return new ServiceResponse(false, "Parametr nie został znaleziony");
-    }
-    situationParameter.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Parametr zdarzenia został pomyślnie przywrócony");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating situationParameter");
-        return new ServiceResponse(false, "Błąd podczas przywracania parametru zdarzenia");
-    }
-}
-
-public async Task<ServiceResponse> UpdateSituationQuestion(int situationId, int questionId)
-{
-    await using var _context = await _factory.CreateDbContextAsync();
-
-    // get situationQuestion
-    var situationQuestion = await _context.SituationQuestions.FirstOrDefaultAsync(situationId, questionId);
-    if (situationQuestion == null)
-    {
-        _logger.LogWarning("SituationQuestion not found");
-        return new ServiceResponse(false, "Pytanie zdarzenia nie zostało znalezione");
-    }
-    if (!situationQuestion.IsDeleted)
-    {
-        _logger.LogWarning("SituationQuestion not marked as deleted");
-        return new ServiceResponse(false, "Pytanie zdarzenia nie zostało oznaczone jako usunięte");
-    }
-    var situation = await _context.Situations.FirstOrDefaultAsync(situationId);
-    if (situation == null || situation.IsDeleted)
-    {
-        _logger.LogWarning("Situation not found");
-        return new ServiceResponse(false, "Zdarzenie nie zostało znalezione");
-    }
-    var question = await _context.Questions.FirstOrDefaultAsync(questionId);
-    if (question == null || question.IsDeleted)
-    {
-        _logger.LogWarning("Question not found");
-        return new ServiceResponse(false, "Pytanie nie zostało znalezione");
-    }
-    situationQuestion.IsDeleted = false;
-    // save changes
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return new ServiceResponse(true, "Pytanie zdarzenia zostało pomyślnie przywrócone");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error updating situationQuestion");
-        return new ServiceResponse(false, "Błąd podczas przywracania pytania zdarzenia");
-    }
-}
 }
