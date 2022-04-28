@@ -19,7 +19,7 @@
         <Column T="DeviceQuery" Field="@nameof(DeviceQuery.CreatedOn)" Title="Data utworzenia"/>
         <Column T="DeviceQuery" Field="@nameof(DeviceQuery.UpdatedBy)" Title="Ostatnia aktualizacja"/>
         <Column T="DeviceQuery" Field="@nameof(DeviceQuery.UpdatedOn)" Title="Data aktualizacji"/>
-        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.DeviceId)" Title="Id">
+        <Column T="DeviceQuery" Field="@nameof(DeviceQuery.Actions)" Title="Działania">
             <CellTemplate>
                  <AuthorizeView Roles="Manager, Admin" Context="manager">
                      <MudFab OnClick="@(()=>Edit(context.Item.DeviceId))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" IconSize="Size.Small" Size="Size.Small"/>

@@ -29,6 +29,7 @@ public interface IAccountService
     Task<ServiceResponse> UpdateAccountPassword(AccountUpdatePasswordCommand command);
 
     Task<ServiceResponse> MarkDeleteAccount(string updatedBy, string userId);
+    Task<ServiceResponse> UpdateNameAndRole(AccountRoleAndNameUpdateCommand accountRoleAndNameUpdate);
 }
 
 public class AccountService : IAccountService
@@ -186,6 +187,40 @@ public class AccountService : IAccountService
         }
     }
 
+    public async Task<ServiceResponse> UpdateNameAndRole(AccountRoleAndNameUpdateCommand accountRoleAndNameUpdate)
+    {
+        await using var context = await _factory.CreateDbContextAsync();
+        var account = await context.Accounts
+            .Include(x => x.Role)
+            .FirstOrDefaultAsync(x => x.UserId == accountRoleAndNameUpdate.UserId);
+        if (account == null)
+        {
+            return new ServiceResponse(false, "Nie znaleziono konta");
+        }
+        var duplicate = await context.Accounts
+             .AsNoTracking()
+             .FirstOrDefaultAsync(x => x.UserName.ToLower() == accountRoleAndNameUpdate.UserName.ToLower() && x.UserId != accountRoleAndNameUpdate.UserId);
+        if (duplicate != null)
+        {
+            return new ServiceResponse(false, "Konto o podanej nazwie już istnieje");
+        }
+        account.UserName = accountRoleAndNameUpdate.UserName;
+        account.RoleId = accountRoleAndNameUpdate.RoleId;
+        account.UpdatedBy = accountRoleAndNameUpdate.UpdatedBy;
+        context.Accounts.Update(account);
+        try
+        {
+            await context.SaveChangesAsync();
+            _logger.LogInformation("Account {UserName} updated", account.UserName);
+            return new ServiceResponse(true, "Konto zostało zaktualizowane");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating account {UserName}", account.UserName);
+            return new ServiceResponse(false, "Wystąpił błąd podczas aktualizacji konta");
+        }
+    }
+    
     public async Task<ServiceResponse> UpdateAccount(AccountUpdateCommand command)
     {
         await using var context = await _factory.CreateDbContextAsync();
@@ -198,8 +233,10 @@ public class AccountService : IAccountService
         }
         if (account.UserName.ToLower() != command.UserName.ToLower())
         {
-            var duplicateName = await context.Accounts.AnyAsync(x => x.UserName.ToLower() == command.UserName.ToLower());
-            if (duplicateName)
+            var duplicate = await context.Accounts
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserName.ToLower() == command.UserName.ToLower() && x.UserId != command.UserId);
+            if (duplicate!=null)
             {
                 return new ServiceResponse(false, "Nazwa użytkownika jest już zajęta");
             }
@@ -215,6 +252,7 @@ public class AccountService : IAccountService
         account.UserName = command.UserName;
         account.Email = command.Email;
         account.UpdatedBy = command.UpdatedBy;
+        
         if (command.Password != null)
         {
             var hasher = new PasswordHasher<Account>();
@@ -229,6 +267,7 @@ public class AccountService : IAccountService
             }
             account.RoleId = command.RoleId;
         }
+        context.Accounts.Update(account);
         account.IsDeleted = false;
         try
         {

@@ -16,33 +16,37 @@ public class AccountConfig : IEntityTypeConfiguration<Account>
         builder.Property(a => a.UserId).ValueGeneratedOnAdd();
         builder.Property(a => a.UserName).IsRequired();
         builder.Property(a => a.Email).IsRequired();
-        Account account = new()
-        {
-            UserId = "a8598d2a-9734-4544-b87f-d7d69aa790e9",
-            UserName = "admin",
-            Email = "admin@admin.com",
-            RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
-            CreatedBy = "seed",
-            CreatedOn =  DateTime.UtcNow,
-            UpdatedBy = "seed",
-            UpdatedOn = DateTime.UtcNow,
-            IsDeleted = false
-        };
-        IPasswordHasher<Account> hasher = new PasswordHasher<Account>();
-        var hash = hasher.HashPassword(account, "Maslo123$");
 
-        builder.HasData(new
-        {
-            UserId = "a8598d2a-9734-4544-b87f-d7d69aa790e9",
-            UserName = "admin",
-            Email = "admin@admin.com",
-            RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
-            CreatedBy = "seed",
-            CreatedOn = DateTime.UtcNow,
-            UpdatedBy = "seed",
-            UpdatedOn = DateTime.UtcNow,
-            IsDeleted = false,
-            PasswordHash = hash
-        });
+        IPasswordHasher<Account> hasher = new PasswordHasher<Account>();
+
+        builder.HasData(
+            new
+            {
+                UserId = "a8598d2a-9734-4544-b87f-d7d69aa790e9",
+                UserName = "admin",
+                Email = "admin@admin.com",
+                RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
+                CreatedBy = "seed",
+                CreatedOn = DateTime.UtcNow,
+                UpdatedBy = "seed",
+                UpdatedOn = DateTime.UtcNow,
+                IsDeleted = false,
+                PasswordHash = hasher.HashPassword(null!, "Maslo123$")
+            },
+
+      new
+      {
+          UserId = "1a95740d-b4fe-4ebf-965b-668fa67ea7cf",
+          UserName = "user",
+          Email = "user@user.com",
+          RoleId = "19d9ba04-7570-4789-8720-8c4fd24fc272",
+          CreatedBy = "seed",
+          CreatedOn = DateTime.UtcNow,
+          UpdatedBy = "seed",
+          UpdatedOn = DateTime.UtcNow,
+          IsDeleted = false,
+          PasswordHash = hasher.HashPassword(null!, "Maslo123$")
+      }
+        );
     }
 }

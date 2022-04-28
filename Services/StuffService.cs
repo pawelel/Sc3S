@@ -1266,7 +1266,8 @@ public class StuffService : IStuffService
                 IsDeleted = d.IsDeleted,
                 UpdatedBy = d.UpdatedBy,
                 CreatedOn = d.CreatedOn,
-                UpdatedOn = d.UpdatedOn
+                UpdatedOn = d.UpdatedOn,
+                CreatedBy = d.CreatedBy
             }).ToListAsync();
         if (query is null)
         {

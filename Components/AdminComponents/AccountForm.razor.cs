@@ -22,7 +22,7 @@ public partial class AccountForm : ComponentBase
     [Parameter] public string UserName { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Parameter] public string UserId { get; set; } = string.Empty;
-    private AccountUpdateCommand _account = new();
+    private AccountRoleAndNameUpdateCommand _account = new();
     private List<Role> _roles = new();
     private void Cancel()
     {
@@ -34,11 +34,13 @@ public partial class AccountForm : ComponentBase
         var result = await AccountService.GetAccountById(userId);
         if (result.IsSuccess)
         {
-            _account = Mapper.Map<AccountUpdateCommand>(result.Value);
+            _account.UserId = result.Value!.UserId;
+            _account.UserName = result.Value.UserName;
+            _account.RoleId = result.Value.RoleId;
         }
         else
         {
-            Snackbar.Add(result.Message, MudBlazor.Severity.Error);
+            Snackbar.Add(result.Message, Severity.Error);
         }
       
     }
@@ -58,9 +60,9 @@ public partial class AccountForm : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(_account.UserId))
+        if (!string.IsNullOrEmpty(UserId))
         {
-            await AccountService.GetAccountById(_account.UserId);
+            await GetAccount(UserId);
         }
         await GetRoles();
     }
@@ -71,18 +73,7 @@ public partial class AccountForm : ComponentBase
 
         if (!string.IsNullOrEmpty(_account.UserId))
         {
-            var result = await AccountService.UpdateAccount(_account);
-            if (result.IsSuccess)
-            {
-                Snackbar.Add(result.Message, Severity.Success);
-                MudDialog.Close(DialogResult.Ok(true));
-                return;
-            }
-            Snackbar.Add(result.Message, Severity.Error);
-        }
-        else
-        {
-            var result = await AccountService.CreateAccount(_account);
+            var result = await AccountService.UpdateNameAndRole(_account);
             if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);

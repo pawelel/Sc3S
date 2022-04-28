@@ -1221,45 +1221,45 @@ namespace Sc3S.Migrations
                 columns: new[] { "CategoryId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5035), "PH 3DMAPPING", false, "3d Mapping", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5050) },
-                    { 2, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5054), "PH ALS", false, "ALS", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5056) },
-                    { 3, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5059), "PH ATLAS DRUCKER", false, "Drukarka Atlas", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5060) },
-                    { 4, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5062), "PH DELLPC", false, "Dell PC", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5064) },
-                    { 5, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5066), "PH EPSON DRUCKER", false, "Drukarka Epson", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5068) },
-                    { 6, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5070), "PH FFT", false, "FFT", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5072) },
-                    { 7, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5074), "PH FIS DRUCKER", false, "Drukarka Fis", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5075) },
-                    { 8, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5078), "PH FIS EQS", false, "EQS", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5080) },
-                    { 9, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5082), "PH FPG", false, "FPG", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5084) },
-                    { 10, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5086), "PH GBA NEC", false, "GBA NEC", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5088) },
-                    { 11, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5090), "PH GBA SIEMENS", false, "GBA Siemens", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5092) },
-                    { 12, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5094), "PH GOM", false, "Gom", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5095) },
-                    { 13, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5098), "PH HDT FIS", false, "HDT Fis", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5099) },
-                    { 14, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5101), "PH HDT LOGISTIK", false, "HDT Logistik", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5103) },
-                    { 15, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5106), "PH HDT ZEBRA", false, "HDT Zebra", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5107) },
-                    { 16, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5109), "PH JUNGMAN", false, "Jungman", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5111) },
-                    { 17, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5113), "PH LOGISTIK DRUCKER", false, "Drukarka logistyczna", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5115) },
-                    { 18, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5117), "PH MASTERPC", false, "MasterPC", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5119) },
-                    { 19, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5121), "PH MDIHOST", false, "MDI Host", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5122) },
-                    { 20, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5125), "PH MFT", false, "MFT", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5126) },
-                    { 21, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5129), "PH OPS", false, "OPS", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5130) },
-                    { 22, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5132), "PH PBL", false, "PBL", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5134) },
-                    { 23, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5136), "PH PC INDUSTRY", false, "PC produkcyjny", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5138) },
-                    { 24, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5141), "PH PEGASUS", false, "Pegasus", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5142) },
-                    { 25, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5145), "PH PHOENIX", false, "Phoenix", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5146) },
-                    { 26, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5148), "PH QSTORQUE", false, "Qs Torque", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5150) },
-                    { 27, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5152), "PH SCOUT", false, "Scout", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5154) },
-                    { 28, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5156), "PH SIEMENS477D", false, "SIEMENS 477D", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5157) },
-                    { 29, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5160), "PH SIEMENS477DPRO", false, "SIEMENS 477D pro", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5161) },
-                    { 30, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5206), "PH SIEMENS677D", false, "SIEMENS 677D", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5209) },
-                    { 31, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5211), "PH SMARTWATCH", false, "Smartwatch", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5213) },
-                    { 32, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5215), "PH SUPPORT SERVICES", false, "Support", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5217) },
-                    { 33, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5219), "PH TABLET PANASONIC", false, "Tablet Panasonic", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5220) },
-                    { 34, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5223), "PH TABLET SURFACE", false, "Tablet Surface", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5224) },
-                    { 35, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5227), "PH TYPENSCHILD", false, "Typenschild", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5228) },
-                    { 36, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5231), "PH VCI", false, "VCI", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5232) },
-                    { 37, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5234), "PH VMT", false, "VMT", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5236) },
-                    { 38, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5238), "PH WINDOWS SERVER", false, "WINDOWS Server", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5240) },
-                    { 39, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5243), "PH ZEISS", false, "Zeiss", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5245) }
+                    { 1, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1607), "PH 3DMAPPING", false, "3d Mapping", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1620) },
+                    { 2, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1623), "PH ALS", false, "ALS", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1625) },
+                    { 3, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1628), "PH ATLAS DRUCKER", false, "Drukarka Atlas", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1630) },
+                    { 4, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1632), "PH DELLPC", false, "Dell PC", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1634) },
+                    { 5, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1636), "PH EPSON DRUCKER", false, "Drukarka Epson", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1637) },
+                    { 6, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1640), "PH FFT", false, "FFT", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1641) },
+                    { 7, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1644), "PH FIS DRUCKER", false, "Drukarka Fis", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1645) },
+                    { 8, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1648), "PH FIS EQS", false, "EQS", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1649) },
+                    { 9, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1651), "PH FPG", false, "FPG", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1653) },
+                    { 10, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1655), "PH GBA NEC", false, "GBA NEC", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1657) },
+                    { 11, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1660), "PH GBA SIEMENS", false, "GBA Siemens", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1661) },
+                    { 12, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1664), "PH GOM", false, "Gom", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1665) },
+                    { 13, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1668), "PH HDT FIS", false, "HDT Fis", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1669) },
+                    { 14, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1671), "PH HDT LOGISTIK", false, "HDT Logistik", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1673) },
+                    { 15, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1675), "PH HDT ZEBRA", false, "HDT Zebra", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1677) },
+                    { 16, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1679), "PH JUNGMAN", false, "Jungman", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1681) },
+                    { 17, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1683), "PH LOGISTIK DRUCKER", false, "Drukarka logistyczna", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1684) },
+                    { 18, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1687), "PH MASTERPC", false, "MasterPC", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1688) },
+                    { 19, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1690), "PH MDIHOST", false, "MDI Host", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1692) },
+                    { 20, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1694), "PH MFT", false, "MFT", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1696) },
+                    { 21, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1698), "PH OPS", false, "OPS", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1700) },
+                    { 22, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1745), "PH PBL", false, "PBL", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1747) },
+                    { 23, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1750), "PH PC INDUSTRY", false, "PC produkcyjny", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1751) },
+                    { 24, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1753), "PH PEGASUS", false, "Pegasus", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1755) },
+                    { 25, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1757), "PH PHOENIX", false, "Phoenix", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1759) },
+                    { 26, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1761), "PH QSTORQUE", false, "Qs Torque", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1762) },
+                    { 27, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1765), "PH SCOUT", false, "Scout", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1766) },
+                    { 28, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1769), "PH SIEMENS477D", false, "SIEMENS 477D", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1770) },
+                    { 29, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1772), "PH SIEMENS477DPRO", false, "SIEMENS 477D pro", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1774) },
+                    { 30, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1776), "PH SIEMENS677D", false, "SIEMENS 677D", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1778) },
+                    { 31, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1780), "PH SMARTWATCH", false, "Smartwatch", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1782) },
+                    { 32, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1784), "PH SUPPORT SERVICES", false, "Support", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1785) },
+                    { 33, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1788), "PH TABLET PANASONIC", false, "Tablet Panasonic", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1789) },
+                    { 34, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1792), "PH TABLET SURFACE", false, "Tablet Surface", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1793) },
+                    { 35, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1795), "PH TYPENSCHILD", false, "Typenschild", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1797) },
+                    { 36, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1799), "PH VCI", false, "VCI", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1801) },
+                    { 37, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1805), "PH VMT", false, "VMT", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1806) },
+                    { 38, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1809), "PH WINDOWS SERVER", false, "WINDOWS Server", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1810) },
+                    { 39, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1812), "PH ZEISS", false, "Zeiss", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 995, DateTimeKind.Local).AddTicks(1814) }
                 });
 
             migrationBuilder.InsertData(
@@ -1267,9 +1267,9 @@ namespace Sc3S.Migrations
                 columns: new[] { "DetailId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2793), "Podstawowy adres IP", false, "IP", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2817) },
-                    { 2, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2822), "Adres MAC", false, "MAC", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2823) },
-                    { 3, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2826), "Nazwa hosta", false, "Hostname", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2827) }
+                    { 1, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5642), "Podstawowy adres IP", false, "IP", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5655) },
+                    { 2, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5659), "Adres MAC", false, "MAC", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5660) },
+                    { 3, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5663), "Nazwa hosta", false, "Hostname", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5665) }
                 });
 
             migrationBuilder.InsertData(
@@ -1277,14 +1277,14 @@ namespace Sc3S.Migrations
                 columns: new[] { "DetailId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 4, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2829), "System operacyjny", false, "OS", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2831) },
-                    { 5, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2833), "Procesor", false, "CPU", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2835) },
-                    { 6, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2837), "Pamięć RAM", false, "RAM", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2838) },
-                    { 7, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2840), "Dysk twardy", false, "Pamięć", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2842) },
-                    { 8, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2844), "Karta graficzna", false, "Karta graficzna", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2846) },
-                    { 9, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2848), "Karta sieciowa", false, "Karta sieciowa", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2849) },
-                    { 10, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2852), "Karta rozszerzeń", false, "Karta rozszerzeń", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2853) },
-                    { 11, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2855), "Zasilacz", false, "Zasilacz", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2857) }
+                    { 4, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5667), "System operacyjny", false, "OS", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5668) },
+                    { 5, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5671), "Procesor", false, "CPU", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5672) },
+                    { 6, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5674), "Pamięć RAM", false, "RAM", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5676) },
+                    { 7, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5678), "Dysk twardy", false, "Pamięć", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5680) },
+                    { 8, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5683), "Karta graficzna", false, "Karta graficzna", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5684) },
+                    { 9, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5687), "Karta sieciowa", false, "Karta sieciowa", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5688) },
+                    { 10, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5690), "Karta rozszerzeń", false, "Karta rozszerzeń", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5692) },
+                    { 11, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5694), "Zasilacz", false, "Zasilacz", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(5696) }
                 });
 
             migrationBuilder.InsertData(
@@ -1292,10 +1292,10 @@ namespace Sc3S.Migrations
                 columns: new[] { "DeviceId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4246), "Urządzenie drukujące", false, "drukarka", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4256) },
-                    { 2, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4260), "Urządzenie komputerowe", false, "komputer", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4261) },
-                    { 3, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4264), "Wyświetlacz", false, "monitor", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4265) },
-                    { 4, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4268), "Skaner kodów", false, "Skaner", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4269) }
+                    { 1, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7123), "Urządzenie drukujące", false, "drukarka", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7133) },
+                    { 2, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7136), "Urządzenie komputerowe", false, "komputer", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7137) },
+                    { 3, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7140), "Wyświetlacz", false, "monitor", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7142) },
+                    { 4, "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7144), "Skaner kodów", false, "Skaner", "seed", new DateTime(2022, 4, 28, 10, 3, 36, 998, DateTimeKind.Local).AddTicks(7145) }
                 });
 
             migrationBuilder.InsertData(
@@ -1303,11 +1303,11 @@ namespace Sc3S.Migrations
                 columns: new[] { "ParameterId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8048), "Wymiar od podłoża pionowo do góry", false, "Wysokość", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8061) },
-                    { 2, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8107), "Wymiar w najszerszym miejscu od lewej do prawej", false, "Szerokość", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8109) },
-                    { 3, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8112), "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu", false, "Długość", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8113) },
-                    { 4, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8116), "Nazwa producenta", false, "Producent", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8117) },
-                    { 5, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8120), "Rozdzielczość ekranu", false, "Rozdzielczość", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8121) }
+                    { 1, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(349), "Wymiar od podłoża pionowo do góry", false, "Wysokość", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(361) },
+                    { 2, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(364), "Wymiar w najszerszym miejscu od lewej do prawej", false, "Szerokość", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(365) },
+                    { 3, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(368), "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu", false, "Długość", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(369) },
+                    { 4, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(371), "Nazwa producenta", false, "Producent", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(373) },
+                    { 5, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(375), "Rozdzielczość ekranu", false, "Rozdzielczość", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(377) }
                 });
 
             migrationBuilder.InsertData(
@@ -1315,8 +1315,8 @@ namespace Sc3S.Migrations
                 columns: new[] { "PlantId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9484), "Zakład Poznań Antoninek", false, "P35", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9495) },
-                    { 2, "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9499), "Zakład Crafter Września", false, "P69", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9500) }
+                    { 1, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(1786), "Zakład Poznań Antoninek", false, "P35", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(1796) },
+                    { 2, "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(1798), "Zakład Crafter Września", false, "P69", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(1800) }
                 });
 
             migrationBuilder.InsertData(
@@ -1324,27 +1324,31 @@ namespace Sc3S.Migrations
                 columns: new[] { "RoleId", "CreatedBy", "CreatedOn", "IsDeleted", "Name", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1903), false, "Admin", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1915) },
-                    { "19d9ba04-7570-4789-8720-8c4fd24fc272", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1921), false, "User", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1923) },
-                    { "4de524ca-176d-44b3-aa26-15c17ba2ea0d", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1917), false, "Manager", "seed", new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1919) }
+                    { "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4281), false, "Admin", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4292) },
+                    { "19d9ba04-7570-4789-8720-8c4fd24fc272", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4298), false, "User", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4300) },
+                    { "4de524ca-176d-44b3-aa26-15c17ba2ea0d", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4294), false, "Manager", "seed", new DateTime(2022, 4, 28, 10, 3, 37, 0, DateTimeKind.Local).AddTicks(4296) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Accounts",
                 columns: new[] { "UserId", "CreatedBy", "CreatedOn", "Email", "IsDeleted", "PasswordHash", "RoleId", "UpdatedBy", "UpdatedOn", "UserName" },
-                values: new object[] { "a8598d2a-9734-4544-b87f-d7d69aa790e9", "seed", new DateTime(2022, 4, 28, 6, 2, 11, 852, DateTimeKind.Utc).AddTicks(4465), "admin@admin.com", false, "AQAAAAEAACcQAAAAEG/KmZxW0hQwiZGOw/HjhWjEg8pkPxEkJJRBX/891yip3sQ3uI4PDYTRa0KOw4MwJw==", "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "seed", new DateTime(2022, 4, 28, 6, 2, 11, 852, DateTimeKind.Utc).AddTicks(4466), "admin" });
+                values: new object[,]
+                {
+                    { "1a95740d-b4fe-4ebf-965b-668fa67ea7cf", "seed", new DateTime(2022, 4, 28, 8, 3, 36, 987, DateTimeKind.Utc).AddTicks(4659), "user@user.com", false, "AQAAAAEAACcQAAAAEIRdwKgMs4cIQrCdXVYYLgGjTDAhB7aK9LjPoASfNBzRqKwCu3g/MqKxy6nT/g2/jg==", "19d9ba04-7570-4789-8720-8c4fd24fc272", "seed", new DateTime(2022, 4, 28, 8, 3, 36, 987, DateTimeKind.Utc).AddTicks(4661), "user" },
+                    { "a8598d2a-9734-4544-b87f-d7d69aa790e9", "seed", new DateTime(2022, 4, 28, 8, 3, 36, 981, DateTimeKind.Utc).AddTicks(7529), "admin@admin.com", false, "AQAAAAEAACcQAAAAEJdemRWQWH4WBlT7MErk0MNKhOaF9FfodkclIa7H6TPdA0l2WX9FTHSMczxxZ9hpMg==", "1320173d-7e65-44c2-82ca-973c3cf1bdf4", "seed", new DateTime(2022, 4, 28, 8, 3, 36, 981, DateTimeKind.Utc).AddTicks(7531), "admin" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Areas",
                 columns: new[] { "AreaId", "CreatedBy", "CreatedOn", "Description", "IsDeleted", "Name", "PlantId", "UpdatedBy", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7580), "", false, "Spawalnia", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7618) },
-                    { 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7621), "", false, "Lakiernia", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7623) },
-                    { 3, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7624), "", false, "Montaż", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7626) },
-                    { 4, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7627), "", false, "Spawalnia", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7629) },
-                    { 5, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7630), "", false, "Lakiernia", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7632) },
-                    { 6, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7633), "", false, "Montaż", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7635) }
+                    { 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4204), "", false, "Spawalnia", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4237) },
+                    { 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4239), "", false, "Lakiernia", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4241) },
+                    { 3, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4242), "", false, "Montaż", 1, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4244) },
+                    { 4, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4246), "", false, "Spawalnia", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4247) },
+                    { 5, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4249), "", false, "Lakiernia", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4250) },
+                    { 6, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4252), "", false, "Montaż", 2, "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de", new DateTime(2022, 4, 28, 10, 3, 36, 993, DateTimeKind.Local).AddTicks(4253) }
                 });
 
             migrationBuilder.CreateIndex(

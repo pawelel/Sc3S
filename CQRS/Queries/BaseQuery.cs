@@ -7,4 +7,5 @@ public class BaseQuery
     public bool IsDeleted { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
+    public string Actions { get; set; } = string.Empty;
 }
