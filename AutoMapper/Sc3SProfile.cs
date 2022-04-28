@@ -10,7 +10,7 @@ public class Sc3SProfile : Profile
 {
     public Sc3SProfile()
     {
-        CreateMap<ApplicationUser, AccountQuery>();
+        CreateMap<Account, AccountQuery>();
         CreateMap<DeviceQuery, DeviceUpdateCommand>();
         CreateMap<PlantQuery, PlantUpdateCommand>();
     }

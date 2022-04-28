@@ -1,9 +1,3 @@
-using FluentValidation;
-
-
-using Microsoft.AspNetCore.Components;
-
-
 
 using MediatR;
 
@@ -40,22 +34,6 @@ builder.Services.AddDbContextFactory<Sc3SContext>(options =>
 // Add builder.Services to the container.
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
-        options => {
-            options.SignIn.RequireConfirmedAccount = false;
-            options.SignIn.RequireConfirmedEmail = false;
-            options.SignIn.RequireConfirmedPhoneNumber = false;
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequiredLength = 8;
-            options.Password.RequiredUniqueChars = 1;
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            options.Lockout.MaxFailedAccessAttempts = 5;
-            options.Lockout.AllowedForNewUsers = true;
-            })
-    .AddEntityFrameworkStores<Sc3SContext>();
 
 
 builder.Services.AddRazorPages();
@@ -72,7 +50,7 @@ builder.Services.AddScoped<AuthStateProvider, AuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<AuthStateProvider>());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
+builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 builder.Services.AddMudServices(config =>
 {
     config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopCenter;
