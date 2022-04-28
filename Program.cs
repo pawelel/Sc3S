@@ -36,7 +36,6 @@ var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContextFactory<Sc3SContext>(options =>
 {
     options.UseSqlServer(cs);
-    options.EnableSensitiveDataLogging();
 });
 // Add builder.Services to the container.
 builder.Services.AddAuthentication();

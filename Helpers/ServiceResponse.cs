@@ -18,10 +18,10 @@ public class ServiceResponse
 {
     public ServiceResponse(bool success, string message)
     {
-        Success = success;
+        IsSuccess = success;
         Message = message;
     }
 
-    public bool Success { get; set; } = true;
+    public bool IsSuccess { get; set; } = true;
     public string Message { get; set; }
 }

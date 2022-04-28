@@ -22,6 +22,10 @@ public class AccountConfig : IEntityTypeConfiguration<Account>
             UserName = "admin",
             Email = "admin@admin.com",
             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
+            CreatedBy = "seed",
+            CreatedOn =  DateTime.UtcNow,
+            UpdatedBy = "seed",
+            UpdatedOn = DateTime.UtcNow,
             IsDeleted = false
         };
         IPasswordHasher<Account> hasher = new PasswordHasher<Account>();
@@ -33,6 +37,11 @@ public class AccountConfig : IEntityTypeConfiguration<Account>
             UserName = "admin",
             Email = "admin@admin.com",
             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
+            CreatedBy = "seed",
+            CreatedOn = DateTime.UtcNow,
+            UpdatedBy = "seed",
+            UpdatedOn = DateTime.UtcNow,
+            IsDeleted = false,
             PasswordHash = hash
         });
     }

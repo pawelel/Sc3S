@@ -1,5 +1,5 @@
-﻿<AuthorizeView Roles="Admin">
-    <MudDataGrid T="AccountDisplayQuery" Items="_accounts" Sortable="true" Filterable="true">
+﻿<AuthorizeView Roles="Admin" Context="admin">
+    <MudDataGrid T="AccountDisplayQuery" Items="_accounts" Sortable="true" Filterable="true" QuickFilter="@QuickFilter">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Periodic Elements</MudText>
         <MudSpacer />
@@ -12,23 +12,25 @@
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.Email)" Title="Email"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.RoleName)" Title="Rola"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.IsDeleted)" Title="Usunięty/Aktywny">
-        <CellTemplate>
-            <MudText Color="@(context.Item.IsDeleted?Color.Error:Color.Success)">@(context.Item.IsDeleted?"Usunięty":"Aktywny")</MudText>
+        <CellTemplate Context="removed">
+            <MudText Color="@(removed.Item.IsDeleted?Color.Error:Color.Success)">@(removed.Item.IsDeleted?"Usunięty":"Aktywny")</MudText>
         </CellTemplate>
         </Column>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.CreatedBy)" Title="Autor"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.CreatedOn)" Title="Data utworzenia"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.UpdatedBy)" Title="Ostatnia aktualizacja"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.UpdatedOn)" Title="Data aktualizacji"/>
-        <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.DeviceId)" Title="Id">
-            <CellTemplate>
-                 <AuthorizeView Roles="Manager, Admin" Context="manager">
-                     <MudFab OnClick="@(()=>Edit(context.Item.DeviceId))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" IconSize="Size.Small" Size="Size.Small"/>
-            <MudFab OnClick="@(()=>MarkDelete(manager.User.Identity?.Name!, context.Item.DeviceId))" Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" IconSize="Size.Small" Size="Size.Small"/>
-                     </AuthorizeView>
-                     <AuthorizeView Roles="Admin" Context="admin">
-                <MudFab OnClick="@(()=>Delete(context.Item.DeviceId))" Color="Color.Error" Icon="@Icons.Filled.DeleteForever" IconSize="Size.Small" Size="Size.Small"/>
-                </AuthorizeView>
+        <Column T="AccountDisplayQuery" Field="" Title="Działania">
+            <CellTemplate Context="actions">
+                
+                     <MudFab OnClick="@(()=>Edit(admin.User.Identity?.Name!, actions.Item.UserId))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" IconSize="Size.Small" Size="Size.Small"/>
+                    @if (admin.User.Identity?.Name != actions.Item.UserName)
+                    {
+                        <MudFab OnClick="@(()=>MarkDelete(admin.User.Identity?.Name!, actions.Item.UserId))" Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" IconSize="Size.Small" Size="Size.Small"/>
+                               
+                   
+                <MudFab OnClick="@(()=>Delete(actions.Item.UserId))" Color="Color.Error" Icon="@Icons.Filled.DeleteForever" IconSize="Size.Small" Size="Size.Small"/>
+                    }
             </CellTemplate>
         </Column>
    </Columns>

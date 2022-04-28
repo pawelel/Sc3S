@@ -27,11 +27,11 @@ public class Sc3SContext : DbContext
             {
                 case EntityState.Added:
      
-                    entry.Property("CreatedAt").CurrentValue = now;
+                    entry.Property("CreatedOn").CurrentValue = now;
                     break;
                 case EntityState.Modified:
     
-                    entry.Property("UpdatedAt").CurrentValue = now;
+                    entry.Property("UpdatedOn").CurrentValue = now;
                     break;
             }
         }

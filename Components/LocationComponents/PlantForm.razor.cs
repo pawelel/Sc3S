@@ -57,7 +57,7 @@ public partial class PlantForm : ComponentBase
         if (PlantId > 0)
         {
             var result = await LocationService.UpdatePlant(_plantUpdate);
-            if (result.Success)
+            if (result.IsSuccess)
             {
                 Snackbar.Add(result.Message, Severity.Success);
                 MudDialog.Close(DialogResult.Ok(true));

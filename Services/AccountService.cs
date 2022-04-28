@@ -24,6 +24,7 @@ public interface IAccountService
     Task<ServiceResponse<AccountDisplayQuery>> GetAccountByUserName(string name);
 
     Task<ServiceResponse<IEnumerable<AccountDisplayQuery>>> GetAccounts();
+    Task<ServiceResponse<List<Role>>> GetRoles();
 
     Task<ServiceResponse> UpdateAccountPassword(AccountUpdatePasswordCommand command);
 
@@ -320,5 +321,18 @@ public class AccountService : IAccountService
             return new ServiceResponse<IEnumerable<AccountDisplayQuery>>(false, null, "Nie znaleziono kont");
         }
         return new ServiceResponse<IEnumerable<AccountDisplayQuery>>(true, accounts, "Konta zostały znalezione");
+    }
+
+    public async Task<ServiceResponse<List<Role>>> GetRoles()
+    {
+        await using var context = await _factory.CreateDbContextAsync();
+        var roles = await context.Roles
+            .AsNoTracking()
+            .ToListAsync();
+        if (roles == null)
+        {
+            return new ServiceResponse<List<Role>>(false, null, "Nie znaleziono ról");
+        }
+        return new ServiceResponse<List<Role>>(true, roles, "Role zostały znalezione");
     }
 }

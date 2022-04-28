@@ -16,11 +16,11 @@ public class ParameterConfig : IEntityTypeConfiguration<Parameter>
         builder.Property(x => x.Description).HasMaxLength(200);
 
         builder.HasData(
-            new Parameter { ParameterId = 1, Name = "Wysokość", Description = "Wymiar od podłoża pionowo do góry" },
-            new Parameter { ParameterId = 2, Name = "Szerokość", Description = "Wymiar w najszerszym miejscu od lewej do prawej" },
-            new Parameter { ParameterId = 3, Name = "Długość", Description = "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu" },
-            new Parameter { ParameterId = 4, Name = "Producent", Description = "Nazwa producenta" },
-            new Parameter { ParameterId = 5, Name = "Rozdzielczość", Description = "Rozdzielczość ekranu" }
+            new Parameter { ParameterId = 1, Name = "Wysokość", Description = "Wymiar od podłoża pionowo do góry", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Parameter { ParameterId = 2, Name = "Szerokość", Description = "Wymiar w najszerszym miejscu od lewej do prawej", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Parameter { ParameterId = 3, Name = "Długość", Description = "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Parameter { ParameterId = 4, Name = "Producent", Description = "Nazwa producenta", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Parameter { ParameterId = 5, Name = "Rozdzielczość", Description = "Rozdzielczość ekranu", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now }
             );
     }
 }

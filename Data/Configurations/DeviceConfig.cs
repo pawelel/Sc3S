@@ -16,10 +16,10 @@ public class DeviceConfig : IEntityTypeConfiguration<Device>
         builder.Property(x => x.Description).HasMaxLength(500);
 
         builder.HasData(
-            new Device { DeviceId = 1, Name = "drukarka", Description = "Urządzenie drukujące", CreatedBy = "App", CreatedOn = DateTime.Now, UpdatedBy = "admin", UpdatedOn = DateTime.Now },
-            new Device { DeviceId = 2, Name = "komputer", Description = "Urządzenie komputerowe" },
-            new Device { DeviceId = 3, Name = "monitor", Description = "Wyświetlacz" },
-            new Device { DeviceId = 4, Name = "Skaner", Description = "Skaner kodów" }
+            new Device { DeviceId = 1, Name = "drukarka", Description = "Urządzenie drukujące", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Device { DeviceId = 2, Name = "komputer", Description = "Urządzenie komputerowe", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Device { DeviceId = 3, Name = "monitor", Description = "Wyświetlacz", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now },
+            new Device { DeviceId = 4, Name = "Skaner", Description = "Skaner kodów", CreatedBy = "seed", CreatedOn = DateTime.Now, UpdatedBy = "seed", UpdatedOn = DateTime.Now }
             );
     }
 }

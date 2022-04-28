@@ -5,9 +5,11 @@ using MudBlazor;
 using Sc3S.CQRS.Queries;
 using Sc3S.Services;
 
+using static MudBlazor.CategoryTypes;
+
 namespace Sc3S.Components.StuffComponents;
 
-public partial class DeviceGrid : ComponentBase
+public partial class DeviceGrid : Microsoft.AspNetCore.Components.ComponentBase
 {
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private IStuffService StuffService { get; set; } = default!;
@@ -36,14 +38,14 @@ public partial class DeviceGrid : ComponentBase
         }
     }
 
-    private bool Search(DeviceQuery device)
+    private Func<DeviceQuery, bool> QuickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_search))
         {
             return true;
         }
-        return device.Name.ToLower().Contains(_search.ToLower());
-    }
+        return x.Name.ToLower().Contains(_search.ToLower());
+    };
 
     private async Task Edit(int id)
     {

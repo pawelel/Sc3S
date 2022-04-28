@@ -1,0 +1,17 @@
+﻿<MudDialog>
+    <DialogContent>
+        <EditForm Model="@_account" OnValidSubmit="@HandleSave">
+            <FluentValidationValidator/>
+            <ValidationSummary/>
+            <MudTextField @bind-Value="_account.UserName" Label="Nazwa" For="@(()=>_account.UserName)" Immediate="true" Variant="Variant.Text" Margin="Margin.Normal"> </MudTextField>
+            <MudSelect @bind-Value="_account.RoleId">
+                @foreach (var role in _roles)
+                {
+                    <MudSelectItem Value="@role.RoleId">@role.Name</MudSelectItem>
+                }
+            </MudSelect>
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Warning" OnClick="Cancel">Anuluj</MudButton>
+        <MudButton Variant="Variant.Outlined" ButtonType="ButtonType.Submit" Size="Size.Small" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success">Zapisz</MudButton>
+        </EditForm>
+    </DialogContent>
+</MudDialog>

@@ -21,11 +21,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 1,
                 Name = "Spawalnia",
                 PlantId = 1,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             },
             new
@@ -33,11 +33,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 2,
                 Name = "Lakiernia",
                 PlantId = 1,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             },
             new
@@ -45,11 +45,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 3,
                 Name = "Montaż",
                 PlantId = 1,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             },
             new
@@ -57,11 +57,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 4,
                 Name = "Spawalnia",
                 PlantId = 2,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             },
             new
@@ -69,11 +69,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 5,
                 Name = "Lakiernia",
                 PlantId = 2,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             },
             new
@@ -81,11 +81,11 @@ public class AreaConfig : IEntityTypeConfiguration<Area>
                 AreaId = 6,
                 Name = "Montaż",
                 PlantId = 2,
-                CreatedAt = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
                 Description = "",
                 IsDeleted = false,
-                UpdatedAt = DateTime.Now,
+                UpdatedOn = DateTime.Now,
                 UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de"
             }
             ); ;

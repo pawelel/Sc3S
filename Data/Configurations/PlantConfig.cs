@@ -22,12 +22,22 @@ public class PlantConfig : IEntityTypeConfiguration<Plant>
                 PlantId = 1,
                 Name = "P35",
                 Description = "Zakład Poznań Antoninek"
+            ,
+                CreatedBy = "seed",
+                CreatedOn = DateTime.Now,
+                UpdatedBy = "seed",
+                UpdatedOn = DateTime.Now
             },
             new()
             {
                 PlantId = 2,
                 Name = "P69",
                 Description = "Zakład Crafter Września"
+            ,
+                CreatedBy = "seed",
+                CreatedOn = DateTime.Now,
+                UpdatedBy = "seed",
+                UpdatedOn = DateTime.Now
             });
     }
 }

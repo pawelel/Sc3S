@@ -49,7 +49,7 @@
 
     private async Task Authenticate()
     {
-
+        
         var userAccount =  await Mediator.Send(_command);
         
         if (userAccount is not null)
@@ -57,7 +57,7 @@
             await authStateProvider.UpdateAuthenticationState(new UserSession
                 {
                     UserName = userAccount.UserName,
-                    Roles = userAccount.Roles
+                    Role = userAccount.Role
                 });
             navManager.NavigateTo("/", true);
         }
