@@ -2,7 +2,6 @@
 
 using MudBlazor;
 
-using Sc3S.Components.StuffComponents;
 using Sc3S.CQRS.Queries;
 using Sc3S.Services;
 

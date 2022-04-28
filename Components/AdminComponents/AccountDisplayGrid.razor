@@ -1,7 +1,7 @@
 ﻿<AuthorizeView Roles="Admin" Context="admin">
-    <MudDataGrid T="AccountDisplayQuery" Items="_accounts" Sortable="true" Filterable="true" QuickFilter="@QuickFilter">
+  <MudDataGrid T="AccountDisplayQuery" Items="_accounts" Sortable="true" Filterable="true" QuickFilter="@QuickFilter">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudText Typo="Typo.h6">Zarządzanie kontami</MudText>
         <MudSpacer />
         <MudTextField @bind-Value="_search" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
             AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -20,7 +20,7 @@
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.CreatedOn)" Title="Data utworzenia"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.UpdatedBy)" Title="Ostatnia aktualizacja"/>
         <Column T="AccountDisplayQuery" Field="@nameof(AccountDisplayQuery.UpdatedOn)" Title="Data aktualizacji"/>
-        <Column T="AccountDisplayQuery" Field="" Title="Działania">
+        <Column T="AccountDisplayQuery" Title="Działania">
             <CellTemplate Context="actions">
                 
                      <MudFab OnClick="@(()=>Edit(admin.User.Identity?.Name!, actions.Item.UserId))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" IconSize="Size.Small" Size="Size.Small"/>

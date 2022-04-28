@@ -21,7 +21,7 @@ public partial class AccountForm : ComponentBase
     [Inject] private IMapper Mapper { get; set; } = default!;
     [Parameter] public string UserName { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    [Parameter] public int UserId { get; set; }
+    [Parameter] public string UserId { get; set; } = string.Empty;
     private AccountUpdateCommand _account = new();
     private List<Role> _roles = new();
     private void Cancel()
