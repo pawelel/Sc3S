@@ -12,7 +12,7 @@ using Sc3S.Data;
 namespace Sc3S.Migrations
 {
     [DbContext(typeof(Sc3SContext))]
-    [Migration("20220428054759_Init")]
+    [Migration("20220428060212_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,13 +95,13 @@ namespace Sc3S.Migrations
                         {
                             UserId = "a8598d2a-9734-4544-b87f-d7d69aa790e9",
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 5, 47, 59, 220, DateTimeKind.Utc).AddTicks(4645),
+                            CreatedOn = new DateTime(2022, 4, 28, 6, 2, 11, 852, DateTimeKind.Utc).AddTicks(4465),
                             Email = "admin@admin.com",
                             IsDeleted = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEJhgYm0n8OOozDLBMXcGqgykRGQUWn6l56jslcN9BVWlSkWZwI5pWFgjFIhHL2CP8g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG/KmZxW0hQwiZGOw/HjhWjEg8pkPxEkJJRBX/891yip3sQ3uI4PDYTRa0KOw4MwJw==",
                             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 5, 47, 59, 220, DateTimeKind.Utc).AddTicks(4647),
+                            UpdatedOn = new DateTime(2022, 4, 28, 6, 2, 11, 852, DateTimeKind.Utc).AddTicks(4466),
                             UserName = "admin"
                         });
                 });
@@ -174,73 +174,73 @@ namespace Sc3S.Migrations
                         {
                             AreaId = 1,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1434),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7580),
                             Description = "",
                             IsDeleted = false,
                             Name = "Spawalnia",
                             PlantId = 1,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1477)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7618)
                         },
                         new
                         {
                             AreaId = 2,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1482),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7621),
                             Description = "",
                             IsDeleted = false,
                             Name = "Lakiernia",
                             PlantId = 1,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1484)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7623)
                         },
                         new
                         {
                             AreaId = 3,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1486),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7624),
                             Description = "",
                             IsDeleted = false,
                             Name = "Montaż",
                             PlantId = 1,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1489)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7626)
                         },
                         new
                         {
                             AreaId = 4,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1491),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7627),
                             Description = "",
                             IsDeleted = false,
                             Name = "Spawalnia",
                             PlantId = 2,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1493)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7629)
                         },
                         new
                         {
                             AreaId = 5,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1495),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7630),
                             Description = "",
                             IsDeleted = false,
                             Name = "Lakiernia",
                             PlantId = 2,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1497)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7632)
                         },
                         new
                         {
                             AreaId = 6,
                             CreatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1499),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7633),
                             Description = "",
                             IsDeleted = false,
                             Name = "Montaż",
                             PlantId = 2,
                             UpdatedBy = "cfd23736-9c80-4ec8-9b1a-1dfb9132a5de",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 221, DateTimeKind.Local).AddTicks(1501)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 852, DateTimeKind.Local).AddTicks(7635)
                         });
                 });
 
@@ -547,430 +547,430 @@ namespace Sc3S.Migrations
                         {
                             CategoryId = 1,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9380),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5035),
                             Description = "PH 3DMAPPING",
                             IsDeleted = false,
                             Name = "3d Mapping",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9416)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5050)
                         },
                         new
                         {
                             CategoryId = 2,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9419),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5054),
                             Description = "PH ALS",
                             IsDeleted = false,
                             Name = "ALS",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9421)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5056)
                         },
                         new
                         {
                             CategoryId = 3,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9423),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5059),
                             Description = "PH ATLAS DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Atlas",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9425)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5060)
                         },
                         new
                         {
                             CategoryId = 4,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9427),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5062),
                             Description = "PH DELLPC",
                             IsDeleted = false,
                             Name = "Dell PC",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9429)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5064)
                         },
                         new
                         {
                             CategoryId = 5,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9431),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5066),
                             Description = "PH EPSON DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Epson",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9433)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5068)
                         },
                         new
                         {
                             CategoryId = 6,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9435),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5070),
                             Description = "PH FFT",
                             IsDeleted = false,
                             Name = "FFT",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9437)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5072)
                         },
                         new
                         {
                             CategoryId = 7,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9439),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5074),
                             Description = "PH FIS DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka Fis",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9441)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5075)
                         },
                         new
                         {
                             CategoryId = 8,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9443),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5078),
                             Description = "PH FIS EQS",
                             IsDeleted = false,
                             Name = "EQS",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9444)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5080)
                         },
                         new
                         {
                             CategoryId = 9,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9447),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5082),
                             Description = "PH FPG",
                             IsDeleted = false,
                             Name = "FPG",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9448)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5084)
                         },
                         new
                         {
                             CategoryId = 10,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9451),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5086),
                             Description = "PH GBA NEC",
                             IsDeleted = false,
                             Name = "GBA NEC",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9452)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5088)
                         },
                         new
                         {
                             CategoryId = 11,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9455),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5090),
                             Description = "PH GBA SIEMENS",
                             IsDeleted = false,
                             Name = "GBA Siemens",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9456)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5092)
                         },
                         new
                         {
                             CategoryId = 12,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9507),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5094),
                             Description = "PH GOM",
                             IsDeleted = false,
                             Name = "Gom",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9509)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5095)
                         },
                         new
                         {
                             CategoryId = 13,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9513),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5098),
                             Description = "PH HDT FIS",
                             IsDeleted = false,
                             Name = "HDT Fis",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9514)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5099)
                         },
                         new
                         {
                             CategoryId = 14,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9516),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5101),
                             Description = "PH HDT LOGISTIK",
                             IsDeleted = false,
                             Name = "HDT Logistik",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9518)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5103)
                         },
                         new
                         {
                             CategoryId = 15,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9520),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5106),
                             Description = "PH HDT ZEBRA",
                             IsDeleted = false,
                             Name = "HDT Zebra",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9522)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5107)
                         },
                         new
                         {
                             CategoryId = 16,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9524),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5109),
                             Description = "PH JUNGMAN",
                             IsDeleted = false,
                             Name = "Jungman",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9526)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5111)
                         },
                         new
                         {
                             CategoryId = 17,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9528),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5113),
                             Description = "PH LOGISTIK DRUCKER",
                             IsDeleted = false,
                             Name = "Drukarka logistyczna",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9530)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5115)
                         },
                         new
                         {
                             CategoryId = 18,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9532),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5117),
                             Description = "PH MASTERPC",
                             IsDeleted = false,
                             Name = "MasterPC",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9534)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5119)
                         },
                         new
                         {
                             CategoryId = 19,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9536),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5121),
                             Description = "PH MDIHOST",
                             IsDeleted = false,
                             Name = "MDI Host",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9538)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5122)
                         },
                         new
                         {
                             CategoryId = 20,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9540),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5125),
                             Description = "PH MFT",
                             IsDeleted = false,
                             Name = "MFT",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9541)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5126)
                         },
                         new
                         {
                             CategoryId = 21,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9544),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5129),
                             Description = "PH OPS",
                             IsDeleted = false,
                             Name = "OPS",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9545)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5130)
                         },
                         new
                         {
                             CategoryId = 22,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9547),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5132),
                             Description = "PH PBL",
                             IsDeleted = false,
                             Name = "PBL",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9549)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5134)
                         },
                         new
                         {
                             CategoryId = 23,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9551),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5136),
                             Description = "PH PC INDUSTRY",
                             IsDeleted = false,
                             Name = "PC produkcyjny",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9553)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5138)
                         },
                         new
                         {
                             CategoryId = 24,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9555),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5141),
                             Description = "PH PEGASUS",
                             IsDeleted = false,
                             Name = "Pegasus",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9557)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5142)
                         },
                         new
                         {
                             CategoryId = 25,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9559),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5145),
                             Description = "PH PHOENIX",
                             IsDeleted = false,
                             Name = "Phoenix",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9561)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5146)
                         },
                         new
                         {
                             CategoryId = 26,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9563),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5148),
                             Description = "PH QSTORQUE",
                             IsDeleted = false,
                             Name = "Qs Torque",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9564)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5150)
                         },
                         new
                         {
                             CategoryId = 27,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9567),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5152),
                             Description = "PH SCOUT",
                             IsDeleted = false,
                             Name = "Scout",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9568)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5154)
                         },
                         new
                         {
                             CategoryId = 28,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9570),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5156),
                             Description = "PH SIEMENS477D",
                             IsDeleted = false,
                             Name = "SIEMENS 477D",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9572)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5157)
                         },
                         new
                         {
                             CategoryId = 29,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9574),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5160),
                             Description = "PH SIEMENS477DPRO",
                             IsDeleted = false,
                             Name = "SIEMENS 477D pro",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9576)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5161)
                         },
                         new
                         {
                             CategoryId = 30,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9578),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5206),
                             Description = "PH SIEMENS677D",
                             IsDeleted = false,
                             Name = "SIEMENS 677D",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9580)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5209)
                         },
                         new
                         {
                             CategoryId = 31,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9582),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5211),
                             Description = "PH SMARTWATCH",
                             IsDeleted = false,
                             Name = "Smartwatch",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9583)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5213)
                         },
                         new
                         {
                             CategoryId = 32,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9586),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5215),
                             Description = "PH SUPPORT SERVICES",
                             IsDeleted = false,
                             Name = "Support",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9587)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5217)
                         },
                         new
                         {
                             CategoryId = 33,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9589),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5219),
                             Description = "PH TABLET PANASONIC",
                             IsDeleted = false,
                             Name = "Tablet Panasonic",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9591)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5220)
                         },
                         new
                         {
                             CategoryId = 34,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9593),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5223),
                             Description = "PH TABLET SURFACE",
                             IsDeleted = false,
                             Name = "Tablet Surface",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9595)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5224)
                         },
                         new
                         {
                             CategoryId = 35,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9597),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5227),
                             Description = "PH TYPENSCHILD",
                             IsDeleted = false,
                             Name = "Typenschild",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9599)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5228)
                         },
                         new
                         {
                             CategoryId = 36,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9603),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5231),
                             Description = "PH VCI",
                             IsDeleted = false,
                             Name = "VCI",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9605)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5232)
                         },
                         new
                         {
                             CategoryId = 37,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9607),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5234),
                             Description = "PH VMT",
                             IsDeleted = false,
                             Name = "VMT",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9608)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5236)
                         },
                         new
                         {
                             CategoryId = 38,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9611),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5238),
                             Description = "PH WINDOWS SERVER",
                             IsDeleted = false,
                             Name = "WINDOWS Server",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9612)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5240)
                         },
                         new
                         {
                             CategoryId = 39,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9614),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5243),
                             Description = "PH ZEISS",
                             IsDeleted = false,
                             Name = "Zeiss",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 223, DateTimeKind.Local).AddTicks(9616)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 854, DateTimeKind.Local).AddTicks(5245)
                         });
                 });
 
@@ -1600,122 +1600,122 @@ namespace Sc3S.Migrations
                         {
                             DetailId = 1,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6123),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2793),
                             Description = "Podstawowy adres IP",
                             IsDeleted = false,
                             Name = "IP",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6138)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2817)
                         },
                         new
                         {
                             DetailId = 2,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6141),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2822),
                             Description = "Adres MAC",
                             IsDeleted = false,
                             Name = "MAC",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6143)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2823)
                         },
                         new
                         {
                             DetailId = 3,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6145),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2826),
                             Description = "Nazwa hosta",
                             IsDeleted = false,
                             Name = "Hostname",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6147)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2827)
                         },
                         new
                         {
                             DetailId = 4,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6149),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2829),
                             Description = "System operacyjny",
                             IsDeleted = false,
                             Name = "OS",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6151)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2831)
                         },
                         new
                         {
                             DetailId = 5,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6153),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2833),
                             Description = "Procesor",
                             IsDeleted = false,
                             Name = "CPU",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6155)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2835)
                         },
                         new
                         {
                             DetailId = 6,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6157),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2837),
                             Description = "Pamięć RAM",
                             IsDeleted = false,
                             Name = "RAM",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6159)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2838)
                         },
                         new
                         {
                             DetailId = 7,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6161),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2840),
                             Description = "Dysk twardy",
                             IsDeleted = false,
                             Name = "Pamięć",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6163)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2842)
                         },
                         new
                         {
                             DetailId = 8,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6165),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2844),
                             Description = "Karta graficzna",
                             IsDeleted = false,
                             Name = "Karta graficzna",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6167)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2846)
                         },
                         new
                         {
                             DetailId = 9,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6169),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2848),
                             Description = "Karta sieciowa",
                             IsDeleted = false,
                             Name = "Karta sieciowa",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6170)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2849)
                         },
                         new
                         {
                             DetailId = 10,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6173),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2852),
                             Description = "Karta rozszerzeń",
                             IsDeleted = false,
                             Name = "Karta rozszerzeń",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6174)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2853)
                         },
                         new
                         {
                             DetailId = 11,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6177),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2855),
                             Description = "Zasilacz",
                             IsDeleted = false,
                             Name = "Zasilacz",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(6178)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(2857)
                         });
                 });
 
@@ -1784,45 +1784,45 @@ namespace Sc3S.Migrations
                         {
                             DeviceId = 1,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7597),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4246),
                             Description = "Urządzenie drukujące",
                             IsDeleted = false,
                             Name = "drukarka",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7608)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4256)
                         },
                         new
                         {
                             DeviceId = 2,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7611),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4260),
                             Description = "Urządzenie komputerowe",
                             IsDeleted = false,
                             Name = "komputer",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7612)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4261)
                         },
                         new
                         {
                             DeviceId = 3,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7615),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4264),
                             Description = "Wyświetlacz",
                             IsDeleted = false,
                             Name = "monitor",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7616)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4265)
                         },
                         new
                         {
                             DeviceId = 4,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7619),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4268),
                             Description = "Skaner kodów",
                             IsDeleted = false,
                             Name = "Skaner",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 227, DateTimeKind.Local).AddTicks(7620)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 859, DateTimeKind.Local).AddTicks(4269)
                         });
                 });
 
@@ -2068,56 +2068,56 @@ namespace Sc3S.Migrations
                         {
                             ParameterId = 1,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(168),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8048),
                             Description = "Wymiar od podłoża pionowo do góry",
                             IsDeleted = false,
                             Name = "Wysokość",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(181)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8061)
                         },
                         new
                         {
                             ParameterId = 2,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(184),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8107),
                             Description = "Wymiar w najszerszym miejscu od lewej do prawej",
                             IsDeleted = false,
                             Name = "Szerokość",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(186)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8109)
                         },
                         new
                         {
                             ParameterId = 3,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(188),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8112),
                             Description = "Wymiar od najbardziej wysuniętego elementu z przodu urządzenia do tyłu",
                             IsDeleted = false,
                             Name = "Długość",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(190)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8113)
                         },
                         new
                         {
                             ParameterId = 4,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(192),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8116),
                             Description = "Nazwa producenta",
                             IsDeleted = false,
                             Name = "Producent",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(194)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8117)
                         },
                         new
                         {
                             ParameterId = 5,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(196),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8120),
                             Description = "Rozdzielczość ekranu",
                             IsDeleted = false,
                             Name = "Rozdzielczość",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(197)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(8121)
                         });
                 });
 
@@ -2186,23 +2186,23 @@ namespace Sc3S.Migrations
                         {
                             PlantId = 1,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(1581),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9484),
                             Description = "Zakład Poznań Antoninek",
                             IsDeleted = false,
                             Name = "P35",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(1591)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9495)
                         },
                         new
                         {
                             PlantId = 2,
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(1596),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9499),
                             Description = "Zakład Crafter Września",
                             IsDeleted = false,
                             Name = "P69",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(1597)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 860, DateTimeKind.Local).AddTicks(9500)
                         });
                 });
 
@@ -2319,31 +2319,31 @@ namespace Sc3S.Migrations
                         {
                             RoleId = "1320173d-7e65-44c2-82ca-973c3cf1bdf4",
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6323),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1903),
                             IsDeleted = false,
                             Name = "Admin",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6335)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1915)
                         },
                         new
                         {
                             RoleId = "4de524ca-176d-44b3-aa26-15c17ba2ea0d",
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6337),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1917),
                             IsDeleted = false,
                             Name = "Manager",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6339)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1919)
                         },
                         new
                         {
                             RoleId = "19d9ba04-7570-4789-8720-8c4fd24fc272",
                             CreatedBy = "seed",
-                            CreatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6341),
+                            CreatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1921),
                             IsDeleted = false,
                             Name = "User",
                             UpdatedBy = "seed",
-                            UpdatedOn = new DateTime(2022, 4, 28, 7, 47, 59, 229, DateTimeKind.Local).AddTicks(6343)
+                            UpdatedOn = new DateTime(2022, 4, 28, 8, 2, 11, 861, DateTimeKind.Local).AddTicks(1923)
                         });
                 });
 
